@@ -1,0 +1,26 @@
+language: node_js
+
+node_js:
+  - '10'
+
+addons:
+  sonarcloud:
+    organization: 'helenfranca-github'
+    token:
+      secure: 4c9ab85eae889eca3925b9bbca17364d1bba7977
+
+services:
+  - postgresql
+
+branches:
+  only:
+    - master
+
+before_install:
+  - npm i -g npm@6.4.1
+
+install:
+  - npm install
+
+script:
+  - sonar-scanner
