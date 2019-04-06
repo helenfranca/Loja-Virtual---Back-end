@@ -6,10 +6,10 @@ import { Cliente } from './../../core/entities/cliente.entity';
 export class ClienteService {
   constructor(
     @Inject('CLIENTE_REPOSITORY')
-    private readonly photoRepository: Repository<Cliente>,
+    private readonly clienteRepository: Repository<Cliente>,
   ) {}
 
   async findAll(): Promise<Cliente[]> {
-    return await this.photoRepository.find();
+    return await this.clienteRepository.find();
   }
 }
