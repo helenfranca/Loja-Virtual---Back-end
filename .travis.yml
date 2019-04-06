@@ -15,6 +15,7 @@ services:
 branches:
   only:
     - master
+    - features
 
 before_install:
   - npm i -g npm@6.4.1
