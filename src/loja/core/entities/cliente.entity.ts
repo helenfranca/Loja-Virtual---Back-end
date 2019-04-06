@@ -5,12 +5,12 @@ export class Cliente {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 500 })
+  @Column({ type: 'varchar', length: 500 })
   nome: string;
 
-  @Column('double')
+  @Column('numeric')
   valortotal: Double;
 
-  @Column('Timestamp')
+  @Column('timestamp')
   data: Date;
 }
