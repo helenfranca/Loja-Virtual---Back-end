@@ -26,8 +26,8 @@ install:
 
 script:
   - sonar-scanner
-
-deploy:
-  provider: heroku
-  on: features
-  app: doacaodesangue-loja
+# deploy:
+#   provider: heroku
+#   api_key:
+#   on: features
+#   app: doacaodesangue-loja
