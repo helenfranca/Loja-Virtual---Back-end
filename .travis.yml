@@ -31,4 +31,4 @@ deploy:
   provider: heroku
   api-key:
     secure: $HEROKU_API_KEY
- app: lojavirtual-doacaodesangue
+ app: landerson.lma@hotmail.com
