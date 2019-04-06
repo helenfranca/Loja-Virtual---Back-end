@@ -15,7 +15,7 @@ services:
 
 branches:
   only:
-    - master
+    # - master
     - features
 
 before_install:
@@ -26,9 +26,8 @@ install:
 
 script:
   - sonar-scanner
-
-deploy:
-  provider: heroku
-  api-key:
-    secure: $HEROKU_API_KEY
- app: doacaodesangue-loja
+# deploy:
+#   provider: heroku
+#   api-key:
+#     secure: $HEROKU_API_KEY
+#  app: doacaodesangue-loja
