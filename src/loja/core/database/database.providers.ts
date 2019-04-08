@@ -1,16 +1,17 @@
 import { createConnection } from 'typeorm';
 
+require('dotenv').config();
 export const databaseProviders = [
   {
     provide: 'DATABASE_CONNECTION',
     useFactory: async () =>
       await createConnection({
         type: 'postgres',
-        host: 'localhost',
+        host: process.env.DB_HOST,
         port: 5432,
-        username: 'postgres',
-        password: '',
-        database: 'loja_virtual',
+        username: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_USER,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
