@@ -25,9 +25,9 @@ install:
   - npm install
 
 script:
-  - sonar-scanner
+  - npm run test
+  # - sonar-scanner
 # deploy:
 #   provider: heroku
 #   api_key:
-#   on: features
-#   app: doacaodesangue-loja
+#   app: doacaodesangue
