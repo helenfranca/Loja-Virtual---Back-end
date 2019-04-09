@@ -1,9 +1,6 @@
 {
   "name": "lojavirtual-backend",
   "version": "0.0.1",
-  "engines": {
-    "node": "10.3.0"
-  },
   "description": "",
   "author": "",
   "license": "MIT",
@@ -14,7 +11,7 @@
     "start:dev": "nodemon",
     "start:debug": "nodemon --config nodemon-debug.json",
     "prestart:prod": "rimraf dist && npm run build",
-    "start:heroku": "npm run prestart:prod && npm run start:prod",
+    "start:heroku": "node server.js",
     "start:prod": "node dist/main.js",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
