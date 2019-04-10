@@ -4,6 +4,7 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     Double,
+    Timestamp,
   } from 'typeorm';
 
   @Entity()
@@ -43,4 +44,7 @@ import {
 
     @Column('timestamp')
     data: Date;
+
+    horarioAbertura: string; //escolher tipo melhor
+    horarioFechamento: string;
   }
