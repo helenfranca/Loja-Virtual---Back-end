@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   Double,
+  OneToMany,
 } from 'typeorm';
+import { Doacao } from './doacao.entity';
 
 export enum SexoEnum {
   Masculino = 'M',
@@ -38,4 +40,7 @@ export class Pessoa extends BaseEntity {
 
   @Column({ type: 'varchar', length: 10, nullable: false })
   senha: string;
+
+  @OneToMany(type => Doacao, doacao => doacao.pessoa)
+  doacao: Doacao[];
 }
