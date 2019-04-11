@@ -1,4 +1,6 @@
+
 export interface genericInterface<T> {
+
   readAll(): Promise<T[]>;
 
   readOne(id: number): Promise<T>;
@@ -8,4 +10,5 @@ export interface genericInterface<T> {
   Drop(body): Promise<T>;
 
   Update(body): Promise<T>;
+
 }

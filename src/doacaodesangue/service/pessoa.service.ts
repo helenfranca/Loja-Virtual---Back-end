@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
   readAll(): Promise<Pessoa[]> {
+
     return Pessoa.find();
   }
   readOne(id: number): Promise<Pessoa> {
@@ -50,5 +51,6 @@ export class PessoaService implements genericInterface<Pessoa> {
         }\n Os parametros estao certos?`,
       );
     }
+ 
   }
 }
