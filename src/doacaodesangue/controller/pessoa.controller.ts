@@ -6,12 +6,16 @@ import {
   HttpStatus,
   Body,
   Post,
+
+  Put,
+
 } from '@nestjs/common';
 import { PessoaService } from '../service/pessoa.service';
 import { Pessoa } from '../model/pessoa.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 
-@ApiUseTags('')
+
+@ApiUseTags('Pessoa')
 @Controller()
 export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
@@ -29,7 +33,9 @@ export class PessoaController {
       } else {
         res
           .status(HttpStatus.NOT_FOUND)
-          .send('Nenhum atendente encontrado na busca');
+
+          .send('Nenhum usuário encontrado na busca');
+
       }
     } catch (err) {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);
@@ -37,7 +43,13 @@ export class PessoaController {
   }
 
   @Post('/pessoa')
-  public createOne(@Body() body: any) {
+  public createOne(@Body() body: any): Promise<Pessoa> {
     return this.pessoaService.Create(body);
   }
+
+  @Put('/pessoa')
+  public updateOne(@Body() body: any) {
+    return this.pessoaService.Update(body);
+  }
+ 
 }
