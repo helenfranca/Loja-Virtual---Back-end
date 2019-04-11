@@ -27,6 +27,5 @@ export class Doacao extends BaseEntity {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'idPessoa' })
   pessoa: Pessoa;
 }
