@@ -6,6 +6,7 @@ import { Pessoa } from '../model/pessoa.entity';
 @Injectable()
 export class DoacaoService implements genericInterface<Doacao> {
   readAll(): Promise<Doacao[]> {
+
     return Doacao.createQueryBuilder('doacao')
       .select(
         'doacao.id, pessoa.nome, doacao.datadoacao, doacao.quantidade, doacao.observacao',
@@ -46,6 +47,7 @@ export class DoacaoService implements genericInterface<Doacao> {
     throw new Error('Method not implemented.');
   }
 
+
   async Update(body: any): Promise<Doacao> {
     try {
       let busca = await Doacao.findOne({ id: body.id });
@@ -59,5 +61,6 @@ export class DoacaoService implements genericInterface<Doacao> {
         }\n Os parametros estao certos?`,
       );
     }
+
   }
 }
