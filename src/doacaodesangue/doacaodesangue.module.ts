@@ -5,11 +5,15 @@ import { Module, CacheModule } from '@nestjs/common';
 import { HemocentroService } from './service/hemocentro.service';
 import { hemocentroController } from './controller/hemocentro.controller';
 
+import { DoacaoService } from './service/doacao.service';
+import { DoacaoController } from './controller/doacao.controller';
+
 const modelProvider = [...databaseProviders];
 
-const modelService = [PessoaService, HemocentroService];
 
-const modelController = [PessoaController, hemocentroController];
+const modelService = [PessoaService, DoacaoService, HemocentroService];
+
+const modelController = [PessoaController, DoacaoController, hemocentroController];
 
 @Module({
   imports: [
