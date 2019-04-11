@@ -3,8 +3,6 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    Double,
-    Timestamp,
   } from 'typeorm';
 
   @Entity()
