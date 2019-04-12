@@ -14,35 +14,38 @@ import {
     nome: string;
     
     @Column({type:'varchar', length:14})
-    cnpj: number;
+    cnpj: string;
     
-    @Column({type:'varchar', length:100})
-    email: string;
+    // @Column({type:'varchar', length:100})
+    // email: string;
     
     @Column({type:'varchar', length:20})
     senha: string;
     
     @Column({type:'varchar', length:8})
     cep: string;
-    
-    @Column({type:'varchar', length:100})
-    bairro: string;
-    
-    @Column({type:'varchar', length:100})
-    cidade: string;
-    
-    @Column({type:'varchar', length:100})
-    logradouro: string;
-    
-    @Column({type:'varchar', length:10})
-    numeroImovel: string;
-    
-    @Column({type:'varchar', length:100})
-    responsavel: string;
 
-    @Column('timestamp')
-    data: Date;
+    @Column({type:'varchar', length:11})
+    telefone: string;
+    
+    // @Column({type:'varchar', length:100})
+    // bairro: string;
+    
+    // @Column({type:'varchar', length:100})
+    // cidade: string;
+    
+    // @Column({type:'varchar', length:100})
+    // logradouro: string;
+    
+    // @Column({type:'varchar', length:10})
+    // numeroImovel: string;
+    
+    // @Column({type:'varchar', length:100})
+    // responsavel: string;
 
-    horarioAbertura: string; //escolher tipo melhor
-    horarioFechamento: string;
+    // @Column('timestamp')
+    // data: Date;
+
+    // horarioAbertura: string; //escolher tipo melhor
+    // horarioFechamento: string;
   }
