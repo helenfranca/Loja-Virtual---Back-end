@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class ProdutoService implements genericInterface<Produto> {
   readAll(): Promise<Produto[]> {
-
     return Produto.find();
   }
   readOne(id: number): Promise<Produto> {
@@ -24,7 +23,8 @@ export class ProdutoService implements genericInterface<Produto> {
       throw new Error(
         `Erro ao salvar Produto \n Erro: ${err.name}\n Mensagem: ${
           err.message
-        }\n Os parametros estao certos?`,
+        }\n Os parametr
+        os estao certos?`,
       );
     }
   }
@@ -48,6 +48,12 @@ export class ProdutoService implements genericInterface<Produto> {
         }\n Os parametros estao certos?`,
       );
     }
- 
+  }
+
+  async buscaProdutoParam(texto: string): Promise<Produto[]> {
+    console.log('buscando com param ', texto);
+    return Produto.createQueryBuilder('produto')
+      .where('produto.nome like :name', { name: '%' + texto + '%' })
+      .getRawMany();
   }
 }
