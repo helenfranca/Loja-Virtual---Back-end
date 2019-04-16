@@ -3,49 +3,29 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
+    OneToMany,
   } from 'typeorm';
+import { FuncionamentoHemocentro } from './funcionamentoHemocentro.entity';
 
   @Entity()
   export class Hemocentro extends BaseEntity {
     @PrimaryGeneratedColumn()  
     id: number;
 
-    @Column({type: 'varchar', length:500})
+    @Column({type: 'varchar', length:500, nullable: false})
     nome: string;
     
-    @Column({type:'varchar', length:14})
-    cnpj: string;
+    @Column({type:'varchar', length:7, nullable: false})
+    cnes: string;
     
-    // @Column({type:'varchar', length:100})
-    // email: string;
+    @Column({type:'varchar', length:100, nullable: false})
+    email: string;
     
-    @Column({type:'varchar', length:20})
+    @Column({type:'varchar', length:20, nullable: false})
     senha: string;
     
-    @Column({type:'varchar', length:8})
-    cep: string;
-
     @Column({type:'varchar', length:11})
     telefone: string;
-    
-    // @Column({type:'varchar', length:100})
-    // bairro: string;
-    
-    // @Column({type:'varchar', length:100})
-    // cidade: string;
-    
-    // @Column({type:'varchar', length:100})
-    // logradouro: string;
-    
-    // @Column({type:'varchar', length:10})
-    // numeroImovel: string;
-    
-    // @Column({type:'varchar', length:100})
-    // responsavel: string;
-
-    // @Column('timestamp')
-    // data: Date;
-
-    // horarioAbertura: string; //escolher tipo melhor
-    // horarioFechamento: string;
+    @OneToMany(() => FuncionamentoHemocentro, funcionamento => funcionamento.hemocentro)
+    funcionamento: FuncionamentoHemocentro[];
   }
