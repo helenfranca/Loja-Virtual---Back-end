@@ -1,6 +1,6 @@
-import { Produto } from 'src/doacaodesangue/model/produto.entity';
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
+import { Produto } from '../model/produto.entity';
 
 @Injectable()
 export class ProdutoService implements genericInterface<Produto> {
@@ -50,10 +50,11 @@ export class ProdutoService implements genericInterface<Produto> {
     }
   }
 
-  async buscaProdutoParam(texto: string): Promise<Produto[]> {
+  async buscaProdutoParam(texto): Promise<Produto | any> {
     console.log('buscando com param ', texto);
-    return Produto.createQueryBuilder('produto')
-      .where('produto.nome like :name', { name: '%' + texto + '%' })
+    return await Produto.createQueryBuilder('produto')
+      .select('produto.nome, produto.quantidade, produto.tipo')
+      .where('produto.nome ILIKE :name', { name: `%${texto}%` })
       .getRawMany();
   }
 }

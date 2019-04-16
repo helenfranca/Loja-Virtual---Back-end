@@ -12,11 +12,11 @@ import { HemocentroService } from '../service/hemocentro.service';
 import { Hemocentro } from '../model/hemocentro.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 
-
 @ApiUseTags('Hemocentro')
 @Controller()
 export class HemocentroController {
   constructor(private readonly HemocentroService: HemocentroService) {}
+
   @Get('/Hemocentro')
   root(): any {
     return this.HemocentroService.readAll();
@@ -33,7 +33,6 @@ export class HemocentroController {
           .status(HttpStatus.NOT_FOUND)
 
           .send('Nenhum usuário encontrado na busca');
-
       }
     } catch (err) {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);
@@ -49,5 +48,4 @@ export class HemocentroController {
   public updateOne(@Body() body: any) {
     return this.HemocentroService.Update(body);
   }
- 
 }

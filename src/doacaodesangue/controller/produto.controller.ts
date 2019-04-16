@@ -11,7 +11,7 @@ import { ProdutoService } from '../service/produto.service';
 import { Produto } from '../model/produto.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 
-@ApiUseTags('Produto')
+@ApiUseTags('produto')
 @Controller()
 export class ProdutoController {
   constructor(private readonly ProdutoService: ProdutoService) {}
@@ -20,7 +20,7 @@ export class ProdutoController {
     return this.ProdutoService.readAll();
   }
 
-  @Get('/Produto/:id')
+  @Get('/produto/:id')
   async readOne(@Res() res, @Param() id) {
     try {
       let Produto: Produto = await this.ProdutoService.readOne(id.id);
@@ -36,14 +36,26 @@ export class ProdutoController {
     }
   }
 
-  @Post('/Produto')
+  @Post('/produto')
   public createOne(@Body() body: any) {
     return this.ProdutoService.Create(body);
   }
 
-  @Get('/Produto/busca/:texto')
-  public buscaProduto(@Res() res, @Param() texto): Promise<Produto[]> {
-    console.log('buscando');
-    return this.ProdutoService.buscaProdutoParam(texto.texto);
+  @Get('/produto/busca/:texto')
+  async buscaProduto(@Res() res, @Param() texto) {
+    try {
+      let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
+        texto.texto,
+      );
+      if (Produto != undefined) {
+        res.status(HttpStatus.OK).send(Produto);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send('Nenhum produto encontrado na busca');
+      }
+    } catch (err) {
+      res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+    }
   }
 }
