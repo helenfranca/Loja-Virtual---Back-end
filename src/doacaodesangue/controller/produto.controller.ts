@@ -58,4 +58,20 @@ export class ProdutoController {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);
     }
   }
+
+  @Get('/produto/camisas')
+  async buscaCamisas(@Res() res, @Param() texto) {
+    // try {
+    let Produto: Produto = await this.ProdutoService.buscaCamisas(texto.texto);
+    //   if (Produto != undefined) {
+    //     res.status(HttpStatus.OK).send(Produto);
+    //   } else {
+    //     res
+    //       .status(HttpStatus.NOT_FOUND)
+    //       .send('Nenhum produto encontrado na busca');
+    //   }
+    // } catch (err) {
+    //   res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+    // }
+  }
 }

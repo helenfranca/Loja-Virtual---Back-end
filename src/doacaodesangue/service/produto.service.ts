@@ -51,10 +51,16 @@ export class ProdutoService implements genericInterface<Produto> {
   }
 
   async buscaProdutoParam(texto): Promise<Produto | any> {
-    console.log('buscando com param ', texto);
     return await Produto.createQueryBuilder('produto')
       .select('produto.nome, produto.quantidade, produto.tipo')
       .where('produto.nome ILIKE :name', { name: `%${texto}%` })
+      .getRawMany();
+  }
+
+  async buscaCamisas(): Promise<Produto | any> {
+    return await Produto.createQueryBuilder('produto')
+      .select('produto.nome, produto.quantidade, produto.tipo')
+      .where('produto.tipo ILIKE :name', { name: 'camisa' })
       .getRawMany();
   }
 }
