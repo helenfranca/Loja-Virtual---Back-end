@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   Double,
-
   OneToMany,
 } from 'typeorm';
 import { Doacao } from './doacao.entity';
@@ -18,7 +17,6 @@ export enum SexoEnum {
 export class Pessoa extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
 
   @Column({ type: 'varchar', length: 20, nullable: false })
   nome: string;
@@ -46,5 +44,4 @@ export class Pessoa extends BaseEntity {
 
   @OneToMany(type => Doacao, doacao => doacao.pessoa)
   doacao: Doacao[];
-
 }
