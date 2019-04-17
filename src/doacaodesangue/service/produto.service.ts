@@ -23,8 +23,7 @@ export class ProdutoService implements genericInterface<Produto> {
       throw new Error(
         `Erro ao salvar Produto \n Erro: ${err.name}\n Mensagem: ${
           err.message
-        }\n Os parametr
-        os estao certos?`,
+        }\n Os parametros estao certos?`,
       );
     }
   }
@@ -60,7 +59,21 @@ export class ProdutoService implements genericInterface<Produto> {
   async buscaCamisas(): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
       .select('produto.nome, produto.quantidade, produto.tipo')
-      .where('produto.tipo ILIKE :name', { name: 'camisa' })
+      .where('produto.tipo ILIKE :name', { name: 'Camisa' })
+      .getRawMany();
+  }
+
+  async buscaBotons(): Promise<Produto | any> {
+    return await Produto.createQueryBuilder('produto')
+      .select('produto.nome, produto.quantidade, produto.tipo')
+      .where('produto.tipo ILIKE :name', { name: 'Boton' })
+      .getRawMany();
+  }
+
+  async buscaCanecas(): Promise<Produto | any> {
+    return await Produto.createQueryBuilder('produto')
+      .select('produto.nome, produto.quantidade, produto.tipo')
+      .where('produto.tipo ILIKE :name', { name: 'Caneca' })
       .getRawMany();
   }
 }

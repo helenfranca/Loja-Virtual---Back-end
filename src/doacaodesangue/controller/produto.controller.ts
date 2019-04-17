@@ -15,7 +15,7 @@ import { ApiUseTags } from '@nestjs/swagger';
 @Controller()
 export class ProdutoController {
   constructor(private readonly ProdutoService: ProdutoService) {}
-  @Get('/Produto')
+  @Get('/produto')
   root(): any {
     return this.ProdutoService.readAll();
   }
@@ -59,19 +59,18 @@ export class ProdutoController {
     }
   }
 
-  @Get('/produto/camisas')
-  async buscaCamisas(@Res() res, @Param() texto) {
-    // try {
-    let Produto: Produto = await this.ProdutoService.buscaCamisas(texto.texto);
-    //   if (Produto != undefined) {
-    //     res.status(HttpStatus.OK).send(Produto);
-    //   } else {
-    //     res
-    //       .status(HttpStatus.NOT_FOUND)
-    //       .send('Nenhum produto encontrado na busca');
-    //   }
-    // } catch (err) {
-    //   res.status(HttpStatus.BAD_GATEWAY).send(err.message);
-    // }
+  @Get('/camisas')
+  async buscaCamisas() {
+    return await this.ProdutoService.buscaCamisas();
+  }
+
+  @Get('/botons')
+  async buscaBotons() {
+    return await this.ProdutoService.buscaBotons();
+  }
+
+  @Get('/canecas')
+  async buscaCanecas() {
+    return await this.ProdutoService.buscaCanecas();
   }
 }
