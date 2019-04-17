@@ -3,6 +3,7 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
+    Double,
   } from 'typeorm';
   
   export enum TipoEnum {
@@ -11,7 +12,7 @@ import {
     Caneca = 'Caneca'
   }
 
-  @Entity()
+ 
   export class Produto extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -19,7 +20,7 @@ import {
     @Column({ type: 'varchar', length: 100, nullable: false })
     nome: string;
     
-    @Column({ type: 'numeric', nullable: false })
+    @Column({ type: 'int', nullable: false })
     quantidade: number;
 
     @Column({ type: 'varchar', length: 250, nullable: false })
@@ -27,5 +28,8 @@ import {
 
     @Column('varchar')
     tipo: TipoEnum;
+
+    @Column({ type: 'float', nullable: false })
+    valor: Double;
   }
   
