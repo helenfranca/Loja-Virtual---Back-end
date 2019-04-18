@@ -27,7 +27,7 @@ export class Pessoa extends BaseEntity {
   @Column({ type: 'timestamp', nullable: false })
   datanascimento: Date;
 
-  @Column({ type: 'varchar', length: 15, nullable: false })
+  @Column({ type: 'varchar', length: 15, nullable: false, unique: true })
   cpf: string;
 
   @Column({ type: 'varchar', length: 1, nullable: false })

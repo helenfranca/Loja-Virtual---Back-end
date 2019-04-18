@@ -1,17 +1,29 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Double, ManyToOne, Entity } from "typeorm";
-import { Compra } from "./compra.entity";
+import {
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  Double,
+  ManyToOne,
+  Entity,
+  OneToMany,
+} from 'typeorm';
+import { Compra } from './compra.entity';
+import { Caneca } from './caneca.entity';
 
 @Entity()
 export class ItemCompra extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-    
-    @Column({type:'int', nullable: false})
-    quantidade: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({type:'float', nullable: false})
-    valorAtual: Double;
+  @Column({ type: 'int', nullable: false })
+  quantidade: number;
 
-    @ManyToOne(type => Compra, compra => compra.itemCompra)
-    compra: Compra;
+  @Column({ type: 'float', nullable: false })
+  valorAtual: Double;
+
+  @ManyToOne(type => Compra, compra => compra.itemCompra)
+  compra: Compra;
+
+  @OneToMany(type => Caneca, caneca => caneca.id)
+  caneca: Caneca;
 }
