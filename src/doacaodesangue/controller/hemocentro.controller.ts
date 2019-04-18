@@ -7,6 +7,7 @@ import {
   Body,
   Post,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { HemocentroService } from '../service/hemocentro.service';
 import { Hemocentro } from '../model/hemocentro.entity';
@@ -47,5 +48,9 @@ export class HemocentroController {
   @Put('/Hemocentro')
   public updateOne(@Body() body: any) {
     return this.HemocentroService.Update(body);
+  }
+  @Delete('/Hemocentro/:id')
+  public deleteOne(@Body() body: any): Promise<Hemocentro> {
+    return this.HemocentroService.Drop(body);
   }
 }

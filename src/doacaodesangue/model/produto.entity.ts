@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  Double,
+} from 'typeorm';
 
 export enum TipoEnum {
   Camisa = 'Camisa',
@@ -6,7 +12,6 @@ export enum TipoEnum {
   Caneca = 'Caneca',
 }
 
-@Entity()
 export class Produto extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,4 +27,7 @@ export class Produto extends BaseEntity {
 
   @Column('varchar')
   tipo: TipoEnum;
+
+  @Column({ type: 'float', nullable: false })
+  valor: Double;
 }

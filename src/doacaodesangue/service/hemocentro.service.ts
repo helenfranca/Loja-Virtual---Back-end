@@ -16,9 +16,9 @@ export class HemocentroService implements genericInterface<Hemocentro> {
     let hemocentro = new Hemocentro();
     try {
       hemocentro.nome = body.nome;
-      hemocentro.cnpj = body.cnpj;
+      hemocentro.cnes = body.cnes;
       hemocentro.telefone = body.telefone;
-      hemocentro.cep = body.cep;
+      hemocentro.email = body.email;
       hemocentro.senha = body.senha;
       return await Hemocentro.save(hemocentro);
     } catch (err) {
@@ -30,17 +30,28 @@ export class HemocentroService implements genericInterface<Hemocentro> {
     }
   }
 
-  Drop(body: any): Promise<Hemocentro> {
-    throw new Error('Method not implemented.');
+  async Drop(body: any): Promise<Hemocentro> {
+    try {
+      let aExcluir = await Hemocentro.findOne(body.id);
+      await Hemocentro.delete(aExcluir)
+      return aExcluir;
+    }
+    catch (err) {
+      throw new Error(
+        `Erro ao deletar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
+          err.message
+        }\n Os parametros estao certos?`,
+      );
+    }
   }
 
   async Update(body: any): Promise<Hemocentro> {
     try {
-      let busca = await Hemocentro.findOne({ cnpj: body.cnpj });
+      let busca = await Hemocentro.findOne({ cnes: body.cnes });
       busca.nome = body.nome;
-      busca.cnpj = body.cnpj;
+      busca.cnes = body.cnes;
       busca.telefone = body.telefone;
-      busca.cep = body.cep;
+      busca.email = body.email;
       busca.senha = body.senha;
       return await Hemocentro.save(busca);
     } catch (err) {
