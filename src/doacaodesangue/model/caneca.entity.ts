@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Produto } from './produto.entity';
 import { ItemCompra } from './itemcompra.entity';
 
@@ -10,6 +10,7 @@ export class Caneca extends Produto {
   @Column({ type: 'int', nullable: false })
   volume: number;
 
-  @ManyToOne(type => ItemCompra, itemCompra => itemCompra.caneca)
-  itemCompra: ItemCompra;
+  @OneToOne(type => ItemCompra)
+  @JoinColumn()
+  itemcompra: ItemCompra;
 }

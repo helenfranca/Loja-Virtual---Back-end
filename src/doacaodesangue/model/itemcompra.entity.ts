@@ -6,9 +6,12 @@ import {
   ManyToOne,
   Entity,
   OneToMany,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
-import { Compra } from './compra.entity';
 import { Caneca } from './caneca.entity';
+import { Botton } from './botton.entity';
+import { Camisa } from './camisa.entity';
 
 @Entity()
 export class ItemCompra extends BaseEntity {
@@ -21,9 +24,12 @@ export class ItemCompra extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valorAtual: Double;
 
-  @ManyToOne(type => Compra, compra => compra.itemCompra)
-  compra: Compra;
-
   @OneToMany(type => Caneca, caneca => caneca.id)
   caneca: Caneca;
+
+  @OneToMany(type => Botton, botton => botton.id)
+  botton: Botton;
+
+  @OneToMany(type => Camisa, camisa => camisa.id)
+  camisa: Camisa;
 }
