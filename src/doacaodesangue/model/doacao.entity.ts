@@ -6,8 +6,10 @@ import {
   Double,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
-import { Pessoa } from './pessoa.entity';
+import { Hemocentro } from './hemocentro.entity';
+import { Doador } from './doador.entity';
 
 @Entity()
 export class Doacao extends BaseEntity {
@@ -23,11 +25,14 @@ export class Doacao extends BaseEntity {
   @Column({ type: 'varchar', length: 50, nullable: false })
   observacao: string;
 
-  @ManyToOne(type => Pessoa, pessoa => pessoa.doacao, {
+  @ManyToOne(type => Doador, doador => doador.doacao, {
     cascade: true,
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'iddoador' })
+  doador: Doador;
 
-  @JoinColumn({ name: 'idPessoa' })
-  pessoa: Pessoa;
+  @OneToOne(type => Hemocentro)
+  @JoinColumn({ name: 'idhemocentro' })
+  hemocentro: Hemocentro;
 }
