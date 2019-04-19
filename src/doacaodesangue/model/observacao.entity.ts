@@ -17,6 +17,6 @@ export class Observacao extends BaseEntity {
   descricao: string;
 
   @OneToOne(type => Doacao)
-  @JoinColumn()
+  @JoinColumn({ name: 'iddoacao' })
   doacao: Doacao;
 }

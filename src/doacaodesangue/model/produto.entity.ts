@@ -4,15 +4,14 @@ import {
   BaseEntity,
   Double,
   ManyToOne,
+  Entity,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { ItemCompra } from './itemcompra.entity';
+import { Categoria } from './categoria.entity';
 
-export enum TipoEnum {
-  Camisa = 'Camisa',
-  Bottons = 'Botton',
-  Caneca = 'Caneca',
-}
-
+@Entity()
 export class Produto extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -26,9 +25,18 @@ export class Produto extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   quantidade: number;
 
-  @Column('varchar')
-  tipo: TipoEnum;
-
   @Column({ type: 'float', nullable: false })
   valor: Double;
+
+  @ManyToOne(type => ItemCompra, itemCompra => itemCompra.id, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'iditemcompra' })
+  itemCompra: ItemCompra;
+
+  @OneToOne(type => Categoria)
+  @JoinColumn({ name: 'idcategoria' })
+  categoria: Categoria;
 }

@@ -19,10 +19,10 @@ export class Doador extends BaseEntity {
   doacao: Doacao[];
 
   @OneToOne(type => TipoSanguineo)
-  @JoinColumn()
+  @JoinColumn({ name: 'idtiposanguineo' })
   tiposanguineo: TipoSanguineo;
 
   @OneToOne(type => Pessoa)
-  @JoinColumn()
+  @JoinColumn({ name: 'idpessoa' })
   pessoa: Pessoa;
 }

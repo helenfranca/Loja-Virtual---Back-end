@@ -8,10 +8,13 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Doacao } from './doacao.entity';
 import { TipoSanguineo } from './tiposanguineo.entity';
 import { Endereco } from './endereco.entity';
+import { Compra } from './compra.entity';
 
 export enum SexoEnum {
   Masculino = 'M',
@@ -47,14 +50,14 @@ export class Pessoa extends BaseEntity {
   @Column({ type: 'varchar', length: 10, nullable: false })
   senha: string;
 
-  // @OneToMany(type => Endereco, endereco => endereco.id)
-  // endereco: Endereco[];
+  @OneToMany(type => Compra, compra => compra.id)
+  compra: Compra[];
 
-  @ManyToOne(type => Endereco, endereco => endereco.id, {
-    eager: true,
-    cascade: true,
-    onDelete: 'CASCADE',
+  @ManyToMany(type => Endereco)
+  @JoinTable({
+    name: 'pessoa_endereco',
+    joinColumn: { name: 'idpessoa', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'idendereco', referencedColumnName: 'id' },
   })
-  @JoinColumn({ name: 'idendereco' })
-  endereco: Endereco;
+  enderecos: Endereco[];
 }

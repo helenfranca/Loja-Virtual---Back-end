@@ -25,10 +25,11 @@ export class Demanda extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   status: StatusEnum;
 
-  @OneToOne(type => TipoSanguineo, tiposanguineo => tiposanguineo.id)
+  @OneToOne(type => TipoSanguineo)
+  @JoinColumn({ name: 'idtiposanguineo' })
   tiposanguineo: TipoSanguineo;
 
   @OneToOne(type => Hemocentro)
-  @JoinColumn()
+  @JoinColumn({ name: 'idhemocentro' })
   hemocentro: Hemocentro;
 }

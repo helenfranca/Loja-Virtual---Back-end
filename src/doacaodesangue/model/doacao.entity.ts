@@ -29,10 +29,10 @@ export class Doacao extends BaseEntity {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'idDoador' })
+  @JoinColumn({ name: 'iddoador' })
   doador: Doador;
 
   @OneToOne(type => Hemocentro)
-  @JoinColumn()
+  @JoinColumn({ name: 'idhemocentro' })
   hemocentro: Hemocentro;
 }

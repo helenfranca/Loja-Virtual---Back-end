@@ -16,9 +16,9 @@ export class TipoSanguineo extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   tipofator: string;
 
-  @OneToMany(type => Demanda, demanda => demanda.tiposanguineo)
+  @OneToMany(type => Demanda, demanda => demanda.id)
   demanda: Demanda[];
 
-  @OneToMany(type => Doador, doador => doador.tiposanguineo)
+  @OneToMany(type => Doador, doador => doador.id)
   doador: Doador[];
 }

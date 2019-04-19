@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { ItemCompra } from './itemcompra.entity';
 import { Endereco } from './endereco.entity';
+import { Pessoa } from './pessoa.entity';
 
 @Entity()
 export class Compra extends BaseEntity {
@@ -43,4 +44,8 @@ export class Compra extends BaseEntity {
   })
   @JoinColumn({ name: 'idendereco' })
   endereco: Endereco;
+
+  @OneToOne(type => Pessoa)
+  @JoinColumn({ name: 'idpessoa' })
+  pessoa: Pessoa;
 }
