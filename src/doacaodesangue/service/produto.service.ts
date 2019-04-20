@@ -17,7 +17,7 @@ export class ProdutoService implements genericInterface<Produto> {
       produto.nome = body.nome;
       produto.quantidade = body.quantidade;
       produto.descricao = body.descricao;
-      produto.tipo = body.tipo;
+      produto.categoria = body.tipo;
       return await Produto.save(produto);
     } catch (err) {
       throw new Error(
@@ -38,7 +38,7 @@ export class ProdutoService implements genericInterface<Produto> {
       busca.nome = body.nome;
       busca.quantidade = body.quantidade;
       busca.descricao = body.descricao;
-      busca.tipo = body.tipo;
+      busca.categoria = body.tipo;
       return await Produto.save(busca);
     } catch (err) {
       throw new Error(

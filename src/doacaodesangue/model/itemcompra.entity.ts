@@ -5,7 +5,6 @@ import {
   Double,
   ManyToOne,
   Entity,
-  OneToMany,
   JoinColumn,
   OneToOne,
 } from 'typeorm';
@@ -22,6 +21,6 @@ export class ItemCompra extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valorAtual: Double;
 
-  @OneToMany(type => Produto, produto => produto.id)
+  @ManyToOne(type => Produto, produto => produto.id)
   produto: Produto;
 }

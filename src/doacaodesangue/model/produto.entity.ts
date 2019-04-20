@@ -3,7 +3,7 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   Double,
-  ManyToOne,
+  OneToMany,
   Entity,
   JoinColumn,
   OneToOne,
@@ -28,7 +28,7 @@ export class Produto extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valor: Double;
 
-  @ManyToOne(type => ItemCompra, itemCompra => itemCompra.id, {
+  @OneToMany(type => ItemCompra, itemCompra => itemCompra.id, {
     eager: true,
     cascade: true,
     onDelete: 'CASCADE',

@@ -2,6 +2,7 @@ import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Doacao } from '../model/doacao.entity';
 import { Pessoa } from '../model/pessoa.entity';
+import { Doador } from '../model/doador.entity';
 
 @Injectable()
 export class DoacaoService implements genericInterface<Doacao> {
@@ -31,7 +32,7 @@ export class DoacaoService implements genericInterface<Doacao> {
       doacao.datadoacao = body.data;
       doacao.observacao = body.observacao;
       let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-      doacao.pessoa = pessoa;
+      doacao.doador = <Doador>pessoa;
       return await Doacao.save(doacao);
     } catch (err) {
       throw new Error(
