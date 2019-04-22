@@ -7,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { ItemCompra } from './itemcompra.entity';
 import { Categoria } from './categoria.entity';
@@ -28,13 +29,8 @@ export class Produto extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valor: Double;
 
-  @ManyToOne(type => ItemCompra, itemCompra => itemCompra.id, {
-    eager: true,
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'iditemcompra' })
-  itemCompra: ItemCompra;
+  @OneToMany(type => ItemCompra, itemcompra => itemcompra.produto)
+  itemCompra: ItemCompra[];
 
   @OneToOne(type => Categoria)
   @JoinColumn({ name: 'idcategoria' })

@@ -13,7 +13,7 @@ import { Tamanho } from './tamanho.entity';
 
 export enum CategoriaEnum {
   Camisa = 'Camisa',
-  Bottons = 'Botton',
+  Botton = 'Botton',
   Caneca = 'Caneca',
 }
 

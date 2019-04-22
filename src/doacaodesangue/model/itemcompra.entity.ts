@@ -10,6 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Produto } from './produto.entity';
+import { Compra } from './compra.entity';
 
 @Entity()
 export class ItemCompra extends BaseEntity {
@@ -22,6 +23,10 @@ export class ItemCompra extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valorAtual: Double;
 
-  @OneToMany(type => Produto, produto => produto.id)
+  @ManyToOne(type => Produto, produto => produto.itemCompra)
+  @JoinColumn({ name: 'idproduto' })
   produto: Produto;
+
+  @OneToMany(type => Compra, compra => compra.itemcompra)
+  compra: Compra[];
 }

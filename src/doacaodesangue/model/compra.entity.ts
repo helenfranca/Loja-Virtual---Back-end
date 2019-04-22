@@ -29,7 +29,7 @@ export class Compra extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valorTotal: Double;
 
-  @ManyToOne(type => ItemCompra, itemcompra => itemcompra.id, {
+  @ManyToOne(type => ItemCompra, itemcompra => itemcompra.compra, {
     eager: true,
     cascade: true,
     onDelete: 'CASCADE',

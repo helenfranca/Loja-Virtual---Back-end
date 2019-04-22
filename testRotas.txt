@@ -1,0 +1,101 @@
+Produto
+{
+	"nome":"Também sou um herói",
+	"quantidade":"10",
+	"descricao":"Costurado a mão",
+	"valor":"19.90",
+    "idcategoria":"3"
+}
+
+
+Categoria
+{
+	"categoria":"Caneca",
+}
+{
+	"categoria":"Botton",
+}
+{
+	"categoria":"Camisa",
+}
+
+Tamanho
+{
+	"tamanho":"P",
+    "idcategoria":"2"
+}
+{
+	"tamanho":"M",
+    "idcategoria":"3"
+}
+{
+	"tamanho":"G",
+    "idcategoria":"3"
+}
+
+Volume
+{
+	"volume":"200",
+    "idcategoria":"1"
+}
+{
+	"volume":"250",
+    "idcategoria":"1"
+}
+{
+	"volume":"300",
+    "idcategoria":"1"
+}
+{
+	"volume":"350",
+    "idcategoria":"1"
+}
+{
+	"volume":"400",
+    "idcategoria":"1"
+}
+{
+	"volume":"450",
+    "idcategoria":"1"
+}
+{
+	"volume":"500",
+    "idcategoria":"1"
+}
+
+Genero
+{
+	"genero":"Feminino",
+    "idcategoria":"3"
+}
+{
+	"genero":"Masculino",
+    "idcategoria":"3"
+}
+
+Material
+{
+	"material":"Algodão",
+    "idcategoria":"3"
+}
+{
+	"material":"Porcelana",
+    "idcategoria":"1"
+}
+{
+	"material":"Plastico",
+    "idcategoria":"1"
+}
+{
+	"material":"Aluminio",
+    "idcategoria":"1"
+}
+{
+	"material":"Malha",
+    "idcategoria":"3"
+}
+{
+	"material":"Plastico",
+    "idcategoria":"2"
+}
+
