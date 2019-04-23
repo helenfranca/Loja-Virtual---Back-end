@@ -67,29 +67,57 @@ export class ProdutoService implements genericInterface<Produto> {
 
   async buscaProdutoParam(texto): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
-      .select('produto.nome, produto.quantidade, produto.tipo')
+      .select(
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+      )
+      .innerJoin('produto.categoria', 'categoria')
+      .innerJoin('produto.tamanho', 'tamanho')
+      .innerJoin('produto.volume', 'volume')
+      .innerJoin('produto.material', 'material')
+      .innerJoin('produto.genero', 'genero')
       .where('produto.nome ILIKE :name', { name: `%${texto}%` })
       .getRawMany();
   }
 
   async buscaCamisas(): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
-      .select('produto.nome, produto.quantidade, produto.tipo')
-      .where('produto.tipo ILIKE :name', { name: 'Camisa' })
+      .select(
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+      )
+      .innerJoin('produto.categoria', 'categoria')
+      .innerJoin('produto.tamanho', 'tamanho')
+      .innerJoin('produto.volume', 'volume')
+      .innerJoin('produto.material', 'material')
+      .innerJoin('produto.genero', 'genero')
+      .where('categoria.nome ILIKE :name', { name: 'Camisa' })
       .getRawMany();
   }
 
-  async buscaBotons(): Promise<Produto | any> {
+  async buscaBottons(): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
-      .select('produto.nome, produto.quantidade, produto.tipo')
-      .where('produto.tipo ILIKE :name', { name: 'Boton' })
+      .select(
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+      )
+      .innerJoin('produto.categoria', 'categoria')
+      .innerJoin('produto.tamanho', 'tamanho')
+      .innerJoin('produto.volume', 'volume')
+      .innerJoin('produto.material', 'material')
+      .innerJoin('produto.genero', 'genero')
+      .where('categoria.nome ILIKE :name', { name: 'Botton' })
       .getRawMany();
   }
 
   async buscaCanecas(): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
-      .select('produto.nome, produto.quantidade, produto.tipo')
-      .where('produto.tipo ILIKE :name', { name: 'Caneca' })
+      .select(
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+      )
+      .innerJoin('produto.categoria', 'categoria')
+      .innerJoin('produto.tamanho', 'tamanho')
+      .innerJoin('produto.volume', 'volume')
+      .innerJoin('produto.material', 'material')
+      .innerJoin('produto.genero', 'genero')
+      .where('categoria.nome ILIKE :name', { name: 'Caneca' })
       .getRawMany();
   }
 }
