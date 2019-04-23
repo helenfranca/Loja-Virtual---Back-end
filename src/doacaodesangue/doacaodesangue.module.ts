@@ -8,9 +8,6 @@ import { DoacaoService } from './service/doacao.service';
 import { DoacaoController } from './controller/doacao.controller';
 import { ProdutoService } from './service/produto.service';
 import { ProdutoController } from './controller/produto.controller';
-import { CategoriaService } from './service/categoria.service';
-import { MaterialService } from './service/material.service';
-import { CriarController } from './controller/criar.controller';
 
 const modelProvider = [...databaseProviders];
 
@@ -19,8 +16,6 @@ const modelService = [
   DoacaoService,
   HemocentroService,
   ProdutoService,
-  CategoriaService,
-  MaterialService,
 ];
 
 const modelController = [
@@ -28,7 +23,6 @@ const modelController = [
   DoacaoController,
   HemocentroController,
   ProdutoController,
-  CriarController,
 ];
 
 @Module({

@@ -3,20 +3,19 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import { Categoria } from './categoria.entity';
+import { VolumeEnum } from './Enum';
+import { Produto } from './produto.entity';
 
 @Entity()
 export class Volume extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
-  volume: string;
+  @Column({ type: 'varchar', length: 20, nullable: false })
+  quantidade: VolumeEnum;
 
-  @OneToOne(type => Categoria)
-  @JoinColumn({ name: 'idcategoria' })
-  categoria: Categoria;
+  @OneToMany(type => Produto, produto => produto.volume)
+  produto: Produto[];
 }

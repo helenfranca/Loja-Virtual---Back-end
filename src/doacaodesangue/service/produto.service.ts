@@ -5,7 +5,16 @@ import { Produto } from '../model/produto.entity';
 @Injectable()
 export class ProdutoService implements genericInterface<Produto> {
   readAll(): Promise<Produto[]> {
-    return Produto.find();
+    return Produto.createQueryBuilder('produto')
+      .select(
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+      )
+      .innerJoin('produto.categoria', 'categoria')
+      .innerJoin('produto.tamanho', 'tamanho')
+      .innerJoin('produto.volume', 'volume')
+      .innerJoin('produto.material', 'material')
+      .innerJoin('produto.genero', 'genero')
+      .getRawMany();
   }
   readOne(id: number): Promise<Produto> {
     return Produto.findOne({ id: id });
@@ -17,8 +26,14 @@ export class ProdutoService implements genericInterface<Produto> {
       produto.nome = body.nome;
       produto.quantidade = body.quantidade;
       produto.descricao = body.descricao;
-      produto.valor = body.valor;
-      produto.categoria = body.categoria;
+      produto.valorunitario = body.valorunitario;
+
+      produto.categoria = body.idcategoria;
+      produto.material = body.idmaterial;
+      produto.tamanho = body.idtamanho;
+      produto.genero = body.idgenero;
+      produto.volume = body.idvolume;
+
       return await Produto.save(produto);
     } catch (err) {
       throw new Error(

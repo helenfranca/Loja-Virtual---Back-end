@@ -1,101 +1,24 @@
 Produto
 {
-	"nome":"Também sou um herói",
-	"quantidade":"10",
-	"descricao":"Costurado a mão",
-	"valor":"19.90",
-    "idcategoria":"3"
+    "nome": "Compartilhando sangue bom",
+    "quantidade": 30,
+    "descricao":"",
+    "valorunitario": "19,90",
+    "idcategoria":"1",
+    "idmaterial":"4",
+    "idvolume":"8",
+    "idtamanho":"1",
+    "idgenero":"2"
 }
 
-
-Categoria
 {
-	"categoria":"Caneca",
+    "nome": "Sou um herói!",
+    "quantidade": 10,
+    "descricao":"T-shirt",
+    "valorunitario": "15.50",
+    "idtamanho":"4",
+    "idcategoria":"1",
+    "idgenero":"1",
+    "idvolume":"8",
+    "idmaterial":"5"
 }
-{
-	"categoria":"Botton",
-}
-{
-	"categoria":"Camisa",
-}
-
-Tamanho
-{
-	"tamanho":"P",
-    "idcategoria":"2"
-}
-{
-	"tamanho":"M",
-    "idcategoria":"3"
-}
-{
-	"tamanho":"G",
-    "idcategoria":"3"
-}
-
-Volume
-{
-	"volume":"200",
-    "idcategoria":"1"
-}
-{
-	"volume":"250",
-    "idcategoria":"1"
-}
-{
-	"volume":"300",
-    "idcategoria":"1"
-}
-{
-	"volume":"350",
-    "idcategoria":"1"
-}
-{
-	"volume":"400",
-    "idcategoria":"1"
-}
-{
-	"volume":"450",
-    "idcategoria":"1"
-}
-{
-	"volume":"500",
-    "idcategoria":"1"
-}
-
-Genero
-{
-	"genero":"Feminino",
-    "idcategoria":"3"
-}
-{
-	"genero":"Masculino",
-    "idcategoria":"3"
-}
-
-Material
-{
-	"material":"Algodão",
-    "idcategoria":"3"
-}
-{
-	"material":"Porcelana",
-    "idcategoria":"1"
-}
-{
-	"material":"Plastico",
-    "idcategoria":"1"
-}
-{
-	"material":"Aluminio",
-    "idcategoria":"1"
-}
-{
-	"material":"Malha",
-    "idcategoria":"3"
-}
-{
-	"material":"Plastico",
-    "idcategoria":"2"
-}
-

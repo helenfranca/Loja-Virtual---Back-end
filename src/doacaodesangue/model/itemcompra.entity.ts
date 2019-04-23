@@ -21,12 +21,21 @@ export class ItemCompra extends BaseEntity {
   quantidade: number;
 
   @Column({ type: 'float', nullable: false })
-  valorAtual: Double;
+  valoratual: Double;
 
-  @ManyToOne(type => Produto, produto => produto.itemCompra)
+  @ManyToOne(type => Compra, compra => compra.itemcompra, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'idcompra' })
+  compra: Compra;
+
+  @ManyToOne(type => Produto, produto => produto.itemcompra, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'idproduto' })
   produto: Produto;
-
-  @OneToMany(type => Compra, compra => compra.itemcompra)
-  compra: Compra[];
 }

@@ -7,10 +7,13 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
+  ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import { ItemCompra } from './itemcompra.entity';
 import { Endereco } from './endereco.entity';
 import { Pessoa } from './pessoa.entity';
+import { Produto } from './produto.entity';
 
 @Entity()
 export class Compra extends BaseEntity {
@@ -29,12 +32,7 @@ export class Compra extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valorTotal: Double;
 
-  @ManyToOne(type => ItemCompra, itemcompra => itemcompra.compra, {
-    eager: true,
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'iditemcompra' })
+  @OneToMany(type => ItemCompra, itemcompra => itemcompra.compra)
   itemcompra: ItemCompra;
 
   @ManyToOne(type => Endereco, endereco => endereco.compra, {
