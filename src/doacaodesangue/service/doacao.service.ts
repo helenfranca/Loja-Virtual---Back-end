@@ -32,7 +32,7 @@ export class DoacaoService implements genericInterface<Doacao> {
       doacao.datadoacao = body.data;
       doacao.observacao = body.observacao;
       let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-      doacao.doador = <Doador>pessoa;
+      //doacao.pessoa = pessoa;
       return await Doacao.save(doacao);
     } catch (err) {
       throw new Error(

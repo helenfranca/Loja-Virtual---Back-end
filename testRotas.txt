@@ -1,0 +1,36 @@
+Produto
+{
+    "nome": "Compartilhando sangue bom",
+    "quantidade": 30,
+    "descricao":"",
+    "valorunitario": "19,90",
+    "idcategoria":"1",
+    "idmaterial":"4",
+    "idvolume":"8",
+    "idtamanho":"1",
+    "idgenero":"2"
+}
+
+{
+    "nome": "Sou um herói!",
+    "quantidade": 10,
+    "descricao":"T-shirt",
+    "valorunitario": "15.50",
+    "idtamanho":"4",
+    "idcategoria":"1",
+    "idgenero":"1",
+    "idvolume":"8",
+    "idmaterial":"5"
+}
+
+{
+    "nome": "Doe sangue, deo vida!",
+    "quantidade": 40,
+    "descricao":"",
+    "valorunitario": "29.90",
+    "idcategoria":"3",
+    "idmaterial":"2",
+    "idvolume":"8",
+    "idtamanho":"2",
+    "idgenero":"3"
+}

@@ -11,7 +11,7 @@ import { TipoSanguineo } from './tiposanguineo.entity';
 import { Pessoa } from './pessoa.entity';
 
 @Entity()
-export class Doador extends Pessoa {
+export class Doador extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

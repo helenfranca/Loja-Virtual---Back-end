@@ -3,13 +3,17 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   Double,
-  OneToMany,
   Entity,
   JoinColumn,
-  OneToOne,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { ItemCompra } from './itemcompra.entity';
 import { Categoria } from './categoria.entity';
+import { Volume } from './volume.entity';
+import { Tamanho } from './tamanho.entity';
+import { Genero } from './genero.entity';
+import { Material } from './material.entity';
 
 @Entity()
 export class Produto extends BaseEntity {
@@ -26,17 +30,28 @@ export class Produto extends BaseEntity {
   quantidade: number;
 
   @Column({ type: 'float', nullable: false })
-  valor: Double;
+  valorunitario: Double;
 
-  @OneToMany(type => ItemCompra, itemCompra => itemCompra.id, {
-    eager: true,
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'iditemcompra' })
-  itemCompra: ItemCompra;
+  @OneToMany(() => ItemCompra, itemcompra => itemcompra.produto)
+  itemcompra: ItemCompra;
 
-  @OneToOne(type => Categoria)
+  @ManyToOne(() => Categoria)
   @JoinColumn({ name: 'idcategoria' })
   categoria: Categoria;
+
+  @ManyToOne(() => Volume)
+  @JoinColumn({ name: 'idvolume' })
+  volume: Volume;
+
+  @ManyToOne(() => Tamanho)
+  @JoinColumn({ name: 'idtamanho' })
+  tamanho: Tamanho;
+
+  @ManyToOne(() => Genero)
+  @JoinColumn({ name: 'idgenero' })
+  genero: Genero;
+
+  @ManyToOne(() => Material)
+  @JoinColumn({ name: 'idmaterial' })
+  material: Material;
 }
