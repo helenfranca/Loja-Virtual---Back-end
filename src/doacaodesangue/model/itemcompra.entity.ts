@@ -6,9 +6,9 @@ import {
   ManyToOne,
   Entity,
   JoinColumn,
-  OneToOne,
 } from 'typeorm';
 import { Produto } from './produto.entity';
+import { Compra } from './compra.entity';
 
 @Entity()
 export class ItemCompra extends BaseEntity {
@@ -19,8 +19,21 @@ export class ItemCompra extends BaseEntity {
   quantidade: number;
 
   @Column({ type: 'float', nullable: false })
-  valorAtual: Double;
+  valoratual: Double;
 
-  @ManyToOne(type => Produto, produto => produto.id)
+  @ManyToOne(() => Compra, compra => compra.itemcompra, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'idcompra' })
+  compra: Compra;
+
+  @ManyToOne(() => Produto, produto => produto.itemcompra, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'idproduto' })
   produto: Produto;
 }

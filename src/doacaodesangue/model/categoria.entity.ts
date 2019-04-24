@@ -8,14 +8,8 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-import { Material } from './material.entity';
-import { Tamanho } from './tamanho.entity';
-
-export enum CategoriaEnum {
-  Camisa = 'Camisa',
-  Bottons = 'Botton',
-  Caneca = 'Caneca',
-}
+import { CategoriaEnum } from './Enum';
+import { Produto } from './produto.entity';
 
 @Entity()
 export class Categoria extends BaseEntity {
@@ -23,13 +17,8 @@ export class Categoria extends BaseEntity {
   id: number;
 
   @Column({ type: 'varchar', length: 10, nullable: false })
-  categoria: CategoriaEnum;
+  nome: CategoriaEnum;
 
-  @OneToMany(type => Material, material => material.id)
-  @JoinColumn({ name: 'idmaterial' })
-  material: Material[];
-
-  @OneToMany(type => Tamanho, tamanho => tamanho.id)
-  @JoinColumn({ name: 'idtamanho' })
-  tamanho: Tamanho[];
+  @OneToMany(type => Produto, produto => produto.categoria)
+  produto: Produto[];
 }

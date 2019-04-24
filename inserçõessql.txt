@@ -1,0 +1,21 @@
+INSERT INTO public.categoria
+(nome)
+VALUES('Camisa'), ('Caneca'), ('Botton');
+
+
+INSERT INTO public.material
+(material)
+VALUES('Porcelana'),('Plastico'), ('Aluminio'),('Algodão'),('Malha'), ('Não especificado');
+
+INSERT INTO public.tamanho
+(tamanho)
+VALUES('P'),('M'),('G'),('GG'),('Não especificado');
+
+INSERT INTO public.volume
+(quantidade)
+VALUES('200'),('250'),('300'),('350'),('400'),('450'),('500'),('Não Possui');
+
+INSERT INTO public.genero
+(genero)
+VALUES('Feminino'), ('Masculino'),('Unissex');
+

@@ -3,26 +3,19 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import { Categoria } from './categoria.entity';
-
-export enum TamanhoEnum {
-  P = 'P',
-  M = 'M',
-  G = 'G',
-}
+import { TamanhoEnum } from './Enum';
+import { Produto } from './produto.entity';
 
 @Entity()
 export class Tamanho extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 20, nullable: false })
   tamanho: TamanhoEnum;
 
-  @ManyToOne(type => Categoria, categoria => categoria.id)
-  @JoinColumn({ name: 'idcategoria' })
-  categoria: Categoria;
+  @OneToMany(type => Produto, produto => produto.tamanho)
+  produto: Produto[];
 }

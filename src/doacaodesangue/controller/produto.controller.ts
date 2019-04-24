@@ -64,9 +64,15 @@ export class ProdutoController {
     return await this.ProdutoService.buscaCamisas();
   }
 
+<<<<<<< HEAD
   @Get('/botons')
   async buscaBotons() {
     return await this.ProdutoService.buscaBotons();
+=======
+  @Get('/bottons')
+  async buscaBottons() {
+    return await this.ProdutoService.buscaBottons();
+>>>>>>> 0a4b616982d610dc468f0a37d953ec47d71de9a4
   }
 
   @Get('/canecas')
