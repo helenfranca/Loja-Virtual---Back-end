@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Body,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ProdutoService } from '../service/produto.service';
 import { Produto } from '../model/produto.entity';
@@ -19,6 +20,26 @@ export class ProdutoController {
   root(): any {
     return this.ProdutoService.readAll();
   }
+
+  @Get('/produto/busca/teste')
+  async buscaProduto(@Res() res, @Query() texto) {
+    try {
+      console.log(texto);
+      let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
+        texto.nome,
+      );
+      if (Produto != undefined) {
+        res.status(HttpStatus.OK).send(Produto);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send('Nenhum produto encontrado na busca');
+      }
+    } catch (err) {
+      res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+    }
+  }
+
 
   @Get('/produto/:id')
   async readOne(@Res() res, @Param() id) {
@@ -41,24 +62,7 @@ export class ProdutoController {
     return this.ProdutoService.Create(body);
   }
 
-  @Get('/produto/busca/:texto')
-  async buscaProduto(@Res() res, @Param() texto) {
-    try {
-      let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
-        texto.texto,
-      );
-      if (Produto != undefined) {
-        res.status(HttpStatus.OK).send(Produto);
-      } else {
-        res
-          .status(HttpStatus.NOT_FOUND)
-          .send('Nenhum produto encontrado na busca');
-      }
-    } catch (err) {
-      res.status(HttpStatus.BAD_GATEWAY).send(err.message);
-    }
-  }
-
+  
   @Get('/camisas')
   async buscaCamisas() {
     return await this.ProdutoService.buscaCamisas();
