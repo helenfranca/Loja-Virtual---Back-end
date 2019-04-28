@@ -3,16 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  Double,
   OneToMany,
-  OneToOne,
-  JoinColumn,
-  ManyToOne,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { Doacao } from './doacao.entity';
-import { TipoSanguineo } from './tiposanguineo.entity';
 import { Endereco } from './endereco.entity';
 import { Compra } from './compra.entity';
 

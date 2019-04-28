@@ -44,9 +44,7 @@ export class ProdutoController {
   @Get('/produto/busca/:texto')
   async buscaProduto(@Res() res, @Param() texto) {
     try {
-      let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
-        texto.texto,
-      );
+      let Produto: Produto = await this.ProdutoService.buscaProdutoParam(texto);
       if (Produto != undefined) {
         res.status(HttpStatus.OK).send(Produto);
       } else {

@@ -1,11 +1,10 @@
-import { Pessoa } from 'src/doacaodesangue/model/pessoa.entity';
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
+import { Pessoa } from '../model/pessoa.entity';
 
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
   readAll(): Promise<Pessoa[]> {
-
     return Pessoa.find();
   }
   readOne(id: number): Promise<Pessoa> {
@@ -51,6 +50,5 @@ export class PessoaService implements genericInterface<Pessoa> {
         }\n Os parametros estao certos?`,
       );
     }
- 
   }
 }
