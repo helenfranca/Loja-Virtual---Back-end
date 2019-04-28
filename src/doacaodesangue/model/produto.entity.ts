@@ -5,11 +5,8 @@ import {
   Double,
   Entity,
   JoinColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 import { ItemCompra } from './itemcompra.entity';
 import { Categoria } from './categoria.entity';
@@ -35,26 +32,26 @@ export class Produto extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   valorunitario: Double;
 
-  @OneToMany(type => ItemCompra, itemcompra => itemcompra.produto)
+  @OneToMany(() => ItemCompra, itemcompra => itemcompra.produto)
   itemcompra: ItemCompra;
 
-  @ManyToOne(type => Categoria)
+  @ManyToOne(() => Categoria)
   @JoinColumn({ name: 'idcategoria' })
   categoria: Categoria;
 
-  @ManyToOne(type => Volume)
+  @ManyToOne(() => Volume)
   @JoinColumn({ name: 'idvolume' })
   volume: Volume;
 
-  @ManyToOne(type => Tamanho)
+  @ManyToOne(() => Tamanho)
   @JoinColumn({ name: 'idtamanho' })
   tamanho: Tamanho;
 
-  @ManyToOne(type => Genero)
+  @ManyToOne(() => Genero)
   @JoinColumn({ name: 'idgenero' })
   genero: Genero;
 
-  @ManyToOne(type => Material)
+  @ManyToOne(() => Material)
   @JoinColumn({ name: 'idmaterial' })
   material: Material;
 }
