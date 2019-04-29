@@ -21,7 +21,7 @@ export class ProdutoController {
     return this.ProdutoService.readAll();
   }
 
-  @Get('/produto/busca/teste')
+  @Get('/produto/busca')
   async buscaProduto(@Res() res, @Query() texto) {
     try {
       console.log(texto);
@@ -39,7 +39,6 @@ export class ProdutoController {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);
     }
   }
-
 
   @Get('/produto/:id')
   async readOne(@Res() res, @Param() id) {
@@ -63,7 +62,6 @@ export class ProdutoController {
     return this.ProdutoService.Create(body);
   }
 
-  
   @Get('/camisas')
   async buscaCamisas() {
     return await this.ProdutoService.buscaCamisas();
