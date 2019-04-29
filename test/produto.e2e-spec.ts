@@ -3,9 +3,8 @@ import { AppModule } from '../src/app.module';
 import { loadFeature, defineFeature } from 'jest-cucumber';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { async } from 'rxjs/internal/scheduler/async';
 
-jest.mock('../src/doacaodesangue/service/produto.service.ts');
+jest.mock('../src/doacaodesangue/service/produto.service');
 
 const feature = loadFeature('./test/features/produto.feature');
 
@@ -140,9 +139,8 @@ defineFeature(feature, test => {
     });
 
     then('devo retornar um vetor com o produto criado', () => {
-      console.log(resposta.text);
       expect(resposta.text).toEqual(
-        '{"categoria": "Botton", "descricao": "", "genero": "Unissex", "id": 4, "material": "Plastico", "nome": "Doe sangue!", "quantidade": 40, "tamanho": "M", "valorunitario": 29.9, "volume": "Não Possui"}',
+        '[{"id":4,"nome":"Doe sangue!","quantidade":40,"descricao":"","valorunitario":29.9,"categoria":"Botton","tamanho":"M","volume":"Não Possui","material":"Plastico","genero":"Unissex"}]',
       );
     });
   });

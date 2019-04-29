@@ -16,7 +16,7 @@ import { ApiUseTags } from '@nestjs/swagger';
 export class ProdutoController {
   constructor(private readonly ProdutoService: ProdutoService) {}
   @Get('/produto')
-  root(): any {
+  root(): Promise<Produto[]> {
     return this.ProdutoService.readAll();
   }
 
