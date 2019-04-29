@@ -24,17 +24,17 @@ defineFeature(feature, test => {
     when,
     then,
   }) => {
-    let texto: string;
+    let texto: {};
     let resposta: any;
     given('que foi informado o texto', () => {
-      texto = 'doe';
+      texto = 'nome=doe';
     });
 
     when(
       'eu pesquisar o produto que contém o trecho do texto no nome',
       async () => {
         resposta = await request(app.getHttpServer()).get(
-          '/produto/busca/' + texto,
+          '/produto/busca?' + texto,
         );
       },
     );

@@ -24,7 +24,7 @@ export class ProdutoController {
   @Get('/produto/busca')
   async buscaProduto(@Res() res, @Query() texto) {
     try {
-      console.log(texto);
+      console.log('LASCOU ' + texto.nome);
       let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
         texto.nome,
       );

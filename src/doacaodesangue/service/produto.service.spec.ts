@@ -79,7 +79,7 @@ describe('ProdutoService', () => {
   });
 
   it('Ao chamar buscaProdutoParam ela retornará um array com todos os produtos que contém o trecho de texto informado como parametro', async () => {
-    let texto = { texto: 'doe' };
+    let texto = { nome: 'doe' };
     let retorno = await service.buscaProdutoParam(texto);
     expect(retorno).toEqual([
       {

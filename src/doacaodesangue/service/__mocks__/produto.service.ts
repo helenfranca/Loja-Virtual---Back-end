@@ -100,7 +100,7 @@ export class ProdutoService {
   // }
 
   async buscaProdutoParam(texto): Promise<{} | any> {
-    if (texto.texto == 'doe') {
+    if (texto.nome == 'doe' || texto == 'doe') {
       return [
         {
           id: 4,
