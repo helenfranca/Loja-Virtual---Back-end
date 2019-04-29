@@ -43,7 +43,7 @@ export class Compra extends BaseEntity {
   @JoinColumn({ name: 'idendereco' })
   endereco: Endereco;
 
-  @OneToOne(type => Pessoa)
+  @OneToOne(type => Pessoa) //// Olhar aqui
   @JoinColumn({ name: 'idpessoa' })
   pessoa: Pessoa;
 }
