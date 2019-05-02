@@ -58,7 +58,7 @@ export class DoacaoService implements genericInterface<Doacao> {
   }
 
   Drop(body: any): Promise<Doacao> {
-    throw new Error('Method not implemented.');
+    throw new Error('Não é possível deletar doação!');
   }
 
   async Update(body: any): Promise<Doacao> {
