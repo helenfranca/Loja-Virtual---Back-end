@@ -76,27 +76,13 @@ export class DoacaoService implements genericInterface<Doacao> {
   }
 
   getDoacoes(id: number) {
-    // return Doacao.createQueryBuilder('doacao')
-    //   .select(' doacao.quantidade, doacao.datadoacao')
-    //   .innerJoin('observacao.doacao', 'observacao')
-    //   .getRawMany();
-
-    return Observacao.createQueryBuilder('observacao')
+    return Doacao.createQueryBuilder('doacao')
       .select(
-        'observacao.descricao, doacao.quantidade, doacao.datadoacao, hemocentro.nome',
+        ' doacao.quantidade, doacao.datadoacao, hemocentro.nome, observacao.descricao',
       )
-      .leftJoin('observacao.doacao', 'doacao')
+      .leftJoin('doacao.observacao', 'observacao')
       .innerJoin('doacao.hemocentro', 'hemocentro')
-      .where('doacao.iddoador = :name', {
-        name: id,
-      })
+      .where('doacao.iddoador = :name', { name: id })
       .getRawMany();
-
-    // .where('doacao.iddoador = :name', { name: id })
-    // .where('observacao.iddoador = doacao.iddoador')
   }
 }
-
-// SELECT "doacao"."datadoacao", "doacao"."quantidade", "observacao"."descricao" FROM  "doacao"
-// INNER JOIN "hemocentro" ON "hemocentro"."id"="doacao"."idhemocentro"
-// left JOIN "observacao" ON "observacao"."iddoacao" = "doacao"."id"

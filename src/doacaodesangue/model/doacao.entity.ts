@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Hemocentro } from './hemocentro.entity';
 import { Doador } from './doador.entity';
+import { Observacao } from './observacao.entity';
 
 @Entity()
 export class Doacao extends BaseEntity {
@@ -35,4 +36,7 @@ export class Doacao extends BaseEntity {
   })
   @JoinColumn({ name: 'idhemocentro' })
   hemocentro: Hemocentro;
+
+  @OneToOne(type => Observacao, observacao => observacao.doacao)
+  observacao: Observacao;
 }
