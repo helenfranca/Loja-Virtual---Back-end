@@ -22,6 +22,7 @@ export class PessoaService implements genericInterface<Pessoa> {
       pessoa.email = body.email;
       pessoa.telefone = body.telefone;
       pessoa.senha = body.senha;
+      pessoa.status = true;
       return await Pessoa.save(pessoa);
     } catch (err) {
       throw new Error(
@@ -32,8 +33,18 @@ export class PessoaService implements genericInterface<Pessoa> {
     }
   }
 
-  Drop(body: any): Promise<Pessoa> {
-    throw new Error('Method not implemented.');
+  async Drop(body: any): Promise<Pessoa> {
+    try {
+      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
+      pessoa.status = false;
+      return await Pessoa.save(pessoa);
+    } catch (err) {
+      throw new Error(
+        `Erro ao apagar pessoa \n Erro: ${err.name}\n Mensagem: ${
+          err.message
+        }\n Os parametros estao certos?`,
+      );
+    }
   }
 
   async Update(body: any): Promise<Pessoa> {

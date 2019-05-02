@@ -44,6 +44,9 @@ export class Pessoa extends BaseEntity {
   @Column({ type: 'varchar', length: 10, nullable: false })
   senha: string;
 
+  @Column({ type: 'boolean', nullable: false })
+  status: boolean;
+
   @OneToMany(type => Compra, compra => compra.id)
   compra: Compra[];
 

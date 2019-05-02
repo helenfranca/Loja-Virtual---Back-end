@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Demanda } from './demanda.entity';
 import { Doador } from './doador.entity';
+import { TipoSanguineoEnum } from './Enum';
 
 @Entity()
 export class TipoSanguineo extends BaseEntity {
@@ -14,7 +15,7 @@ export class TipoSanguineo extends BaseEntity {
   id: number;
 
   @Column({ type: 'varchar', nullable: false })
-  tipofator: string;
+  tipofator: TipoSanguineoEnum;
 
   @OneToMany(type => Demanda, demanda => demanda.id)
   demanda: Demanda[];

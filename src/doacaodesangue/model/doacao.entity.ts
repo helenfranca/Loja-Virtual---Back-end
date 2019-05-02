@@ -22,9 +22,6 @@ export class Doacao extends BaseEntity {
   @Column({ type: 'integer', nullable: false })
   quantidade: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
-  observacao: string;
-
   @ManyToOne(type => Doador, doador => doador.doacao, {
     cascade: true,
     onDelete: 'CASCADE',
@@ -32,7 +29,10 @@ export class Doacao extends BaseEntity {
   @JoinColumn({ name: 'iddoador' })
   doador: Doador;
 
-  @OneToOne(type => Hemocentro)
+  @ManyToOne(type => Hemocentro, hemocentro => hemocentro.doacao, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'idhemocentro' })
   hemocentro: Hemocentro;
 }

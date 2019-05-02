@@ -37,6 +37,25 @@ export class DoacaoController {
     }
   }
 
+  @Get('doacao/doador/:id')
+  async DoacaodoDoador(@Res() res, @Param() id) {
+    try {
+      let doacoes = await this.doacaoService.getDoacoes(id.id);
+      console.log(doacoes);
+      if (doacoes != undefined) {
+        res.status(HttpStatus.OK).send(doacoes);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send(
+            'Nenhuma doação referente a esse doador foi encontrada na busca',
+          );
+      }
+    } catch (err) {
+      res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+    }
+  }
+
   @Post('/doacao')
   public createOne(@Body() body: any): Promise<Doacao> {
     return this.doacaoService.Create(body);

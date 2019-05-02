@@ -19,3 +19,6 @@ INSERT INTO public.genero
 (genero)
 VALUES('Feminino'), ('Masculino'),('Unissex');
 
+INSERT INTO public.tipo_sanguineo
+(tipofator)
+VALUES('A+'), ('A-'),('AB+'),('AB-'), ('O+'),('O-');

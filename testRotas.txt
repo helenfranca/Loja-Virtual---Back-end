@@ -34,3 +34,44 @@ Produto
     "idtamanho":"2",
     "idgenero":"3"
 }
+
+Pessoa
+
+{
+	"nome":"Tony",
+	"sobrenome":"Stark de Ferro",
+	"datanascimento":"07/05/2000",
+	"cpf":"123.234.345-90",
+	"sexo":"M",
+	"email":"homemdeferro@gmail.com",
+	"telefone":27960706070,
+	"senha":"123456",
+	"status":true
+}
+
+{
+	"nome":"Peter",
+	"sobrenome":"Parker",
+	"datanascimento":"10/03/1987",
+	"cpf":"123.234.345-80",
+	"sexo":"M",
+	"email":"peterparker@gmail.com",
+	"telefone":27960703242,
+	"senha":"1234567",
+	"status":true
+}
+
+Doador
+{
+	"cpf": "123.234.345-80",
+	"tiposanguineo":"3"
+}
+
+Hemocentro
+{
+    "nome": "Dorio Silva",
+    "cnes": 2486199,
+    "telefone":"2732323232",
+    "email": "dorio@gmail.com",
+    "senha":"123456"
+}
