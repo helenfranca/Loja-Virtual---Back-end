@@ -11,30 +11,32 @@ import { Observacao } from '../model/observacao.entity';
 export class DoacaoService implements genericInterface<Doacao> {
   readAll(): Promise<Doacao[]> {
     return Doacao.createQueryBuilder('doacao')
-      .select('doacao.id, pessoa.nome, doacao.datadoacao, doacao.quantidade')
-      .innerJoin('doacao.pessoa', 'pessoa')
-      .getRawMany();
+      .select('doacao.id, pessoa.nome, pessoa.sobrenome, doacao.datadoacao, doacao.quantidade, observacao.descricao')
+      .innerJoin('doacao.doador', 'doador')
+      .innerJoin('doador.pessoa','pessoa')
+      .leftJoin('doacao.observacao','observacao')
+      .getRawMany()
   }
 
   readOne(id: number): Promise<Doacao> {
     return Doacao.createQueryBuilder('doacao')
-      .select(
-        'doacao.id, pessoa.nome, doacao.datadoacao, doacao.quantidade, doacao.observacao',
-      )
-      .innerJoin('doacao.pessoa', 'pessoa')
-      .where('doacao.id = :name', { name: id })
-      .getRawOne();
+    .select('doacao.id, pessoa.nome, pessoa.sobrenome, doacao.datadoacao, doacao.quantidade, observacao.descricao')
+    .innerJoin('doacao.doador', 'doador')
+    .innerJoin('doador.pessoa','pessoa')
+    .leftJoin('doacao.observacao','observacao')
+    .where('doacao.id = :name', { name: id })
+    .getRawOne();
   }
 
   async Create(body: any): Promise<Doacao> {
-    let doacao = new Doacao();
+    let doacao: Doacao = new Doacao();
     try {
       let pessoa = await Pessoa.findOne({ cpf: body.cpf });
       let doador = await Doador.findOne({ pessoa: pessoa });
       let hemocentro = await Hemocentro.findOne({ id: body.idhemocentro });
 
       doacao.quantidade = body.quantidade;
-      doacao.datadoacao = body.data;
+      doacao.datadoacao = new Date().toLocaleDateString();
       doacao.doador = doador;
       doacao.hemocentro = hemocentro;
       let doa = await Doacao.save(doacao);
@@ -61,6 +63,7 @@ export class DoacaoService implements genericInterface<Doacao> {
     throw new Error('Não é possível deletar doação!');
   }
 
+  //Altera a quantidade de sangue doada
   async Update(body: any): Promise<Doacao> {
     try {
       let busca = await Doacao.findOne({ id: body.id });
@@ -75,6 +78,7 @@ export class DoacaoService implements genericInterface<Doacao> {
     }
   }
 
+  //Retorna todas as doações realizadas por um doador, informando o id
   getDoacoes(id: number) {
     return Doacao.createQueryBuilder('doacao')
       .select(

@@ -24,9 +24,10 @@ export class DoadorService implements genericInterface<Doador> {
 
   aptos():Promise<Doador[]>{
     return Doador.createQueryBuilder('doador')
-      .select('doador.*, pessoa.nome, tiposanguineo.tipofator')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
       .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true')
       .getRawMany();
   }
 

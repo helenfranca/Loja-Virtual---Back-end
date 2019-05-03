@@ -62,7 +62,15 @@ Pessoa
 Doador
 {
 	"cpf": "123.234.345-80",
-	"tiposanguineo":"3"
+	"tiposanguineo":"3",
+	"malaria":false,
+	"hepatite11":true,
+	"hepatiteb":false,
+	"hepatitec":false,
+	"droga":true,
+	"chagas":false,
+	"htlv":false,
+	"hiv":false
 }
 
 Hemocentro
@@ -72,4 +80,22 @@ Hemocentro
     "telefone":"2732323232",
     "email": "dorio@gmail.com",
     "senha":"123456"
+}
+
+{
+    "nome": "Santa Rita",
+    "cnes": 2486198,
+    "telefone":"2732322222",
+    "email": "rita@gmail.com",
+    "senha":"123456"
+}
+
+Doacao
+
+{
+    "cpf":"123.234.345-80",
+    "quantidade":400,
+    "idhemocentro":1,
+    "observacao":"Paciente relatou vertigem"
+
 }

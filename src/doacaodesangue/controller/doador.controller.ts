@@ -21,6 +21,11 @@ export class DoadorController {
     return this.doadorService.readAll();
   }
 
+  @Get('/doador/aptos')
+  public getAptos(): Promise<Doador[]> {
+    return this.doadorService.aptos();
+  }
+
   @Get('/doador/:id')
   async readOne(@Res() res, @Param() id) {
     try {
@@ -47,8 +52,4 @@ export class DoadorController {
     return this.doadorService.Update(body);
   }
 
-  @Get('/doador/apto')
-  public getAptos(): Promise<Doador[]> {
-    return this.doadorService.aptos();
-  }
 }

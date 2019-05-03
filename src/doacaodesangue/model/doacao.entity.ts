@@ -17,8 +17,8 @@ export class Doacao extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'timestamp', nullable: false })
-  datadoacao: Date;
+  @Column({ type: 'varchar', nullable: false })
+  datadoacao: string;
 
   @Column({ type: 'integer', nullable: false })
   quantidade: number;
