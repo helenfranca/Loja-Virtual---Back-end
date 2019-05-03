@@ -5,6 +5,7 @@ import {
   OneToMany,
   OneToOne,
   JoinColumn,
+  Column,
 } from 'typeorm';
 import { Doacao } from './doacao.entity';
 import { TipoSanguineo } from './tiposanguineo.entity';
@@ -14,6 +15,15 @@ import { Pessoa } from './pessoa.entity';
 export class Doador extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ type: 'boolean', nullable: false })
+  apto: boolean;
+
+  transfusao: boolean;
+
+  malaria: boolean;
+  hepatite11: boolean;
+  drogailicita: boolean;
 
   @OneToMany(type => Doacao, doacao => doacao.doador)
   doacao: Doacao[];
@@ -25,4 +35,5 @@ export class Doador extends BaseEntity {
   @OneToOne(type => Pessoa)
   @JoinColumn({ name: 'idpessoa' })
   pessoa: Pessoa;
+
 }

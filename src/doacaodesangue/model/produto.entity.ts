@@ -7,6 +7,7 @@ import {
   JoinColumn,
   OneToMany,
   ManyToOne,
+  OneToOne,
 } from 'typeorm';
 import { ItemCompra } from './itemcompra.entity';
 import { Categoria } from './categoria.entity';
@@ -14,6 +15,7 @@ import { Volume } from './volume.entity';
 import { Tamanho } from './tamanho.entity';
 import { Genero } from './genero.entity';
 import { Material } from './material.entity';
+import { Imagem } from './imagem.entity';
 
 @Entity()
 export class Produto extends BaseEntity {
@@ -54,4 +56,7 @@ export class Produto extends BaseEntity {
   @ManyToOne(() => Material)
   @JoinColumn({ name: 'idmaterial' })
   material: Material;
+
+  @OneToOne(type => Imagem, imagem => imagem.produto)
+  imagem: Imagem;
 }
