@@ -1,4 +1,5 @@
 import { Produto } from "./produto.entity";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne } from "typeorm";
 
 @Entity()
 export class Imagem extends BaseEntity {

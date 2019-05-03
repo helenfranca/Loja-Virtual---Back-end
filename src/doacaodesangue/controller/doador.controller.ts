@@ -46,4 +46,9 @@ export class DoadorController {
   public updateOne(@Body() body: any) {
     return this.doadorService.Update(body);
   }
+
+  @Get('/doador/apto')
+  public getAptos(): Promise<Doador[]> {
+    return this.doadorService.aptos();
+  }
 }
