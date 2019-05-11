@@ -29,6 +29,9 @@ export class Hemocentro extends BaseEntity {
   @Column({ type: 'varchar', length: 11 })
   telefone: string;
 
+  @Column({ type: 'boolean', nullable: false })
+  status: boolean;
+
   @OneToMany(type => Funcionamento, funcionamento => funcionamento.hemocentro)
   funcionamento: Funcionamento[];
 

@@ -16,7 +16,7 @@ export class Observacao extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   descricao: string;
 
-  @OneToOne(type => Doacao)
+  @OneToOne(type => Doacao, doacao => doacao.observacao)
   @JoinColumn({ name: 'iddoacao' })
   doacao: Doacao;
 }

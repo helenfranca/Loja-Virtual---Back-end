@@ -17,14 +17,14 @@ import { ApiUseTags } from '@nestjs/swagger';
 export class ProdutoController {
   constructor(private readonly ProdutoService: ProdutoService) {}
   @Get('/produto')
-  root(): any {
+  root(): Promise<Produto[]> {
     return this.ProdutoService.readAll();
   }
 
-  @Get('/produto/busca/teste')
+  @Get('/produto/busca')
   async buscaProduto(@Res() res, @Query() texto) {
     try {
-      console.log(texto);
+      console.log('LASCOU ' + texto.nome);
       let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
         texto.nome,
       );
@@ -40,11 +40,11 @@ export class ProdutoController {
     }
   }
 
-
   @Get('/produto/:id')
   async readOne(@Res() res, @Param() id) {
     try {
       let Produto: Produto = await this.ProdutoService.readOne(id.id);
+
       if (Produto != undefined) {
         res.status(HttpStatus.OK).send(Produto);
       } else {
@@ -62,7 +62,6 @@ export class ProdutoController {
     return this.ProdutoService.Create(body);
   }
 
-  
   @Get('/camisas')
   async buscaCamisas() {
     return await this.ProdutoService.buscaCamisas();

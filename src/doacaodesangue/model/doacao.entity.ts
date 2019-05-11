@@ -10,20 +10,18 @@ import {
 } from 'typeorm';
 import { Hemocentro } from './hemocentro.entity';
 import { Doador } from './doador.entity';
+import { Observacao } from './observacao.entity';
 
 @Entity()
 export class Doacao extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'timestamp', nullable: false })
-  datadoacao: Date;
+  @Column({ type: 'varchar', nullable: false })
+  datadoacao: string;
 
   @Column({ type: 'integer', nullable: false })
   quantidade: number;
-
-  @Column({ type: 'varchar', length: 50, nullable: false })
-  observacao: string;
 
   @ManyToOne(type => Doador, doador => doador.doacao, {
     cascade: true,
@@ -32,7 +30,13 @@ export class Doacao extends BaseEntity {
   @JoinColumn({ name: 'iddoador' })
   doador: Doador;
 
-  @OneToOne(type => Hemocentro)
+  @ManyToOne(type => Hemocentro, hemocentro => hemocentro.doacao, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'idhemocentro' })
   hemocentro: Hemocentro;
+
+  @OneToOne(type => Observacao, observacao => observacao.doacao)
+  observacao: Observacao;
 }

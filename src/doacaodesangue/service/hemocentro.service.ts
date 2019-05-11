@@ -1,11 +1,10 @@
-import { Hemocentro } from 'src/doacaodesangue/model/hemocentro.entity';
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
+import { Hemocentro } from '../model/hemocentro.entity';
 
 @Injectable()
 export class HemocentroService implements genericInterface<Hemocentro> {
   readAll(): Promise<Hemocentro[]> {
-
     return Hemocentro.find();
   }
   readOne(id: number): Promise<Hemocentro> {
@@ -20,6 +19,7 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       hemocentro.telefone = body.telefone;
       hemocentro.email = body.email;
       hemocentro.senha = body.senha;
+      hemocentro.status = true;
       return await Hemocentro.save(hemocentro);
     } catch (err) {
       throw new Error(
@@ -32,11 +32,10 @@ export class HemocentroService implements genericInterface<Hemocentro> {
 
   async Drop(body: any): Promise<Hemocentro> {
     try {
-      let aExcluir = await Hemocentro.findOne(body.id);
-      await Hemocentro.delete(aExcluir)
-      return aExcluir;
-    }
-    catch (err) {
+      let hemocentro = await Hemocentro.findOne(body.id);
+      hemocentro.status = false;
+      return await Hemocentro.save(hemocentro);
+    } catch (err) {
       throw new Error(
         `Erro ao deletar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
           err.message
@@ -61,6 +60,5 @@ export class HemocentroService implements genericInterface<Hemocentro> {
         }\n Os parametros estao certos?`,
       );
     }
- 
   }
 }

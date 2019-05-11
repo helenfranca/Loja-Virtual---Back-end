@@ -37,3 +37,14 @@ export enum CategoriaEnum {
   Caneca = 'Caneca',
   Botton = 'Botton',
 }
+
+export enum TipoSanguineoEnum {
+  Apos = 'A+',
+  Aneg = 'A-',
+  ABpos = 'AB+',
+  ABneg = 'AB-',
+  Bpos = 'B+',
+  Bneg = 'B-',
+  Opos = 'O+',
+  Oneg = 'O-',
+}

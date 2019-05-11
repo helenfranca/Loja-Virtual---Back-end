@@ -3,16 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  Double,
   OneToMany,
-  OneToOne,
-  JoinColumn,
-  ManyToOne,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { Doacao } from './doacao.entity';
-import { TipoSanguineo } from './tiposanguineo.entity';
 import { Endereco } from './endereco.entity';
 import { Compra } from './compra.entity';
 
@@ -49,6 +43,9 @@ export class Pessoa extends BaseEntity {
 
   @Column({ type: 'varchar', length: 10, nullable: false })
   senha: string;
+
+  @Column({ type: 'boolean', nullable: false })
+  status: boolean;
 
   @OneToMany(type => Compra, compra => compra.id)
   compra: Compra[];
