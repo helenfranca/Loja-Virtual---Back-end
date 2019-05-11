@@ -2,8 +2,31 @@ import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Pessoa } from '../model/pessoa.entity';
 
+
+const DADOS_CRIPTOGRAFAR = {
+  algoritmo : "aes256",
+  codificacao : "utf8",
+  segredo : "chaves",
+  tipo : "hex"
+};
+
+const crypto = require("crypto");
+
+function criptografar(senha) {
+  const cipher = crypto.createCipher(DADOS_CRIPTOGRAFAR.algoritmo, DADOS_CRIPTOGRAFAR.segredo);
+  cipher.update(senha);
+  return cipher.final(DADOS_CRIPTOGRAFAR.tipo);
+};
+
+function descriptografar(senha) {
+  const decipher = crypto.createDecipher(DADOS_CRIPTOGRAFAR.algoritmo, DADOS_CRIPTOGRAFAR.segredo);
+  decipher.update(senha, DADOS_CRIPTOGRAFAR.tipo);
+  return decipher.final();
+};
+
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
+
   readAll(): Promise<Pessoa[]> {
     return Pessoa.find();
   }
@@ -21,7 +44,9 @@ export class PessoaService implements genericInterface<Pessoa> {
       pessoa.sexo = body.sexo;
       pessoa.email = body.email;
       pessoa.telefone = body.telefone;
-      pessoa.senha = body.senha;
+      pessoa.senha = criptografar(body.senha);
+      console.log(pessoa.senha);
+      console.log(descriptografar(pessoa.senha));
       pessoa.status = true;
       return await Pessoa.save(pessoa);
     } catch (err) {

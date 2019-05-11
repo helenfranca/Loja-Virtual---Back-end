@@ -41,7 +41,7 @@ export class Pessoa extends BaseEntity {
   @Column({ type: 'bigint', nullable: false })
   telefone: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 250, nullable: false })
   senha: string;
 
   @Column({ type: 'boolean', nullable: false })
