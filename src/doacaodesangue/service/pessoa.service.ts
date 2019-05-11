@@ -1,41 +1,28 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Pessoa } from '../model/pessoa.entity';
-
-
-const DADOS_CRIPTOGRAFAR = {
-  algoritmo : "aes256",
-  codificacao : "utf8",
-  segredo : "chaves",
-  tipo : "hex"
-};
-
-const crypto = require("crypto");
-
-function criptografar(senha) {
-  const cipher = crypto.createCipher(DADOS_CRIPTOGRAFAR.algoritmo, DADOS_CRIPTOGRAFAR.segredo);
-  cipher.update(senha);
-  return cipher.final(DADOS_CRIPTOGRAFAR.tipo);
-};
-
-function descriptografar(senha) {
-  const decipher = crypto.createDecipher(DADOS_CRIPTOGRAFAR.algoritmo, DADOS_CRIPTOGRAFAR.segredo);
-  decipher.update(senha, DADOS_CRIPTOGRAFAR.tipo);
-  return decipher.final();
-};
+import { CriptografiaService } from './criptografia.service';
 
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
-
   readAll(): Promise<Pessoa[]> {
     return Pessoa.find();
   }
-  readOne(id: number): Promise<Pessoa> {
-    return Pessoa.findOne({ id: id });
+
+  // Caso precise descriptar a senha
+  async readOne(id: number): Promise<Pessoa> {
+    let a: Pessoa = await Pessoa.findOne({ id: id });
+    // let a: Pessoa = await Pessoa.createQueryBuilder('pessoa')
+    //   .select('pessoa.*')
+    //   .where('pessoa.id = :name', { name: id })
+    //   .getRawOne();
+
+    return a;
   }
 
   async Create(body: any): Promise<Pessoa> {
     let pessoa = new Pessoa();
+    let cripto = new CriptografiaService();
     try {
       pessoa.nome = body.nome;
       pessoa.sobrenome = body.sobrenome;
@@ -44,9 +31,7 @@ export class PessoaService implements genericInterface<Pessoa> {
       pessoa.sexo = body.sexo;
       pessoa.email = body.email;
       pessoa.telefone = body.telefone;
-      pessoa.senha = criptografar(body.senha);
-      console.log(pessoa.senha);
-      console.log(descriptografar(pessoa.senha));
+      pessoa.senha = cripto.criptografar(body.senha);
       pessoa.status = true;
       return await Pessoa.save(pessoa);
     } catch (err) {
@@ -74,10 +59,13 @@ export class PessoaService implements genericInterface<Pessoa> {
 
   async Update(body: any): Promise<Pessoa> {
     try {
+      let cripto = new CriptografiaService();
       let busca = await Pessoa.findOne({ cpf: body.cpf });
       busca.telefone = body.telefone;
       busca.email = body.email;
-      busca.senha = body.senha;
+      let senha = body.senha;
+      busca.senha = cripto.criptografar(senha);
+
       return await Pessoa.save(busca);
     } catch (err) {
       throw new Error(
