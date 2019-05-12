@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Demanda, StatusEnum } from '../model/demanda.entity';
 import { genericInterface } from './interface/generic.interface';
 import { Hemocentro } from '../model/hemocentro.entity';
-import { TipoSanguineoEnum } from '../model/Enum';
-import { TipoSanguineo } from '../model/tiposanguineo.entity';
 import { TipoSanguineoService } from './tiposanguineo.service';
 
 @Injectable()
@@ -28,6 +26,17 @@ export class DemandaService implements genericInterface<Demanda> {
       .where('demanda.id = :name', { name: id })
       .getRawOne();
   }
+
+  async relatorio() {
+    let demanda = await Demanda.createQueryBuilder('demanda')
+      .select('demanda.id, tiposanguineo.tipofator')
+      .innerJoin('demanda.tiposanguineo', 'tiposanguineo')
+      .getRawMany();
+
+    console.log(demanda);
+    return 0;
+  }
+
   async Create(body: any): Promise<Demanda> {
     let demanda: Demanda = new Demanda();
     try {

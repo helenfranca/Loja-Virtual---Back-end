@@ -65,4 +65,15 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       );
     }
   }
+
+  async hemocentroDemanda() {
+    let hemocentro: Hemocentro[] = await Hemocentro.createQueryBuilder(
+      'hemocentro',
+    )
+      .select('count(hemocentro.id) as qtddemanda, hemocentro.nome')
+      .innerJoin('hemocentro.demanda', 'demanda')
+      .groupBy('hemocentro.nome')
+      .getRawMany();
+    return hemocentro;
+  }
 }
