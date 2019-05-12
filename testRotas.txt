@@ -35,6 +35,7 @@ Produto
     "idgenero":"3"
 }
 
+
 Pessoa
 
 {
@@ -59,6 +60,12 @@ Pessoa
 	"senha":"1234567"
 }
 
+{"id":11,"nome":"Harry","sobrenome":"Potter","datanascimento":"1980-07-31T00:00:00.000Z","cpf":"148.914.247-96","sexo":"M","email":"harrypotter@hogwarts.uk","telefone":"99999999","senha":"teste","status":true},
+{"id":15,"nome":"Harry","sobrenome":"Potter","datanascimento":"1980-07-31T00:00:00.000Z","cpf":"148.914.247-90","sexo":"M","email":"harrypotter@hogwarts.uk","telefone":"99999999","senha":"teste","status":true},
+{"id":16,"nome":"João","sobrenome":"Potter","datanascimento":"1980-07-31T00:00:00.000Z","cpf":"158.914.247-90","sexo":"M","email":"harrypotter@hogwarts.uk","telefone":"99999999","senha":"teste","status":true},
+{"id":19,"nome":"Malu","sobrenome":"Freitas","datanascimento":"1997-09-08T00:00:00.000Z","cpf":"789.456.123-00","sexo":"F","email":"malufrt@hotmail.com","telefone":"99999999","senha":"teste","status":true},
+{"id":20,"nome":"Marry","sobrenome":"Popis","datanascimento":"2001-10-05T00:00:00.000Z","cpf":"125.753.951-85","sexo":"F","email":"marry@gmail.com","telefone":"27996582563","senha":"senha","status":true}
+
 Doador
 {
 	"cpf": "123.234.345-80",
@@ -72,6 +79,9 @@ Doador
 	"htlv":false,
 	"hiv":false
 }
+
+GET - Doador
+[{"id":7,"nome":"Peter","tipofator":"AB+"},{"id":8,"nome":"Tony","tipofator":"A-"}]
 
 Hemocentro
 {
@@ -99,3 +109,13 @@ Doacao
     "observacao":"Paciente relatou vertigem"
 
 }
+{"id":3,"nome":"Peter","sobrenome":"Parker","datadoacao":"2019-5-3","quantidade":400,"descricao":"Paciente relatou vertigem"},
+{"id":6,"nome":"Tony","sobrenome":"Stark de Ferro","datadoacao":"2019-5-3","quantidade":150,"descricao":null},
+{"id":5,"nome":"Peter","sobrenome":"Parker","datadoacao":"2019-5-3","quantidade":100,"descricao":null},
+{"id":4,"nome":"Peter","sobrenome":"Parker","datadoacao":"2019-5-3","quantidade":20,"descricao":null}
+
+Demanda
+
+[{"id":6,"status":0,"nome":"Dorio Silva","tipofator":"AB-"},
+{"id":7,"status":1,"nome":"Santa Rita","tipofator":"A+"},
+{"id":8,"status":1,"nome":"Santa Rita","tipofator":"B+"}]

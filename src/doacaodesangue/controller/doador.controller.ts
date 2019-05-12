@@ -35,7 +35,7 @@ export class DoadorController {
       } else {
         res
           .status(HttpStatus.NOT_FOUND)
-          .send('Nenhuma doação encontrada na busca');
+          .send('Nenhum doador encontrada na busca');
       }
     } catch (err) {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);
@@ -51,5 +51,4 @@ export class DoadorController {
   public updateOne(@Body() body: any) {
     return this.doadorService.Update(body);
   }
-
 }

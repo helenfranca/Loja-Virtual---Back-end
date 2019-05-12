@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Demanda, StatusEnum } from '../model/demanda.entity';
 import { genericInterface } from './interface/generic.interface';
 import { Hemocentro } from '../model/hemocentro.entity';
-import { TipoSanguineoEnum } from '../model/Enum';
-import { TipoSanguineo } from '../model/tiposanguineo.entity';
 import { TipoSanguineoService } from './tiposanguineo.service';
 
 @Injectable()
@@ -38,7 +36,7 @@ export class DemandaService implements genericInterface<Demanda> {
       demanda.status = StatusEnum.Aberta;
       demanda.data = new Date().toLocaleDateString();
       demanda.hemocentro = hemocentro;
-      demanda.tiposanguineo = tiposangue.id;
+      demanda.tiposanguineo = tiposangue;
       return await Demanda.save(demanda);
     } catch (err) {
       throw new Error(
