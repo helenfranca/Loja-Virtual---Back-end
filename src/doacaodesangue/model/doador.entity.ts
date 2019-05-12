@@ -43,16 +43,14 @@ export class Doador extends BaseEntity {
   @Column({ type: 'boolean', nullable: false })
   hiv: boolean;
 
-
   @OneToMany(type => Doacao, doacao => doacao.doador)
   doacao: Doacao[];
 
-  @OneToOne(type => TipoSanguineo)
+  @OneToOne(type => TipoSanguineo, tiposanguineo => tiposanguineo.doador)
   @JoinColumn({ name: 'idtiposanguineo' })
   tiposanguineo: TipoSanguineo;
 
   @OneToOne(type => Pessoa)
   @JoinColumn({ name: 'idpessoa' })
   pessoa: Pessoa;
-
 }

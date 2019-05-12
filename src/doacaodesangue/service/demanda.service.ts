@@ -38,7 +38,7 @@ export class DemandaService implements genericInterface<Demanda> {
       demanda.status = StatusEnum.Aberta;
       demanda.data = new Date().toLocaleDateString();
       demanda.hemocentro = hemocentro;
-      demanda.tiposanguineo = tiposangue.id;
+      demanda.tiposanguineo = tiposangue;
       return await Demanda.save(demanda);
     } catch (err) {
       throw new Error(

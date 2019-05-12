@@ -8,7 +8,7 @@ import { TipoSanguineoService } from './tiposanguineo.service';
 export class DoadorService implements genericInterface<Doador> {
   readAll(): Promise<Doador[]> {
     return Doador.createQueryBuilder('doador')
-      .select('doador.id, pessoa.nome,tiposanguineo.tipofator')
+      .select('doador.id, pessoa.nome, pessoa.email, tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
       .innerJoin('doador.tiposanguineo', 'tiposanguineo')
       .getRawMany();
@@ -16,7 +16,7 @@ export class DoadorService implements genericInterface<Doador> {
 
   readOne(id: number): Promise<Doador> {
     return Doador.createQueryBuilder('doador')
-      .select('doador.id, pessoa.nome,tiposanguineo.tipofator')
+      .select('doador.id, pessoa.nome, pessoa.email, tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
       .innerJoin('doador.tiposanguineo', 'tiposanguineo')
       .where('doador.id = :name', { name: id })
@@ -84,7 +84,6 @@ export class DoadorService implements genericInterface<Doador> {
   async Update(body: any): Promise<Doador> {
     try {
       let busca = await Doador.findOne({ id: body.id });
-      busca.tiposanguineo = body.tiposanguineo;
       //Saude
       busca.doenca_chagas = body.chagas;
       busca.drogailicita = body.droga;
@@ -110,7 +109,7 @@ export class DoadorService implements genericInterface<Doador> {
       return await Doador.save(busca);
     } catch (err) {
       throw new Error(
-        `Erro ao atualizar doação \n Erro: ${err.name}\n Mensagem: ${
+        `Erro ao atualizar doador \n Erro: ${err.name}\n Mensagem: ${
           err.message
         }\n Os parametros estao certos?`,
       );
