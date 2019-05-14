@@ -23,6 +23,16 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawOne();
   }
 
+  doadoresTipo() {
+    let retorno = Doador.createQueryBuilder('doador')
+      .select('count(doador.id) as qtddoador, tiposanguineo.tipofator')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .groupBy('tiposanguineo.tipofator')
+      .getRawMany();
+
+    return retorno;
+  }
+
   aptos(): Promise<Doador[]> {
     return Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
@@ -36,36 +46,41 @@ export class DoadorService implements genericInterface<Doador> {
     let doador = new Doador();
     try {
       let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-      let tipo = new TipoSanguineoService();
-      let tiposangue = await tipo.buscaOne(body.tiposanguineo);
 
-      doador.pessoa = pessoa;
-      doador.tiposanguineo = tiposangue;
-      doador.doenca_chagas = body.chagas;
-      doador.drogailicita = body.droga;
-      doador.hepatite11 = body.hepatite11;
-      doador.hepatiteb = body.hepatiteb;
-      doador.hepatitec = body.hepatitec;
-      doador.hiv = body.hiv;
-      doador.htlv = body.htlv;
-      doador.malaria = body.malaria;
+      if (pessoa != undefined) {
+        doador.pessoa = pessoa;
+        let tipo = new TipoSanguineoService();
+        let tiposangue = await tipo.buscaOne(body.tiposanguineo);
 
-      if (
-        body.chagas ||
-        body.droga ||
-        body.hepatite11 ||
-        body.hepatiteb ||
-        body.hepatitec ||
-        body.hiv ||
-        body.htlv ||
-        body.malaria
-      ) {
-        doador.apto = false;
-      } else {
-        doador.apto = true;
+        if (tiposangue != undefined) {
+          doador.tiposanguineo = tiposangue;
+          doador.doenca_chagas = body.chagas;
+          doador.drogailicita = body.droga;
+          doador.hepatite11 = body.hepatite11;
+          doador.hepatiteb = body.hepatiteb;
+          doador.hepatitec = body.hepatitec;
+          doador.hiv = body.hiv;
+          doador.htlv = body.htlv;
+          doador.malaria = body.malaria;
+
+          if (
+            body.chagas ||
+            body.droga ||
+            body.hepatite11 ||
+            body.hepatiteb ||
+            body.hepatitec ||
+            body.hiv ||
+            body.htlv ||
+            body.malaria
+          ) {
+            doador.apto = false;
+          } else {
+            doador.apto = true;
+          }
+
+          return await Doador.save(doador);
+        }
       }
-
-      return await Doador.save(doador);
     } catch (err) {
       throw new Error(
         `Erro ao salvar doador \n Erro: ${err.name}\n Mensagem: ${

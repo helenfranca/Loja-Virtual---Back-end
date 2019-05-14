@@ -22,7 +22,7 @@ export class DemandaController {
     return this.demandaService.readAll();
   }
 
-  @Get('/demanda/tipo')
+  @Get('/demandas/tipo')
   async relatorio(@Res() res) {
     try {
       let demanda = await this.demandaService.relatorio();

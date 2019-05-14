@@ -29,12 +29,12 @@ export class DemandaService implements genericInterface<Demanda> {
 
   async relatorio() {
     let demanda = await Demanda.createQueryBuilder('demanda')
-      .select('demanda.id, tiposanguineo.tipofator')
+      .select('count(demanda.id), tiposanguineo.tipofator')
       .innerJoin('demanda.tiposanguineo', 'tiposanguineo')
+      .groupBy('tiposanguineo.tipofator')
       .getRawMany();
 
-    console.log(demanda);
-    return 0;
+    return demanda;
   }
 
   async Create(body: any): Promise<Demanda> {

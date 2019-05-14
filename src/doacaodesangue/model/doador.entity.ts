@@ -6,6 +6,7 @@ import {
   OneToOne,
   JoinColumn,
   Column,
+  ManyToOne,
 } from 'typeorm';
 import { Doacao } from './doacao.entity';
 import { TipoSanguineo } from './tiposanguineo.entity';
@@ -46,11 +47,15 @@ export class Doador extends BaseEntity {
   @OneToMany(type => Doacao, doacao => doacao.doador)
   doacao: Doacao[];
 
-  @OneToOne(type => TipoSanguineo, tiposanguineo => tiposanguineo.doador)
+  @ManyToOne(type => TipoSanguineo, tiposanguineo => tiposanguineo.doador, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'idtiposanguineo' })
   tiposanguineo: TipoSanguineo;
 
-  @OneToOne(type => Pessoa)
+  @OneToOne(type => Pessoa, pessoa => pessoa.doador)
   @JoinColumn({ name: 'idpessoa' })
   pessoa: Pessoa;
 }
