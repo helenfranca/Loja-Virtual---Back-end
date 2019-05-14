@@ -1,7 +1,16 @@
-import { ApiUseTags } from "@nestjs/swagger";
-import { Controller, Get, Res, Param, HttpStatus, Post, Body, Put } from "@nestjs/common";
-import { DemandaService } from "../service/demanda.service";
-import { Demanda } from "../model/demanda.entity";
+import { ApiUseTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Res,
+  Param,
+  HttpStatus,
+  Post,
+  Body,
+  Put,
+} from '@nestjs/common';
+import { DemandaService } from '../service/demanda.service';
+import { Demanda } from '../model/demanda.entity';
 
 @ApiUseTags('Demanda')
 @Controller()
@@ -11,6 +20,22 @@ export class DemandaController {
   @Get('/demanda')
   root(): any {
     return this.demandaService.readAll();
+  }
+
+  @Get('/demanda/tipo')
+  async relatorio(@Res() res) {
+    try {
+      let demanda = await this.demandaService.relatorio();
+      if (demanda != undefined) {
+        res.status(HttpStatus.OK).send(demanda);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send('Nenhuma demanda encontrada na busca');
+      }
+    } catch (err) {
+      res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+    }
   }
 
   @Get('/demanda/:id')
@@ -28,7 +53,6 @@ export class DemandaController {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);
     }
   }
-
 
   @Post('/demanda')
   public createOne(@Body() body: any): Promise<Demanda> {

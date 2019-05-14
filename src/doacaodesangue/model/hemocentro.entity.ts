@@ -23,7 +23,7 @@ export class Hemocentro extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({ type: 'varchar', length: 250, nullable: false })
   senha: string;
 
   @Column({ type: 'varchar', length: 11 })

@@ -51,14 +51,14 @@ export class DoadorService implements genericInterface<Doador> {
       doador.malaria = body.malaria;
 
       if (
-        (body.chagas ||
-          body.droga ||
-          body.hepatite11 ||
-          body.hepatiteb ||
-          body.hepatitec ||
-          body.hiv ||
-          body.htlv ||
-          body.malaria) == true
+        body.chagas ||
+        body.droga ||
+        body.hepatite11 ||
+        body.hepatiteb ||
+        body.hepatitec ||
+        body.hiv ||
+        body.htlv ||
+        body.malaria
       ) {
         doador.apto = false;
       } else {
@@ -95,14 +95,14 @@ export class DoadorService implements genericInterface<Doador> {
       busca.malaria = body.malaria;
 
       if (
-        (body.chagas ||
-          body.droga ||
-          body.hepatite11 ||
-          body.hepatiteb ||
-          body.hepatitec ||
-          body.hiv ||
-          body.htlv ||
-          body.malaria) == true
+        body.chagas ||
+        body.droga ||
+        body.hepatite11 ||
+        body.hepatiteb ||
+        body.hepatitec ||
+        body.hiv ||
+        body.htlv ||
+        body.malaria
       ) {
         busca.apto = false;
       }
