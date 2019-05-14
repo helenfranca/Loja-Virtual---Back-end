@@ -26,6 +26,11 @@ export class DoadorController {
     return this.doadorService.aptos();
   }
 
+  @Get('/doador/tipo')
+  public getDoadores() {
+    return this.doadorService.doadoresTipo();
+  }
+
   @Get('/doador/:id')
   async readOne(@Res() res, @Param() id) {
     try {

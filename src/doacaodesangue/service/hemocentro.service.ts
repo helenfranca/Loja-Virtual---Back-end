@@ -70,9 +70,13 @@ export class HemocentroService implements genericInterface<Hemocentro> {
     let hemocentro: Hemocentro[] = await Hemocentro.createQueryBuilder(
       'hemocentro',
     )
-      .select('count(hemocentro.id) as qtddemanda, hemocentro.nome')
+      .select(
+        'count(hemocentro.id) as qtddemanda, hemocentro.nome as hemocentro, tiposanguineo.tipofator',
+      )
       .innerJoin('hemocentro.demanda', 'demanda')
-      .groupBy('hemocentro.nome')
+      .innerJoin('demanda.tiposanguineo', 'tiposanguineo')
+      .groupBy('hemocentro.nome, tiposanguineo.tipofator')
+      .orderBy('hemocentro.nome, tipofator')
       .getRawMany();
     return hemocentro;
   }

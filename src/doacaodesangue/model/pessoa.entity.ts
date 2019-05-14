@@ -6,9 +6,11 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { Endereco } from './endereco.entity';
 import { Compra } from './compra.entity';
+import { Doador } from './doador.entity';
 
 export enum SexoEnum {
   Masculino = 'M',
@@ -57,4 +59,7 @@ export class Pessoa extends BaseEntity {
     inverseJoinColumn: { name: 'idendereco', referencedColumnName: 'id' },
   })
   enderecos: Endereco[];
+
+  @OneToOne(type => Doador, doador => doador.pessoa)
+  doador: Doador;
 }
