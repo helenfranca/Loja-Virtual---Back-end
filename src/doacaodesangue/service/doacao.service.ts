@@ -11,21 +11,25 @@ import { Observacao } from '../model/observacao.entity';
 export class DoacaoService implements genericInterface<Doacao> {
   readAll(): Promise<Doacao[]> {
     return Doacao.createQueryBuilder('doacao')
-      .select('doacao.id, pessoa.nome, pessoa.sobrenome, doacao.datadoacao, doacao.quantidade, observacao.descricao')
+      .select(
+        'doacao.id, pessoa.nome, pessoa.sobrenome, doacao.datadoacao, doacao.quantidade, observacao.descricao',
+      )
       .innerJoin('doacao.doador', 'doador')
-      .innerJoin('doador.pessoa','pessoa')
-      .leftJoin('doacao.observacao','observacao')
-      .getRawMany()
+      .innerJoin('doador.pessoa', 'pessoa')
+      .leftJoin('doacao.observacao', 'observacao')
+      .getRawMany();
   }
 
   readOne(id: number): Promise<Doacao> {
     return Doacao.createQueryBuilder('doacao')
-    .select('doacao.id, pessoa.nome, pessoa.sobrenome, doacao.datadoacao, doacao.quantidade, observacao.descricao')
-    .innerJoin('doacao.doador', 'doador')
-    .innerJoin('doador.pessoa','pessoa')
-    .leftJoin('doacao.observacao','observacao')
-    .where('doacao.id = :name', { name: id })
-    .getRawOne();
+      .select(
+        'doacao.id, pessoa.nome, pessoa.sobrenome, doacao.datadoacao, doacao.quantidade, observacao.descricao',
+      )
+      .innerJoin('doacao.doador', 'doador')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .leftJoin('doacao.observacao', 'observacao')
+      .where('doacao.id = :name', { name: id })
+      .getRawOne();
   }
 
   async Create(body: any): Promise<Doacao> {

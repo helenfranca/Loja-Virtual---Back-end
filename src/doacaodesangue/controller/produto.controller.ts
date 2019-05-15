@@ -24,7 +24,6 @@ export class ProdutoController {
   @Get('/produto/busca')
   async buscaProduto(@Res() res, @Query() texto) {
     try {
-      console.log('LASCOU ' + texto.nome);
       let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
         texto.nome,
       );
@@ -50,7 +49,7 @@ export class ProdutoController {
       } else {
         res
           .status(HttpStatus.NOT_FOUND)
-          .send('Nenhum atendente encontrado na busca');
+          .send('Nenhum produto encontrado na busca');
       }
     } catch (err) {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);

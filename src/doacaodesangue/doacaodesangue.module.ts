@@ -11,6 +11,11 @@ import { ProdutoController } from './controller/produto.controller';
 import { DoadorService } from './service/doador.service';
 import { DoadorController } from './controller/doador.controller';
 import { ObservacaoService } from './service/observacao.service';
+import { DemandaService } from './service/demanda.service';
+import { DemandaController } from './controller/demanda.controller';
+import { TipoSanguineoService } from './service/tiposanguineo.service';
+import { CriptografiaService } from './service/criptografia.service';
+import { ConvocacaoService } from './service/convocacao.service';
 
 const modelProvider = [...databaseProviders];
 
@@ -21,6 +26,10 @@ const modelService = [
   ProdutoService,
   DoadorService,
   ObservacaoService,
+  DemandaService,
+  TipoSanguineoService,
+  CriptografiaService,
+  ConvocacaoService,
 ];
 
 const modelController = [
@@ -29,6 +38,7 @@ const modelController = [
   HemocentroController,
   ProdutoController,
   DoadorController,
+  DemandaController,
 ];
 
 @Module({
