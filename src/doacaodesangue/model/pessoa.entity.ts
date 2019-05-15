@@ -6,9 +6,11 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { Endereco } from './endereco.entity';
 import { Compra } from './compra.entity';
+import { Doador } from './doador.entity';
 
 export enum SexoEnum {
   Masculino = 'M',
@@ -41,7 +43,7 @@ export class Pessoa extends BaseEntity {
   @Column({ type: 'bigint', nullable: false })
   telefone: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 250, nullable: false })
   senha: string;
 
   @Column({ type: 'boolean', nullable: false })
@@ -57,4 +59,7 @@ export class Pessoa extends BaseEntity {
     inverseJoinColumn: { name: 'idendereco', referencedColumnName: 'id' },
   })
   enderecos: Endereco[];
+
+  @OneToOne(type => Doador, doador => doador.pessoa)
+  doador: Doador;
 }
