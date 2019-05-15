@@ -2,9 +2,19 @@ import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Pessoa } from '../model/pessoa.entity';
 import { CriptografiaService } from './criptografia.service';
+import { getRepository } from 'typeorm';
 
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
+  async Login(body: any) {
+    const login = await getRepository(Pessoa)
+      .createQueryBuilder('pessoa')
+      .where(
+        'pessoa.email= :e and pessoa.senha= :s',{e: body.email, s: body.senha}
+      )
+      .getOne();
+      return login;
+  }
   readAll(): Promise<Pessoa[]> {
     return Pessoa.find();
   }
@@ -29,7 +39,7 @@ export class PessoaService implements genericInterface<Pessoa> {
       pessoa.datanascimento = body.datanascimento;
       pessoa.cpf = body.cpf;
       pessoa.sexo = body.sexo;
-      pessoa.email = body.email;
+      pessoa.email = body.ema
       pessoa.telefone = body.telefone;
       pessoa.senha = cripto.criptografar(body.senha);
       pessoa.status = true;
