@@ -78,6 +78,7 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       .groupBy('hemocentro.nome, tiposanguineo.tipofator')
       .orderBy('hemocentro.nome, tipofator')
       .getRawMany();
+
     return hemocentro;
   }
 }
