@@ -16,7 +16,7 @@ const modelService = [
 const modelController = [
   AuthController,
 ];
-
+require('dotenv').config();
 @Module({
     imports: [
       CacheModule.register({
@@ -24,7 +24,7 @@ const modelController = [
         max: 10,
       }),
       JwtModule.register({
-        secretOrPrivateKey: 'secret12356789'
+        secretOrPrivateKey: process.env.PRIVATE_KEY
     })
     ],
     providers: [...modelProvider, ...modelService],
