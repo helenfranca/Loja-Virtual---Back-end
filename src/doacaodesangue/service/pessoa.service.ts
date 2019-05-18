@@ -6,14 +6,9 @@ import { getRepository } from 'typeorm';
 
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
-  async Login(body: any) {
-    const login = await getRepository(Pessoa)
-      .createQueryBuilder('pessoa')
-      .where(
-        'pessoa.email= :e and pessoa.senha= :s',{e: body.email, s: body.senha}
-      )
-      .getOne();
-      return login;
+    
+  async findByEmail(email: string): Promise<Pessoa> {
+        throw new Error("Method not implemented.");
   }
   readAll(): Promise<Pessoa[]> {
     return Pessoa.find();
