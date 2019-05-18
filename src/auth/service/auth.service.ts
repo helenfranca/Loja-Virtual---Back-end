@@ -11,25 +11,27 @@ export class AuthService {
     ) { }
 
     private async validate(userData: Pessoa): Promise<Pessoa> {
-        return await this.userService.findByEmail(userData.email);
+        return await this.userService.findByEmail(userData.email, userData.senha);
     }
 
     public async login(user: Pessoa): Promise< any | { status: number }>{
-        return this.validate(user).then((userData)=>{
-          if(!userData){
-            return { status: 404 };
-          }
-          let payload = `${userData.nome}${userData.id}`;
-          const accessToken = this.jwtService.sign(payload);
+        let u : Pessoa = await this.validate(user);
+        if (u.id != null) {
+            let payload = `${u.nome}${u.id}`;
+            const accessToken = this.jwtService.sign(payload);
 
-          return {
-             expires_in: 3600,
-             access_token: accessToken,
-             user_id: payload,
-             status: 200
-          };
-
-        });
+            return {
+                expires_in: 3600,
+                access_token: accessToken,
+                user_id: payload,
+                status: 200
+            };
+        }
+        else {
+            return { 
+                status: 404,
+                message: 'Email ou senha incorreto!'};
+        }
     }
 
     public async register(user: Pessoa): Promise<any>{
