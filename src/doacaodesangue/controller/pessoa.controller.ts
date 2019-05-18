@@ -47,9 +47,4 @@ export class PessoaController {
   public updateOne(@Body() body: any) {
     return this.pessoaService.Update(body);
   }
-  @Post('/auth/login/')
-  public login(@Body() body: any) {
-    console.log(body.email, body.senha);
-    return this.pessoaService.Login(body);
-  }
 }

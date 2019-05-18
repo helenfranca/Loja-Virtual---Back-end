@@ -6,12 +6,12 @@ import { Pessoa } from 'src/doacaodesangue/model/pessoa.entity';
 @Controller('auth')
 export  class  AuthController {
     constructor(private  readonly  authService:  AuthService) {}
-    @Post('login')
+    @Post('/login')
     async login(@Body() user: Pessoa): Promise<any> {
       return this.authService.login(user);
     }  
 
-    @Post('register')
+    @Post('/register')
     async register(@Body() user: Pessoa): Promise<any> {
       return this.authService.register(user);
     }  

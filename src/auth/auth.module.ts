@@ -2,17 +2,19 @@
 import { Module, CacheModule } from '@nestjs/common';
 import { PessoaService } from 'src/doacaodesangue/service/pessoa.service';
 import { databaseProviders } from 'src/doacaodesangue/database/database.providers';
-import { PessoaController } from 'src/doacaodesangue/controller/pessoa.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthController } from './controller/auth.controller';
+import { AuthService } from './service/auth.service';
 
 const modelProvider = [...databaseProviders];
 
 const modelService = [
-  PessoaService
+  PessoaService,
+  AuthService
 ];
 
 const modelController = [
-  PessoaController,
+  AuthController,
 ];
 
 @Module({
