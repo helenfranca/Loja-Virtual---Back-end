@@ -5,12 +5,14 @@ import { databaseProviders } from 'src/doacaodesangue/database/database.provider
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controller/auth.controller';
 import { AuthService } from './service/auth.service';
+import { GoogleStrategy } from './service/google.strategy';
 
 const modelProvider = [...databaseProviders];
 
 const modelService = [
   PessoaService,
-  AuthService
+  AuthService,
+  GoogleStrategy
 ];
 
 const modelController = [
