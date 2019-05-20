@@ -51,15 +51,15 @@ export class DemandaService implements genericInterface<Demanda> {
       demanda.data = new Date().toLocaleDateString();
       demanda.hemocentro = hemocentro;
       demanda.tiposanguineo = tiposangue;
-      let a = await Demanda.save(demanda);
-      if (a != undefined) {
+      let convocar = await Demanda.save(demanda);
+      if (convocar != undefined) {
         let doadorService = new DoadorService();
         let doadores: Doador[] = await doadorService.aptosConvocacao(
           tiposangue,
         );
         let notificacao = new ConvocacaoService();
-        notificacao.notificar(doadores);
-        return a;
+        notificacao.convocar(convocar, doadores);
+        return convocar;
       }
     } catch (err) {
       throw new Error(
