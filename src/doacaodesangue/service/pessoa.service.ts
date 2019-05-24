@@ -11,7 +11,6 @@ export class PessoaService implements genericInterface<Pessoa> {
     let user: Pessoa = await Pessoa.createQueryBuilder('pessoa')
        .where('pessoa.email = :e and pessoa.senha = :s', { e: email, s: senha})
        .getOne();
-    console.log(user.nome, email);
     return user;
   }
   readAll(): Promise<Pessoa[]> {

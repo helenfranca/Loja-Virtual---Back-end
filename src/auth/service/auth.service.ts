@@ -24,7 +24,7 @@ export class AuthService {
 
     public async login(user: Pessoa): Promise< any | { status: number }>{
         let u : Pessoa = await this.validate(user);
-        if (u.id != null) {
+        if (u != null) {
             let payload = `${u.nome}${u.id}`;
             const accessToken = this.jwtService.sign(payload);
 
