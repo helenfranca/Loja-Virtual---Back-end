@@ -18,6 +18,7 @@ export class DemandaService implements genericInterface<Demanda> {
       .innerJoin('demanda.tiposanguineo', 'tiposanguineo')
       .getRawMany();
   }
+  vnjksdjvnvsndvjsvidjn;
 
   readOne(id: number): Promise<Demanda> {
     return Demanda.createQueryBuilder('demanda')
