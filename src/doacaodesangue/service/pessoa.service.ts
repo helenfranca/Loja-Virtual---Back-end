@@ -1,7 +1,11 @@
+// ~~ Parte Service
+// Montar os objetos na camada anterior, na camada de lógica
+// A partir de agora no serviço só vai constar a comunicação do banco
+
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Pessoa } from '../model/pessoa.entity';
-import { CriptografiaService } from './criptografia.service';
+import { CriptografiaService } from './logica/criptografia.logica';
 
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
@@ -12,11 +16,6 @@ export class PessoaService implements genericInterface<Pessoa> {
   // Caso precise descriptar a senha
   async readOne(id: number): Promise<Pessoa> {
     let a: Pessoa = await Pessoa.findOne({ id: id });
-    // let a: Pessoa = await Pessoa.createQueryBuilder('pessoa')
-    //   .select('pessoa.*')
-    //   .where('pessoa.id = :name', { name: id })
-    //   .getRawOne();
-
     return a;
   }
 

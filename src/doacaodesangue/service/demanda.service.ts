@@ -1,3 +1,7 @@
+// ~~ Parte Service
+// Montar os objetos na camada anterior, na camada de lógica
+// A partir de agora no serviço só vai constar a comunicação do banco
+
 import { Injectable } from '@nestjs/common';
 import { Demanda, StatusEnum } from '../model/demanda.entity';
 import { genericInterface } from './interface/generic.interface';
@@ -5,7 +9,7 @@ import { Hemocentro } from '../model/hemocentro.entity';
 import { TipoSanguineoService } from './tiposanguineo.service';
 import { DoadorService } from './doador.service';
 import { Doador } from '../model/doador.entity';
-import { ConvocacaoService } from './convocacao.service';
+import { ConvocacaoService } from './logica/convocacao.service';
 
 @Injectable()
 export class DemandaService implements genericInterface<Demanda> {
@@ -18,7 +22,6 @@ export class DemandaService implements genericInterface<Demanda> {
       .innerJoin('demanda.tiposanguineo', 'tiposanguineo')
       .getRawMany();
   }
-  vnjksdjvnvsndvjsvidjn;
 
   readOne(id: number): Promise<Demanda> {
     return Demanda.createQueryBuilder('demanda')
@@ -53,15 +56,14 @@ export class DemandaService implements genericInterface<Demanda> {
       demanda.hemocentro = hemocentro;
       demanda.tiposanguineo = tiposangue;
       let convocar = await Demanda.save(demanda);
-      if (convocar != undefined) {
-        let doadorService = new DoadorService();
-        let doadores: Doador[] = await doadorService.aptosConvocacao(
-          tiposangue,
-        );
-        let notificacao = new ConvocacaoService();
-        notificacao.convocar(convocar, doadores);
-        return convocar;
-      }
+      // if (convocar != undefined) {
+      //   let doadorService = new DoadorService();
+      //   let doadores: Doador[] = await doadorService.aptosConvocacao(
+      //     tiposangue,
+      //   );
+      //   let notificacao = new ConvocacaoService();
+      //   notificacao.convocar(convocar, doadores);}
+      return convocar;
     } catch (err) {
       throw new Error(
         `Erro ao salvar demanda \n Erro: ${err.name}\n Mensagem: ${

@@ -14,8 +14,8 @@ import { ObservacaoService } from './service/observacao.service';
 import { DemandaService } from './service/demanda.service';
 import { DemandaController } from './controller/demanda.controller';
 import { TipoSanguineoService } from './service/tiposanguineo.service';
-import { CriptografiaService } from './service/criptografia.service';
-import { ConvocacaoService } from './service/convocacao.service';
+import { CriptografiaService } from './service/logica/criptografia.logica';
+import { ConvocacaoService } from './service/logica/convocacao.service';
 
 const modelProvider = [...databaseProviders];
 

@@ -1,7 +1,11 @@
+// ~~ Parte Service
+// Montar os objetos na camada anterior, na camada de lógica
+// A partir de agora no serviço só vai constar a comunicação do banco
+
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Hemocentro } from '../model/hemocentro.entity';
-import { CriptografiaService } from './criptografia.service';
+import { CriptografiaService } from './logica/criptografia.logica';
 
 @Injectable()
 export class HemocentroService implements genericInterface<Hemocentro> {

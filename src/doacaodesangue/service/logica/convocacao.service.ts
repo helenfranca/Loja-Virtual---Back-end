@@ -1,3 +1,7 @@
+// ~~ Parte lógica
+// Implementar metodo que vai receber a demanda e vai gerar a convocação
+// Trocar nome do arquivo
+
 import { Injectable } from '@nestjs/common';
 
 const nodemailer = require('nodemailer');
@@ -7,8 +11,8 @@ const transporter = nodemailer.createTransport({
   port: 25,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: 'helenfranca93@gmail.com',
-    pass: 'anelehhelena',
+    user: 'email',
+    pass: 'senha',
   },
   tls: { rejectUnauthorized: false },
 });
