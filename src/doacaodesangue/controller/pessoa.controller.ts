@@ -8,23 +8,24 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { PessoaService } from '../service/pessoa.service';
+//import { PessoaService } from '../service/pessoa.service';
 import { Pessoa } from '../model/pessoa.entity';
 import { ApiUseTags } from '@nestjs/swagger';
+import { Montador } from '../service/logica/montador.logica';
 
 @ApiUseTags('Pessoa')
 @Controller()
 export class PessoaController {
-  constructor(private readonly pessoaService: PessoaService) {}
+  constructor(private readonly montador: Montador) {}
   @Get('/pessoa')
   root(): any {
-    return this.pessoaService.readAll();
+    return this.montador.pegaPessoas();
   }
 
   @Get('/pessoa/:id')
   async readOne(@Res() res, @Param() id) {
     try {
-      let pessoa: Pessoa = await this.pessoaService.readOne(id.id);
+      let pessoa: Pessoa = await this.montador.leUmaPessoa(id.id);
       if (pessoa != undefined) {
         res.status(HttpStatus.OK).send(pessoa);
       } else {
@@ -40,11 +41,11 @@ export class PessoaController {
 
   @Post('/pessoa')
   public createOne(@Body() body: any): Promise<Pessoa> {
-    return this.pessoaService.Create(body);
+    return this.montador.montaPessoa(body);
   }
 
   @Put('/pessoa')
   public updateOne(@Body() body: any) {
-    return this.pessoaService.Update(body);
+    return this.montador.alteraPessoa(body);
   }
 }

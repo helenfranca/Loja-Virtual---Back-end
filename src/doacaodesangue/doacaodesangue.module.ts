@@ -16,6 +16,7 @@ import { DemandaController } from './controller/demanda.controller';
 import { TipoSanguineoService } from './service/tiposanguineo.service';
 import { CriptografiaService } from './service/logica/criptografia.logica';
 import { ConvocacaoService } from './service/logica/convocacao.service';
+import { Montador } from './service/logica/montador.logica';
 
 const modelProvider = [...databaseProviders];
 
@@ -30,6 +31,7 @@ const modelService = [
   TipoSanguineoService,
   CriptografiaService,
   ConvocacaoService,
+  Montador,
 ];
 
 const modelController = [
