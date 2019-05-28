@@ -43,6 +43,6 @@ export class Montador {
     pessoa.email = body.email;
     let senha = body.senha;
     pessoa.senha = cripto.criptografar(senha);
-    this.servico.Update(pessoa);
+    return this.servico.Update(pessoa);
   }
 }
