@@ -7,9 +7,7 @@ import { Demanda, StatusEnum } from '../model/demanda.entity';
 import { genericInterface } from './interface/generic.interface';
 import { Hemocentro } from '../model/hemocentro.entity';
 import { TipoSanguineoService } from './tiposanguineo.service';
-import { DoadorService } from './doador.service';
-import { Doador } from '../model/doador.entity';
-import { ConvocacaoService } from './logica/convocacao.service';
+
 
 @Injectable()
 export class DemandaService implements genericInterface<Demanda> {
