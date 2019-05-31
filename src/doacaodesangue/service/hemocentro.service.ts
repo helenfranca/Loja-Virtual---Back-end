@@ -5,7 +5,6 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Hemocentro } from '../model/hemocentro.entity';
-import { CriptografiaService } from './logica/criptografia.logica';
 
 @Injectable()
 export class HemocentroService implements genericInterface<Hemocentro> {
