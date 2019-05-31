@@ -1,18 +1,14 @@
-// ~~ Parte Service
-// Montar os objetos na camada anterior, na camada de lógica
-// A partir de agora no serviço só vai constar a comunicação do banco
-
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Hemocentro } from '../model/hemocentro.entity';
 
 @Injectable()
 export class HemocentroService implements genericInterface<Hemocentro> {
-  readAll(): Promise<Hemocentro[]> {
-    return Hemocentro.find();
+  async readAll(): Promise<Hemocentro[]> {
+    return await Hemocentro.find();
   }
-  readOne(id: number): Promise<Hemocentro> {
-    return Hemocentro.findOne({ id: id });
+  async readOne(id: number): Promise<Hemocentro> {
+    return await Hemocentro.findOne({ id: id });
   }
 
   async Create(body: any): Promise<Hemocentro> {

@@ -25,7 +25,7 @@ export class HemocentroController {
 
   @Get('/Hemocentro')
   root(): any {
-    this.montador.pegaHemocentros();
+    return this.montador.pegaHemocentros();
   }
 
   @Get('/hemocentro/demandas')

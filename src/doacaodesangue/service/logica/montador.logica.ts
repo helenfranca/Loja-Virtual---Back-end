@@ -13,6 +13,8 @@ import { TipoSanguineoService } from '../tiposanguineo.service';
 import { Doacao } from 'src/doacaodesangue/model/doacao.entity';
 import { DoacaoService } from '../doacao.service';
 import { ObservacaoService } from '../observacao.service';
+import { DemandaService } from '../demanda.service';
+import { Demanda, StatusEnum } from 'src/doacaodesangue/model/demanda.entity';
 
 @Injectable()
 export class Montador {
@@ -22,6 +24,8 @@ export class Montador {
     private readonly servicoHemocentro: HemocentroService,
     private readonly servicoDoador: DoadorService,
     private readonly servicoDoacao: DoacaoService,
+    private readonly servicoDemanda: DemandaService,
+    private readonly servicoTipoSanguineo: TipoSanguineoService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -247,13 +251,13 @@ export class Montador {
   public async montaDoador(body): Promise<Doador> {
     let doador = new Doador();
     try {
-      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-
+      let pessoa = await this.servicoPessoa.pessoaCpf(body);
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
-        let tipo = new TipoSanguineoService();
-        let tiposangue = await tipo.buscaOne(body.tiposanguineo);
 
+        let tiposangue = await this.servicoTipoSanguineo.buscaOne(
+          body.tiposanguineo,
+        );
         if (tiposangue != undefined) {
           doador.tiposanguineo = tiposangue;
           doador.doenca_chagas = body.chagas;
@@ -279,8 +283,7 @@ export class Montador {
           } else {
             doador.apto = true;
           }
-
-          return this.servicoDoador.Create(doador);
+          return await this.servicoDoador.Create(doador);
         }
       }
     } catch (err) {
@@ -353,7 +356,7 @@ export class Montador {
       doacao.doador = doador;
       doacao.hemocentro = hemocentro;
 
-      let confirma = await this.servicoDoacao.Create(doador);
+      let confirma = await this.servicoDoacao.Create(doacao);
 
       if (body.observacao != undefined) {
         let obs = {};
@@ -386,5 +389,54 @@ export class Montador {
 
   public pegaDoacoesDoador(id) {
     return this.servicoDoacao.getDoacoesDoador(id);
+  }
+
+  // ~~~~~~~~~~~~~~~~~~ //
+  //       Demanda      //
+  // ~~~~~~~~~~~~~~~~~~ //
+
+  public pegaDemanda(): Promise<Demanda[]> {
+    return this.servicoDemanda.readAll();
+  }
+
+  public leUmaDemanda(id: number): Promise<Demanda> {
+    return this.servicoDemanda.readOne(id);
+  }
+
+  public async montaDemanda(body): Promise<Demanda> {
+    let demanda: Demanda = new Demanda();
+    try {
+      let hemocentro = await this.servicoHemocentro.readOne(body.idhemocentro);
+      let tiposangue = await this.servicoTipoSanguineo.buscaOne(
+        body.tiposanguineo,
+      );
+
+      demanda.status = StatusEnum.Aberta;
+      demanda.data = new Date().toLocaleDateString();
+      demanda.hemocentro = hemocentro;
+      demanda.tiposanguineo = tiposangue;
+
+      return this.servicoDemanda.Create(demanda);
+    } catch (err) {
+      return err;
+    }
+  }
+
+  public async deletarDemanda(body: Demanda): Promise<Demanda> {
+    try {
+      let demanda = await this.servicoDemanda.readOne(body.id);
+      demanda.status = StatusEnum.Fechada;
+      return this.servicoDemanda.Drop(demanda);
+    } catch (err) {
+      return err;
+    }
+  }
+
+  public async alteraDemanda(body) {
+    try {
+      return this.servicoDemanda.Update(body);
+    } catch (err) {
+      return err;
+    }
   }
 }
