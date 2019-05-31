@@ -10,24 +10,28 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import { HemocentroService } from '../service/hemocentro.service';
 import { Hemocentro } from '../model/hemocentro.entity';
 import { ApiUseTags } from '@nestjs/swagger';
+import { Montador } from '../service/logica/montador.logica';
+import { Relatorio } from '../service/logica/relatorio.logica';
 
 @ApiUseTags('Hemocentro')
 @Controller()
 export class HemocentroController {
-  constructor(private readonly HemocentroService: HemocentroService) {}
+  constructor(
+    private readonly montador: Montador,
+    private readonly relatorios: Relatorio,
+  ) {}
 
   @Get('/Hemocentro')
   root(): any {
-    return this.HemocentroService.readAll();
+    this.montador.pegaHemocentros();
   }
 
   @Get('/hemocentro/demandas')
   async relatorio(@Res() res) {
     try {
-      let hemocentro = await this.HemocentroService.hemocentroDemanda();
+      let hemocentro = await this.relatorios.hemocentroDemanda();
       if (hemocentro != undefined) {
         res.status(HttpStatus.OK).send(hemocentro);
       } else {
@@ -44,7 +48,7 @@ export class HemocentroController {
   @Get('/Hemocentro/:id')
   async readOne(@Res() res, @Param() id) {
     try {
-      let hemocentro: Hemocentro = await this.HemocentroService.readOne(id.id);
+      let hemocentro: Hemocentro = await this.montador.leUmHemocentro(id.id);
       if (hemocentro != undefined) {
         res.status(HttpStatus.OK).send(hemocentro);
       } else {
@@ -60,15 +64,16 @@ export class HemocentroController {
 
   @Post('/Hemocentro')
   public createOne(@Body() body: any): Promise<Hemocentro> {
-    return this.HemocentroService.Create(body);
+    return this.montador.montaHemocentro(body);
   }
 
   @Put('/Hemocentro')
   public updateOne(@Body() body: any) {
-    return this.HemocentroService.Update(body);
+    return this.montador.alteraHemocentro(body);
   }
+
   @Delete('/Hemocentro/:id')
   public deleteOne(@Body() body: any): Promise<Hemocentro> {
-    return this.HemocentroService.Drop(body);
+    return this.montador.deletarHemocentro(body);
   }
 }

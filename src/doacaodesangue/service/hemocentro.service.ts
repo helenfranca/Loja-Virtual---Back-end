@@ -17,16 +17,8 @@ export class HemocentroService implements genericInterface<Hemocentro> {
   }
 
   async Create(body: any): Promise<Hemocentro> {
-    let hemocentro = new Hemocentro();
-    let cripto = new CriptografiaService();
     try {
-      hemocentro.nome = body.nome;
-      hemocentro.cnes = body.cnes;
-      hemocentro.telefone = body.telefone;
-      hemocentro.email = body.email;
-      hemocentro.senha = cripto.criptografar(body.senha);
-      hemocentro.status = true;
-      return await Hemocentro.save(hemocentro);
+      return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao salvar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
@@ -36,11 +28,9 @@ export class HemocentroService implements genericInterface<Hemocentro> {
     }
   }
 
-  async Drop(body: any): Promise<Hemocentro> {
+  async Drop(body: Hemocentro): Promise<Hemocentro> {
     try {
-      let hemocentro = await Hemocentro.findOne(body.id);
-      hemocentro.status = false;
-      return await Hemocentro.save(hemocentro);
+      return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao deletar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
@@ -52,15 +42,7 @@ export class HemocentroService implements genericInterface<Hemocentro> {
 
   async Update(body: any): Promise<Hemocentro> {
     try {
-      let cripto = new CriptografiaService();
-      let busca = await Hemocentro.findOne({ cnes: body.cnes });
-      busca.nome = body.nome;
-      busca.cnes = body.cnes;
-      busca.telefone = body.telefone;
-      busca.email = body.email;
-      let senha = body.senha;
-      busca.senha = cripto.criptografar(senha);
-      return await Hemocentro.save(busca);
+      return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao atualizar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
@@ -84,5 +66,9 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       .getRawMany();
 
     return hemocentro;
+  }
+
+  async hemocentro(body) {
+    return await Hemocentro.findOne({ id: body.idhemocentro });
   }
 }

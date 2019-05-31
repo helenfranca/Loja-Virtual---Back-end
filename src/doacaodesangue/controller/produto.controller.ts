@@ -11,22 +11,21 @@ import {
 import { ProdutoService } from '../service/produto.service';
 import { Produto } from '../model/produto.entity';
 import { ApiUseTags } from '@nestjs/swagger';
+import { Montador } from '../service/logica/montador.logica';
 
 @ApiUseTags('produto')
 @Controller()
 export class ProdutoController {
-  constructor(private readonly ProdutoService: ProdutoService) {}
+  constructor(private readonly montador: Montador) {}
   @Get('/produto')
   root(): Promise<Produto[]> {
-    return this.ProdutoService.readAll();
+    return this.montador.pegaProdutos();
   }
 
   @Get('/produto/busca')
   async buscaProduto(@Res() res, @Query() texto) {
     try {
-      let Produto: Produto = await this.ProdutoService.buscaProdutoParam(
-        texto.nome,
-      );
+      let Produto: Produto = await this.montador.buscaParametro(texto.nome);
       if (Produto != undefined) {
         res.status(HttpStatus.OK).send(Produto);
       } else {
@@ -42,7 +41,7 @@ export class ProdutoController {
   @Get('/produto/:id')
   async readOne(@Res() res, @Param() id) {
     try {
-      let Produto: Produto = await this.ProdutoService.readOne(id.id);
+      let Produto: Produto = await this.montador.leUmProduto(id.id);
 
       if (Produto != undefined) {
         res.status(HttpStatus.OK).send(Produto);
@@ -58,21 +57,21 @@ export class ProdutoController {
 
   @Post('/produto')
   public createOne(@Body() body: any) {
-    return this.ProdutoService.Create(body);
+    return this.montador.montaProduto(body);
   }
 
   @Get('/camisas')
   async buscaCamisas() {
-    return await this.ProdutoService.buscaCamisas();
+    return await this.montador.camisas();
   }
 
   @Get('/bottons')
   async buscaBottons() {
-    return await this.ProdutoService.buscaBottons();
+    return await this.montador.bottons();
   }
 
   @Get('/canecas')
   async buscaCanecas() {
-    return await this.ProdutoService.buscaCanecas();
+    return await this.montador.canecas();
   }
 }

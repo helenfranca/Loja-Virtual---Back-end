@@ -33,27 +33,8 @@ export class DoacaoService implements genericInterface<Doacao> {
   }
 
   async Create(body: any): Promise<Doacao> {
-    let doacao: Doacao = new Doacao();
     try {
-      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-      let doador = await Doador.findOne({ pessoa: pessoa });
-      let hemocentro = await Hemocentro.findOne({ id: body.idhemocentro });
-
-      doacao.quantidade = body.quantidade;
-      doacao.datadoacao = new Date().toLocaleDateString();
-      doacao.doador = doador;
-      doacao.hemocentro = hemocentro;
-      let doa = await Doacao.save(doacao);
-
-      if (body.observacao != undefined) {
-        let obs = {};
-        obs['observacao'] = body.observacao;
-        obs['iddoacao'] = doa;
-
-        let observacaoService = new ObservacaoService();
-        await observacaoService.Create(obs);
-      }
-      return doacao;
+      return await Doacao.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao salvar doação \n Erro: ${err.name}\n Mensagem: ${
@@ -70,9 +51,7 @@ export class DoacaoService implements genericInterface<Doacao> {
   //Altera a quantidade de sangue doada
   async Update(body: any): Promise<Doacao> {
     try {
-      let busca = await Doacao.findOne({ id: body.id });
-      busca.quantidade = body.quantidade;
-      return await Doacao.save(busca);
+      return await Doacao.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao atualizar doação \n Erro: ${err.name}\n Mensagem: ${
@@ -83,7 +62,7 @@ export class DoacaoService implements genericInterface<Doacao> {
   }
 
   //Retorna todas as doações realizadas por um doador, informando o id
-  getDoacoes(id: number) {
+  getDoacoesDoador(id: number) {
     return Doacao.createQueryBuilder('doacao')
       .select(
         ' doacao.quantidade, doacao.datadoacao, hemocentro.nome, observacao.descricao',

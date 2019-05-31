@@ -17,6 +17,8 @@ import { TipoSanguineoService } from './service/tiposanguineo.service';
 import { CriptografiaService } from './service/logica/criptografia.logica';
 import { ConvocacaoService } from './service/logica/convocacao.service';
 import { Montador } from './service/logica/montador.logica';
+import { Relatorio } from './service/logica/relatorio.logica';
+import { Tuntum } from './service/logica/tuntum.logica';
 
 const modelProvider = [...databaseProviders];
 
@@ -32,6 +34,8 @@ const modelService = [
   CriptografiaService,
   ConvocacaoService,
   Montador,
+  Relatorio,
+  Tuntum,
 ];
 
 const modelController = [

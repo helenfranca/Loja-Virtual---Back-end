@@ -23,6 +23,33 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawOne();
   }
 
+  async Create(body: any): Promise<Doador> {
+    try {
+      return await Doador.save(body);
+    } catch (err) {
+      throw new Error(
+        `Erro ao salvar doador \n Erro: ${err.name}\n Mensagem: ${
+          err.message
+        }\n Os parametros estao certos?`,
+      );
+    }
+  }
+
+  async Drop(body: any): Promise<Doador> {
+    return await Doador.save(body);
+  }
+
+  async Update(body: any): Promise<Doador> {
+    return await Doador.save(body);
+  }
+  catch(err) {
+    throw new Error(
+      `Erro ao atualizar doador \n Erro: ${err.name}\n Mensagem: ${
+        err.message
+      }\n Os parametros estao certos?`,
+    );
+  }
+
   doadoresTipo() {
     let retorno = Doador.createQueryBuilder('doador')
       .select('count(doador.id) as qtddoador, tiposanguineo.tipofator')
@@ -53,92 +80,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async Create(body: any): Promise<Doador> {
-    let doador = new Doador();
-    try {
-      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-
-      if (pessoa != undefined) {
-        doador.pessoa = pessoa;
-        let tipo = new TipoSanguineoService();
-        let tiposangue = await tipo.buscaOne(body.tiposanguineo);
-
-        if (tiposangue != undefined) {
-          doador.tiposanguineo = tiposangue;
-          doador.doenca_chagas = body.chagas;
-          doador.drogailicita = body.droga;
-          doador.hepatite11 = body.hepatite11;
-          doador.hepatiteb = body.hepatiteb;
-          doador.hepatitec = body.hepatitec;
-          doador.hiv = body.hiv;
-          doador.htlv = body.htlv;
-          doador.malaria = body.malaria;
-
-          if (
-            body.chagas ||
-            body.droga ||
-            body.hepatite11 ||
-            body.hepatiteb ||
-            body.hepatitec ||
-            body.hiv ||
-            body.htlv ||
-            body.malaria
-          ) {
-            doador.apto = false;
-          } else {
-            doador.apto = true;
-          }
-
-          return await Doador.save(doador);
-        }
-      }
-    } catch (err) {
-      throw new Error(
-        `Erro ao salvar doador \n Erro: ${err.name}\n Mensagem: ${
-          err.message
-        }\n Os parametros estao certos?`,
-      );
-    }
-  }
-
-  async Drop(body: any): Promise<Doador> {
-    let busca = await Doador.findOne({ id: body.id });
-    busca.apto = false;
-    return await Doador.save(busca);
-  }
-
-  async Update(body: any): Promise<Doador> {
-    try {
-      let busca = await Doador.findOne({ id: body.id });
-      //Saude
-      busca.doenca_chagas = body.chagas;
-      busca.drogailicita = body.droga;
-      busca.hepatite11 = body.hepatite11;
-      busca.hepatiteb = body.hepatiteb;
-      busca.hepatitec = body.hepatitec;
-      busca.hiv = body.hiv;
-      busca.htlv = body.htlv;
-      busca.malaria = body.malaria;
-
-      if (
-        body.chagas ||
-        body.droga ||
-        body.hepatite11 ||
-        body.hepatiteb ||
-        body.hepatitec ||
-        body.hiv ||
-        body.htlv ||
-        body.malaria
-      ) {
-        busca.apto = false;
-      }
-      return await Doador.save(busca);
-    } catch (err) {
-      throw new Error(
-        `Erro ao atualizar doador \n Erro: ${err.name}\n Mensagem: ${
-          err.message
-        }\n Os parametros estao certos?`,
-      );
-    }
+  async doador(pessoa) {
+    return await Doador.findOne({ pessoa: pessoa });
   }
 }

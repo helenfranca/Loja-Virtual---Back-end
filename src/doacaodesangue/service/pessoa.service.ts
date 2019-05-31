@@ -13,6 +13,10 @@ export class PessoaService implements genericInterface<Pessoa> {
     return Pessoa.find();
   }
 
+  pessoaCpf(body) {
+    return Pessoa.findOne({ cpf: body.cpf });
+  }
+
   // Caso precise descriptar a senha
   async readOne(id: number): Promise<Pessoa> {
     let a: Pessoa = await Pessoa.findOne({ id: id });
