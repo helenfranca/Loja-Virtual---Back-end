@@ -1,7 +1,6 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Doador } from '../model/doador.entity';
-import { Pessoa } from '../model/pessoa.entity';
 
 @Injectable()
 export class DoadorService implements genericInterface<Doador> {
