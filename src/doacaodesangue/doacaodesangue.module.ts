@@ -15,7 +15,7 @@ import { DemandaService } from './service/demanda.service';
 import { DemandaController } from './controller/demanda.controller';
 import { TipoSanguineoService } from './service/tiposanguineo.service';
 import { CriptografiaService } from './service/logica/criptografia.logica';
-import { ConvocacaoService } from './service/logica/convocacao.service';
+import { ConvocacaoLogica } from './service/logica/convocacao.logica';
 import { Montador } from './service/logica/montador.logica';
 import { Relatorio } from './service/logica/relatorio.logica';
 import { Tuntum } from './service/logica/tuntum.logica';
@@ -32,7 +32,7 @@ const modelService = [
   DemandaService,
   TipoSanguineoService,
   CriptografiaService,
-  ConvocacaoService,
+  ConvocacaoLogica,
   Montador,
   Relatorio,
   Tuntum,

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DoadorService } from '../doador.service';
+import { Doador } from 'src/doacaodesangue/model/doador.entity';
 
 @Injectable()
 export class Tuntum {
@@ -9,8 +10,8 @@ export class Tuntum {
     return this.servicoDoador.aptos();
   }
 
-  public aptoConvocar(tipo) {
-    return this.servicoDoador.aptosConvocacao(tipo);
+  public async aptoConvocar(tipo) {
+    return await this.servicoDoador.aptosConvocacao(tipo);
   }
 
   public doadorTipo() {

@@ -15,6 +15,8 @@ import { DoacaoService } from '../doacao.service';
 import { ObservacaoService } from '../observacao.service';
 import { DemandaService } from '../demanda.service';
 import { Demanda, StatusEnum } from 'src/doacaodesangue/model/demanda.entity';
+import { ConvocacaoLogica } from './convocacao.logica';
+import { TipoSanguineo } from 'src/doacaodesangue/model/tiposanguineo.entity';
 
 @Injectable()
 export class Montador {
@@ -26,6 +28,7 @@ export class Montador {
     private readonly servicoDoacao: DoacaoService,
     private readonly servicoDemanda: DemandaService,
     private readonly servicoTipoSanguineo: TipoSanguineoService,
+    private readonly logicaConvocacao: ConvocacaoLogica,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -406,8 +409,10 @@ export class Montador {
   public async montaDemanda(body): Promise<Demanda> {
     let demanda: Demanda = new Demanda();
     try {
-      let hemocentro = await this.servicoHemocentro.readOne(body.idhemocentro);
-      let tiposangue = await this.servicoTipoSanguineo.buscaOne(
+      let hemocentro: Hemocentro = await this.servicoHemocentro.readOne(
+        body.idhemocentro,
+      );
+      let tiposangue: TipoSanguineo = await this.servicoTipoSanguineo.buscaOne(
         body.tiposanguineo,
       );
 
@@ -416,7 +421,11 @@ export class Montador {
       demanda.hemocentro = hemocentro;
       demanda.tiposanguineo = tiposangue;
 
-      return this.servicoDemanda.Create(demanda);
+      let demandaInsert: Demanda = await this.servicoDemanda.Create(demanda);
+      if (demandaInsert != undefined) {
+        await this.logicaConvocacao.convocar(demandaInsert);
+        return demandaInsert;
+      }
     } catch (err) {
       return err;
     }

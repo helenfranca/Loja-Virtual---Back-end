@@ -67,8 +67,8 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  aptosConvocacao(tipo): Promise<Doador[]> {
-    return Doador.createQueryBuilder('doador')
+  async aptosConvocacao(tipo) {
+    return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
       .innerJoin('doador.tiposanguineo', 'tiposanguineo')

@@ -17,7 +17,7 @@ export class PessoaService implements genericInterface<Pessoa> {
     return await Pessoa.findOne({ id: id });
   }
 
-  async Create(pessoa: Pessoa): Promise<Pessoa> {
+  async Create(pessoa): Promise<Pessoa> {
     try {
       return await Pessoa.save(pessoa);
     } catch (err) {
