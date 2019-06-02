@@ -203,7 +203,7 @@ export class Montador {
     return this.servicoHemocentro.readOne(id);
   }
 
-  public montaHemocentro(body: Hemocentro): Promise<Hemocentro> {
+  public async montaHemocentro(body: Hemocentro): Promise<Hemocentro> {
     let hemocentro = new Hemocentro();
     let cripto = new CriptografiaService();
     try {
@@ -213,7 +213,7 @@ export class Montador {
       hemocentro.email = body.email;
       hemocentro.senha = cripto.criptografar(body.senha);
       hemocentro.status = true;
-      return this.servicoHemocentro.Create(hemocentro);
+      return await this.servicoHemocentro.Create(hemocentro);
     } catch (err) {
       return err;
     }

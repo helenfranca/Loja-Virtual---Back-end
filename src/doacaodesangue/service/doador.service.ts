@@ -21,7 +21,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawOne();
   }
 
-  async Create(body: any): Promise<Doador> {
+  async Create(body: Doador): Promise<Doador> {
     try {
       return await Doador.save(body);
     } catch (err) {
@@ -67,13 +67,16 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async aptosConvocacao(tipo) {
+  async aptosConvocacaoOp(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
       .innerJoin('doador.tiposanguineo', 'tiposanguineo')
-      .where('doador.apto = true and tiposanguineo.tipofator = :name', {
-        name: tipo.tipofator,
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :op ', {
+        op: tipos.Op,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
       })
       .getRawMany();
   }

@@ -11,7 +11,10 @@ export class Tuntum {
   }
 
   public async aptoConvocar(tipo) {
-    return await this.servicoDoador.aptosConvocacao(tipo);
+    if (tipo.tipofator == 'O+') {
+      let tipos = { Op: 'O+', On: 'O-' };
+      return await this.servicoDoador.aptosConvocacaoOp(tipos);
+    }
   }
 
   public doadorTipo() {

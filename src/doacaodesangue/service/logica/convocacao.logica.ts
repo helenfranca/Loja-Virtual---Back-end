@@ -21,7 +21,6 @@ const mailOptions = {
   from: '"Tuntum - Doação de Sangue"<tuntumdoacaodesangue@gmail.com>',
   to: '',
   subject: 'Ei, doador! Você tem uma nova missão!',
-  text: 'Este é um teste do Tuntum <3!',
   html: '',
 };
 
@@ -35,14 +34,19 @@ export class ConvocacaoLogica {
     let doadoresAptos = await this.logicaTuntum.aptoConvocar(
       demanda.tiposanguineo,
     );
+    doadoresAptos.forEach(element => {
+      console.log(element.email + ', ' + element.nome);
+    });
+    // this.email(doadoresAptos, demanda);
+  }
 
+  email(doadoresAptos, demanda) {
     let emails = [];
     doadoresAptos.forEach(element => {
       emails.push(element.email);
     });
-
+    let i = 0;
     emails.forEach(element => {
-      let i = 0;
       mailOptions.to = element;
       let html = this.montaEmail.montaHtml(
         doadoresAptos[i].nome,
