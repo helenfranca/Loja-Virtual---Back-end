@@ -17,14 +17,14 @@ export class PessoaService implements genericInterface<Pessoa> {
     return await Pessoa.findOne({ id: id });
   }
 
-  async Create(pessoa): Promise<Pessoa> {
+  async Create(pessoa: Pessoa): Promise<Pessoa> {
     try {
       return await Pessoa.save(pessoa);
     } catch (err) {
       throw new Error(
-        `Erro ao salvar pessoa \n Erro: ${err.name}\n Mensagem: ${
-          err.message
-        }\n Os parametros estao certos?`,
+        `Erro ao salvar pessoa \n Erro: ${
+          err.name
+        }\n Mensagem: ${err}\n Os parametros estao certos?`,
       );
     }
   }

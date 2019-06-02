@@ -44,15 +44,21 @@ export class Montador {
   }
 
   public montaPessoa(body: Pessoa) {
+    var moment = require('moment');
+    var data = moment(body.datanascimento, 'DD/MM/YYYY');
+    //Feito isso basta definir o formato de saída:
+
     let pessoa = new Pessoa();
     let cripto = new CriptografiaService();
     try {
       pessoa.nome = body.nome;
       pessoa.sobrenome = body.sobrenome;
-      pessoa.datanascimento = body.datanascimento;
+
+      pessoa.datanascimento = data.format('YYYY-MM-DD');
 
       //Validar CPF
       pessoa.cpf = body.cpf;
+
       pessoa.sexo = body.sexo;
       pessoa.email = body.email;
       pessoa.telefone = body.telefone;

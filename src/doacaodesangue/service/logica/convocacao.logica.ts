@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Tuntum } from './tuntum.logica';
 import { Demanda } from 'src/doacaodesangue/model/demanda.entity';
+import { MontaEmail } from './email';
 
 const nodemailer = require('nodemailer');
 
@@ -17,15 +18,19 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailOptions = {
-  from: 'Tuntum - Doação de Sangue',
+  from: '"Tuntum - Doação de Sangue"<tuntumdoacaodesangue@gmail.com>',
   to: '',
-  subject: 'E-mail enviado usando Node!',
-  text: 'Teste um a um ;)',
+  subject: 'Ei, doador! Você tem uma nova missão!',
+  text: 'Este é um teste do Tuntum <3!',
+  html: '',
 };
 
 @Injectable()
 export class ConvocacaoLogica {
-  constructor(private readonly logicaTuntum: Tuntum) {}
+  constructor(
+    private readonly logicaTuntum: Tuntum,
+    private readonly montaEmail: MontaEmail,
+  ) {}
   async convocar(demanda: Demanda) {
     let doadoresAptos = await this.logicaTuntum.aptoConvocar(
       demanda.tiposanguineo,
@@ -37,8 +42,14 @@ export class ConvocacaoLogica {
     });
 
     emails.forEach(element => {
+      let i = 0;
       mailOptions.to = element;
-      console.log(mailOptions.to);
+      let html = this.montaEmail.montaHtml(
+        doadoresAptos[i].nome,
+        demanda.hemocentro.nome,
+        demanda.tiposanguineo.tipofator,
+      );
+      mailOptions.html = html;
       transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
           console.log('Caiu no erro: ' + error);
@@ -46,6 +57,7 @@ export class ConvocacaoLogica {
           console.log('Email enviado: ' + info.response);
         }
       });
+      i = i + 1;
     });
   }
 }

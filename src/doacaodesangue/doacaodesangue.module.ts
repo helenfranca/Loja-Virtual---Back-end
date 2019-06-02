@@ -19,6 +19,7 @@ import { ConvocacaoLogica } from './service/logica/convocacao.logica';
 import { Montador } from './service/logica/montador.logica';
 import { Relatorio } from './service/logica/relatorio.logica';
 import { Tuntum } from './service/logica/tuntum.logica';
+import { MontaEmail } from './service/logica/email';
 
 const modelProvider = [...databaseProviders];
 
@@ -36,6 +37,7 @@ const modelService = [
   Montador,
   Relatorio,
   Tuntum,
+  MontaEmail,
 ];
 
 const modelController = [
