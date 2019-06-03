@@ -9,23 +9,28 @@ import {
   Body,
   Put,
 } from '@nestjs/common';
-import { DemandaService } from '../service/demanda.service';
 import { Demanda } from '../model/demanda.entity';
+import { Montador } from '../service/logica/montador.logica';
+import { Relatorio } from '../service/logica/relatorio.logica';
 
 @ApiUseTags('Demanda')
 @Controller()
 export class DemandaController {
-  constructor(private readonly demandaService: DemandaService) {}
+  constructor(
+    private readonly montador: Montador,
+    private readonly relatorio: Relatorio,
+  ) {}
 
   @Get('/demanda')
   root(): any {
-    return this.demandaService.readAll();
+    return this.montador.pegaDemanda();
   }
 
   @Get('/demandas/tipo')
-  async relatorio(@Res() res) {
+  async relatorioDemanda(@Res() res) {
     try {
-      let demanda = await this.demandaService.relatorio();
+      let demanda = await this.relatorio.demandaTipo();
+
       if (demanda != undefined) {
         res.status(HttpStatus.OK).send(demanda);
       } else {
@@ -41,7 +46,7 @@ export class DemandaController {
   @Get('/demanda/:id')
   async readOne(@Res() res, @Param() id) {
     try {
-      let demanda: Demanda = await this.demandaService.readOne(id.id);
+      let demanda: Demanda = await this.montador.leUmaDemanda(id.id);
       if (demanda != undefined) {
         res.status(HttpStatus.OK).send(demanda);
       } else {
@@ -56,11 +61,11 @@ export class DemandaController {
 
   @Post('/demanda')
   public createOne(@Body() body: any): Promise<Demanda> {
-    return this.demandaService.Create(body);
+    return this.montador.montaDemanda(body);
   }
 
   @Put('/demanda')
   public updateOne(@Body() body: any) {
-    return this.demandaService.Update(body);
+    return this.montador.deletarDemanda(body);
   }
 }

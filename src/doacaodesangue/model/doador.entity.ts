@@ -58,4 +58,5 @@ export class Doador extends BaseEntity {
   @OneToOne(type => Pessoa, pessoa => pessoa.doador)
   @JoinColumn({ name: 'idpessoa' })
   pessoa: Pessoa;
+
 }

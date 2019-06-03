@@ -11,20 +11,21 @@ import {
 import { ApiUseTags } from '@nestjs/swagger';
 import { DoacaoService } from '../service/doacao.service';
 import { Doacao } from '../model/doacao.entity';
+import { Montador } from '../service/logica/montador.logica';
 
 @ApiUseTags('Doacao')
 @Controller()
 export class DoacaoController {
-  constructor(private readonly doacaoService: DoacaoService) {}
+  constructor(private readonly montador: Montador) {}
   @Get('/doacao')
   root(): any {
-    return this.doacaoService.readAll();
+    return this.montador.pegaDoacoes();
   }
 
   @Get('/doacao/:id')
   async readOne(@Res() res, @Param() id) {
     try {
-      let doacao: Doacao = await this.doacaoService.readOne(id.id);
+      let doacao: Doacao = await this.montador.leUmaDoacao(id.id);
       if (doacao != undefined) {
         res.status(HttpStatus.OK).send(doacao);
       } else {
@@ -40,7 +41,7 @@ export class DoacaoController {
   @Get('doacao/doador/:id')
   async DoacaodoDoador(@Res() res, @Param() id) {
     try {
-      let doacoes = await this.doacaoService.getDoacoes(id.id);
+      let doacoes = await this.montador.pegaDoacoesDoador(id.id);
       console.log(doacoes);
       if (doacoes != undefined) {
         res.status(HttpStatus.OK).send(doacoes);
@@ -58,11 +59,11 @@ export class DoacaoController {
 
   @Post('/doacao')
   public createOne(@Body() body: any): Promise<Doacao> {
-    return this.doacaoService.Create(body);
+    return this.montador.montaDoacao(body);
   }
 
   @Put('/doacao')
   public updateOne(@Body() body: any) {
-    return this.doacaoService.Update(body);
+    return this.montador.alteraDoacao(body);
   }
 }

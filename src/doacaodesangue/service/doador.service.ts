@@ -1,8 +1,6 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Doador } from '../model/doador.entity';
-import { Pessoa } from '../model/pessoa.entity';
-import { TipoSanguineoService } from './tiposanguineo.service';
 
 @Injectable()
 export class DoadorService implements genericInterface<Doador> {
@@ -21,6 +19,33 @@ export class DoadorService implements genericInterface<Doador> {
       .innerJoin('doador.tiposanguineo', 'tiposanguineo')
       .where('doador.id = :name', { name: id })
       .getRawOne();
+  }
+
+  async Create(body: Doador): Promise<Doador> {
+    try {
+      return await Doador.save(body);
+    } catch (err) {
+      throw new Error(
+        `Erro ao salvar doador \n Erro: ${err.name}\n Mensagem: ${
+          err.message
+        }\n Os parametros estao certos?`,
+      );
+    }
+  }
+
+  async Drop(body: any): Promise<Doador> {
+    return await Doador.save(body);
+  }
+
+  async Update(body: any): Promise<Doador> {
+    return await Doador.save(body);
+  }
+  catch(err) {
+    throw new Error(
+      `Erro ao atualizar doador \n Erro: ${err.name}\n Mensagem: ${
+        err.message
+      }\n Os parametros estao certos?`,
+    );
   }
 
   doadoresTipo() {
@@ -42,92 +67,120 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async Create(body: any): Promise<Doador> {
-    let doador = new Doador();
-    try {
-      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-
-      if (pessoa != undefined) {
-        doador.pessoa = pessoa;
-        let tipo = new TipoSanguineoService();
-        let tiposangue = await tipo.buscaOne(body.tiposanguineo);
-
-        if (tiposangue != undefined) {
-          doador.tiposanguineo = tiposangue;
-          doador.doenca_chagas = body.chagas;
-          doador.drogailicita = body.droga;
-          doador.hepatite11 = body.hepatite11;
-          doador.hepatiteb = body.hepatiteb;
-          doador.hepatitec = body.hepatitec;
-          doador.hiv = body.hiv;
-          doador.htlv = body.htlv;
-          doador.malaria = body.malaria;
-
-          if (
-            body.chagas ||
-            body.droga ||
-            body.hepatite11 ||
-            body.hepatiteb ||
-            body.hepatitec ||
-            body.hiv ||
-            body.htlv ||
-            body.malaria
-          ) {
-            doador.apto = false;
-          } else {
-            doador.apto = true;
-          }
-
-          return await Doador.save(doador);
-        }
-      }
-    } catch (err) {
-      throw new Error(
-        `Erro ao salvar doador \n Erro: ${err.name}\n Mensagem: ${
-          err.message
-        }\n Os parametros estao certos?`,
-      );
-    }
+  async aptosConvocacaoOpositivo(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :op ', {
+        op: tipos.Op,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .getRawMany();
   }
 
-  async Drop(body: any): Promise<Doador> {
-    let busca = await Doador.findOne({ id: body.id });
-    busca.apto = false;
-    return await Doador.save(busca);
+  async aptosConvocacaoOnegativo(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :on ', {
+        on: tipos.On,
+      })
+      .getRawMany();
   }
 
-  async Update(body: any): Promise<Doador> {
-    try {
-      let busca = await Doador.findOne({ id: body.id });
-      //Saude
-      busca.doenca_chagas = body.chagas;
-      busca.drogailicita = body.droga;
-      busca.hepatite11 = body.hepatite11;
-      busca.hepatiteb = body.hepatiteb;
-      busca.hepatitec = body.hepatitec;
-      busca.hiv = body.hiv;
-      busca.htlv = body.htlv;
-      busca.malaria = body.malaria;
+  async aptosConvocacaoApositivo(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :ap ', {
+        ap: tipos.Ap,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :an', {
+        an: tipos.An,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :op', {
+        op: tipos.Op,
+      })
+      .getRawMany();
+  }
 
-      if (
-        body.chagas ||
-        body.droga ||
-        body.hepatite11 ||
-        body.hepatiteb ||
-        body.hepatitec ||
-        body.hiv ||
-        body.htlv ||
-        body.malaria
-      ) {
-        busca.apto = false;
-      }
-      return await Doador.save(busca);
-    } catch (err) {
-      throw new Error(
-        `Erro ao atualizar doador \n Erro: ${err.name}\n Mensagem: ${
-          err.message
-        }\n Os parametros estao certos?`,
-      );
-    }
+  async aptosConvocacaoAnegativo(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :on ', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :an', {
+        an: tipos.An,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoABnegativo(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :an', {
+        an: tipos.An,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :bn', {
+        bn: tipos.Bn,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :abn', {
+        abn: tipos.ABn,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoBpositivo(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :bp', {
+        bp: tipos.Bp,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :bn', {
+        bn: tipos.Bn,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :op', {
+        op: tipos.Op,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoBnegativo(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true  and tiposanguineo.tipofator LIKE :bn', {
+        bn: tipos.Bn,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .getRawMany();
+  }
+
+  async doador(pessoa) {
+    return await Doador.findOne({ pessoa: pessoa });
   }
 }
