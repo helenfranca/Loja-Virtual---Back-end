@@ -34,10 +34,8 @@ export class ConvocacaoLogica {
     let doadoresAptos = await this.logicaTuntum.aptoConvocar(
       demanda.tiposanguineo,
     );
-    doadoresAptos.forEach(element => {
-      console.log(element.email + ', ' + element.nome);
-    });
-    // this.email(doadoresAptos, demanda);
+
+    this.email(doadoresAptos, demanda);
   }
 
   email(doadoresAptos, demanda) {

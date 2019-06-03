@@ -67,7 +67,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async aptosConvocacaoOp(tipos) {
+  async aptosConvocacaoOpositivo(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
@@ -81,7 +81,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async aptosConvocacaoOn(tipos) {
+  async aptosConvocacaoOnegativo(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
@@ -92,7 +92,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async aptosConvocacaoAp(tipos) {
+  async aptosConvocacaoApositivo(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
@@ -112,7 +112,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async aptosConvocacaoAn(tipos) {
+  async aptosConvocacaoAnegativo(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
@@ -126,7 +126,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async aptosConvocacaoABn(tipos) {
+  async aptosConvocacaoABnegativo(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
@@ -146,7 +146,7 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
-  async aptosConvocacaoBp(tipos) {
+  async aptosConvocacaoBpositivo(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
@@ -160,13 +160,13 @@ export class DoadorService implements genericInterface<Doador> {
       .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
         on: tipos.On,
       })
-      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :abn', {
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :op', {
         op: tipos.Op,
       })
       .getRawMany();
   }
 
-  async aptosConvocacaoBn(tipos) {
+  async aptosConvocacaoBnegativo(tipos) {
     return await Doador.createQueryBuilder('doador')
       .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
       .innerJoin('doador.pessoa', 'pessoa')
