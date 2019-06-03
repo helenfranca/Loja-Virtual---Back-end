@@ -190,15 +190,18 @@ export class Montador {
   }
 
   public camisas() {
-    return this.servicoProduto.buscaCamisas();
+    let param = 'camisa';
+    return this.servicoProduto.buscaProduto(param);
   }
 
   public canecas() {
-    return this.servicoProduto.buscaCanecas();
+    let param = 'caneca';
+    return this.servicoProduto.buscaProduto(param);
   }
 
   public bottons() {
-    return this.servicoProduto.buscaBottons();
+    let param = 'botton';
+    return this.servicoProduto.buscaProduto(param);
   }
 
   // ~~~~~~~~~~~~~~~~~~ //
