@@ -459,7 +459,7 @@ export class Montador {
 
   public async alteraDemanda(body): Promise<Demanda> {
     try {
-      return this.servicoDemanda.Update(body);
+      return await this.servicoDemanda.Update(body);
     } catch (err) {
       return err;
     }
