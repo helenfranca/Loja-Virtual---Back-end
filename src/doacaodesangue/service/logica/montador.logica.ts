@@ -70,6 +70,16 @@ export class Montador {
     }
   }
 
+  public async deletaPessoa(body: Pessoa) {
+    try {
+      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
+      pessoa.status = false;
+      this.servicoPessoa.Drop(pessoa);
+    } catch (err) {
+      return err;
+    }
+  }
+
   public async alteraPessoa(body: Pessoa): Promise<Pessoa> {
     try {
       let cripto = new CriptografiaService();
