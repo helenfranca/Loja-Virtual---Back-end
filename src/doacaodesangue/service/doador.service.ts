@@ -81,6 +81,105 @@ export class DoadorService implements genericInterface<Doador> {
       .getRawMany();
   }
 
+  async aptosConvocacaoOn(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :on ', {
+        on: tipos.On,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoAp(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :ap ', {
+        ap: tipos.Ap,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :an', {
+        an: tipos.An,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :op', {
+        op: tipos.Op,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoAn(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :on ', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :an', {
+        an: tipos.An,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoABn(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :an', {
+        an: tipos.An,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :bn', {
+        bn: tipos.Bn,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :abn', {
+        abn: tipos.ABn,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoBp(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true and tiposanguineo.tipofator LIKE :bp', {
+        bp: tipos.Bp,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :bn', {
+        bn: tipos.Bn,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :abn', {
+        op: tipos.Op,
+      })
+      .getRawMany();
+  }
+
+  async aptosConvocacaoBn(tipos) {
+    return await Doador.createQueryBuilder('doador')
+      .select('doador.id, pessoa.nome, pessoa.email,tiposanguineo.tipofator')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .innerJoin('doador.tiposanguineo', 'tiposanguineo')
+      .where('doador.apto = true  and tiposanguineo.tipofator LIKE :bn', {
+        bn: tipos.Bn,
+      })
+      .orWhere('doador.apto = true  and tiposanguineo.tipofator LIKE :on', {
+        on: tipos.On,
+      })
+      .getRawMany();
+  }
+
   async doador(pessoa) {
     return await Doador.findOne({ pessoa: pessoa });
   }

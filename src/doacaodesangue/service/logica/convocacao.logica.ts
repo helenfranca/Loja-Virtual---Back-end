@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailOptions = {
-  from: '"Tuntum - Doação de Sangue"<tuntumdoacaodesangue@gmail.com>',
+  from: '"Tuntum - Doação de Sangue" <tuntumdoacaodesangue@gmail.com>',
   to: '',
   subject: 'Ei, doador! Você tem uma nova missão!',
   html: '',
