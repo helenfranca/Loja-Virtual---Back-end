@@ -457,7 +457,7 @@ export class Montador {
     }
   }
 
-  public async alteraDemanda(body) {
+  public async alteraDemanda(body): Promise<Demanda> {
     try {
       return this.servicoDemanda.Update(body);
     } catch (err) {
