@@ -14,8 +14,12 @@ import { ObservacaoService } from './service/observacao.service';
 import { DemandaService } from './service/demanda.service';
 import { DemandaController } from './controller/demanda.controller';
 import { TipoSanguineoService } from './service/tiposanguineo.service';
-import { CriptografiaService } from './service/criptografia.service';
-import { ConvocacaoService } from './service/convocacao.service';
+import { CriptografiaService } from './service/logica/criptografia.logica';
+import { ConvocacaoLogica } from './service/logica/convocacao.logica';
+import { Montador } from './service/logica/montador.logica';
+import { Relatorio } from './service/logica/relatorio.logica';
+import { Tuntum } from './service/logica/tuntum.logica';
+import { MontaEmail } from './service/logica/email';
 
 const modelProvider = [...databaseProviders];
 
@@ -29,7 +33,11 @@ const modelService = [
   DemandaService,
   TipoSanguineoService,
   CriptografiaService,
-  ConvocacaoService,
+  ConvocacaoLogica,
+  Montador,
+  Relatorio,
+  Tuntum,
+  MontaEmail,
 ];
 
 const modelController = [

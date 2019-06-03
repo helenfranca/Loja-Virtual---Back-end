@@ -9,32 +9,36 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
-import { DoadorService } from '../service/doador.service';
 import { Doador } from '../model/doador.entity';
+import { Montador } from '../service/logica/montador.logica';
+import { Tuntum } from '../service/logica/tuntum.logica';
 
 @ApiUseTags('Doador')
 @Controller()
 export class DoadorController {
-  constructor(private readonly doadorService: DoadorService) {}
+  constructor(
+    private readonly montador: Montador,
+    private readonly tuntum: Tuntum,
+  ) {}
   @Get('/doador')
   root(): any {
-    return this.doadorService.readAll();
+    return this.montador.pegaDoadores();
   }
 
   @Get('/doador/aptos')
   public getAptos(): Promise<Doador[]> {
-    return this.doadorService.aptos();
+    return this.tuntum.aptosDoar();
   }
 
   @Get('/doador/tipo')
   public getDoadores() {
-    return this.doadorService.doadoresTipo();
+    return this.tuntum.doadorTipo();
   }
 
   @Get('/doador/:id')
   async readOne(@Res() res, @Param() id) {
     try {
-      let doacao: Doador = await this.doadorService.readOne(id.id);
+      let doacao: Doador = await this.montador.leUmDoador(id.id);
       if (doacao != undefined) {
         res.status(HttpStatus.OK).send(doacao);
       } else {
@@ -49,11 +53,11 @@ export class DoadorController {
 
   @Post('/doador')
   public createOne(@Body() body: any): Promise<Doador> {
-    return this.doadorService.Create(body);
+    return this.montador.montaDoador(body);
   }
 
   @Put('/doador')
   public updateOne(@Body() body: any) {
-    return this.doadorService.Update(body);
+    return this.montador.alteraDoador(body);
   }
 }
