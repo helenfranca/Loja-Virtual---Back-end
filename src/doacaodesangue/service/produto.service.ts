@@ -16,25 +16,14 @@ export class ProdutoService implements genericInterface<Produto> {
       .innerJoin('produto.genero', 'genero')
       .getRawMany();
   }
+
   readOne(id: number): Promise<Produto> {
     return Produto.findOne({ id: id });
   }
 
   async Create(body: any): Promise<Produto> {
-    let produto = new Produto();
     try {
-      produto.nome = body.nome;
-      produto.quantidade = body.quantidade;
-      produto.descricao = body.descricao;
-      produto.valorunitario = body.valorunitario;
-
-      produto.categoria = body.idcategoria;
-      produto.material = body.idmaterial;
-      produto.tamanho = body.idtamanho;
-      produto.genero = body.idgenero;
-      produto.volume = body.idvolume;
-
-      return await Produto.save(produto);
+      return await Produto.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao salvar Produto \n Erro: ${err.name}\n Mensagem: ${
@@ -50,12 +39,7 @@ export class ProdutoService implements genericInterface<Produto> {
 
   async Update(body: any): Promise<Produto> {
     try {
-      let busca = await Produto.findOne({ id: body.id });
-      busca.nome = body.nome;
-      busca.quantidade = body.quantidade;
-      busca.descricao = body.descricao;
-      //busca.tipo = body.tipo;
-      return await Produto.save(busca);
+      return await Produto.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao atualizar Produto \n Erro: ${err.name}\n Mensagem: ${

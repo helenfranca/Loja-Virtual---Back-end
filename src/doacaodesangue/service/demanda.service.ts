@@ -1,11 +1,12 @@
+// ~~ Parte Service
+// Montar os objetos na camada anterior, na camada de lógica
+// A partir de agora no serviço só vai constar a comunicação do banco
+
 import { Injectable } from '@nestjs/common';
 import { Demanda, StatusEnum } from '../model/demanda.entity';
 import { genericInterface } from './interface/generic.interface';
 import { Hemocentro } from '../model/hemocentro.entity';
 import { TipoSanguineoService } from './tiposanguineo.service';
-import { DoadorService } from './doador.service';
-import { Doador } from '../model/doador.entity';
-import { ConvocacaoService } from './convocacao.service';
 
 @Injectable()
 export class DemandaService implements genericInterface<Demanda> {
@@ -30,37 +31,18 @@ export class DemandaService implements genericInterface<Demanda> {
       .getRawOne();
   }
 
-  async relatorio() {
+  async demandaTipo() {
     let demanda = await Demanda.createQueryBuilder('demanda')
       .select('count(demanda.id), tiposanguineo.tipofator')
       .innerJoin('demanda.tiposanguineo', 'tiposanguineo')
       .groupBy('tiposanguineo.tipofator')
       .getRawMany();
-
     return demanda;
   }
 
-  async Create(body: any): Promise<Demanda> {
-    let demanda: Demanda = new Demanda();
+  async Create(body: Demanda): Promise<Demanda> {
     try {
-      let hemocentro = await Hemocentro.findOne({ id: body.idhemocentro });
-      let tipo = new TipoSanguineoService();
-      let tiposangue = await tipo.buscaOne(body.tiposanguineo);
-
-      demanda.status = StatusEnum.Aberta;
-      demanda.data = new Date().toLocaleDateString();
-      demanda.hemocentro = hemocentro;
-      demanda.tiposanguineo = tiposangue;
-      let a = await Demanda.save(demanda);
-      if (a != undefined) {
-        let doadorService = new DoadorService();
-        let doadores: Doador[] = await doadorService.aptosConvocacao(
-          tiposangue,
-        );
-        let notificacao = new ConvocacaoService();
-        notificacao.notificar(doadores);
-        return a;
-      }
+      return await Demanda.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao salvar demanda \n Erro: ${err.name}\n Mensagem: ${
@@ -71,9 +53,7 @@ export class DemandaService implements genericInterface<Demanda> {
   }
   async Drop(body: any): Promise<Demanda> {
     try {
-      let demanda = await Demanda.findOne({ id: body.id });
-      demanda.status = StatusEnum.Fechada;
-      return await Demanda.save(demanda);
+      return await Demanda.save(body);
     } catch (err) {
       throw new Error(
         `Erro ao apagar pessoa \n Erro: ${err.name}\n Mensagem: ${
