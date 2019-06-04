@@ -36,10 +36,8 @@ export class PessoaService implements genericInterface<Pessoa> {
     }
   }
 
-  async Drop(body: any): Promise<Pessoa> {
+  async Drop(pessoa: Pessoa): Promise<Pessoa> {
     try {
-      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
-      pessoa.status = false;
       return await Pessoa.save(pessoa);
     } catch (err) {
       throw new Error(

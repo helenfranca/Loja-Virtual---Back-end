@@ -63,7 +63,7 @@ export class ProdutoService implements genericInterface<Produto> {
       .getRawMany();
   }
 
-  async buscaCamisas(): Promise<Produto | any> {
+  async buscaProduto(param): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
       .select(
         'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
@@ -73,35 +73,7 @@ export class ProdutoService implements genericInterface<Produto> {
       .innerJoin('produto.volume', 'volume')
       .innerJoin('produto.material', 'material')
       .innerJoin('produto.genero', 'genero')
-      .where('categoria.nome ILIKE :name', { name: 'Camisa' })
-      .getRawMany();
-  }
-
-  async buscaBottons(): Promise<Produto | any> {
-    return await Produto.createQueryBuilder('produto')
-      .select(
-        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
-      )
-      .innerJoin('produto.categoria', 'categoria')
-      .innerJoin('produto.tamanho', 'tamanho')
-      .innerJoin('produto.volume', 'volume')
-      .innerJoin('produto.material', 'material')
-      .innerJoin('produto.genero', 'genero')
-      .where('categoria.nome ILIKE :name', { name: 'Botton' })
-      .getRawMany();
-  }
-
-  async buscaCanecas(): Promise<Produto | any> {
-    return await Produto.createQueryBuilder('produto')
-      .select(
-        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
-      )
-      .innerJoin('produto.categoria', 'categoria')
-      .innerJoin('produto.tamanho', 'tamanho')
-      .innerJoin('produto.volume', 'volume')
-      .innerJoin('produto.material', 'material')
-      .innerJoin('produto.genero', 'genero')
-      .where('categoria.nome ILIKE :name', { name: 'Caneca' })
+      .where('categoria.nome ILIKE :name', { name: param })
       .getRawMany();
   }
 }
