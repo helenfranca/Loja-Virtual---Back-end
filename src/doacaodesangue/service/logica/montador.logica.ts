@@ -70,6 +70,16 @@ export class Montador {
     }
   }
 
+  public async deletaPessoa(body: Pessoa) {
+    try {
+      let pessoa = await Pessoa.findOne({ cpf: body.cpf });
+      pessoa.status = false;
+      this.servicoPessoa.Drop(pessoa);
+    } catch (err) {
+      return err;
+    }
+  }
+
   public async alteraPessoa(body: Pessoa): Promise<Pessoa> {
     try {
       let cripto = new CriptografiaService();
@@ -180,15 +190,18 @@ export class Montador {
   }
 
   public camisas() {
-    return this.servicoProduto.buscaCamisas();
+    let param = 'camisa';
+    return this.servicoProduto.buscaProduto(param);
   }
 
   public canecas() {
-    return this.servicoProduto.buscaCanecas();
+    let param = 'caneca';
+    return this.servicoProduto.buscaProduto(param);
   }
 
   public bottons() {
-    return this.servicoProduto.buscaBottons();
+    let param = 'botton';
+    return this.servicoProduto.buscaProduto(param);
   }
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -447,9 +460,9 @@ export class Montador {
     }
   }
 
-  public async alteraDemanda(body) {
+  public async alteraDemanda(body): Promise<Demanda> {
     try {
-      return this.servicoDemanda.Update(body);
+      return await this.servicoDemanda.Update(body);
     } catch (err) {
       return err;
     }

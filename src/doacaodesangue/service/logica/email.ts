@@ -24,7 +24,7 @@ export class MontaEmail {
       hemocentro +
       ' está precisando do tipo sanguíneo ' +
       tiposangue +
-      ', e você é um doador compatível.<br> Por favor, se dirija ao endereço do Hemocentro ' +
+      ', e você é um doador compatível.<br> Por favor, se dirija ao centro de captação do Hemocentro ' +
       hemocentro +
       ' o mais depressa possível e realize a sua doação.<br><br> <h4>A equipe Tuntum agradece!</h4></td>' +
       '</tr>' +

@@ -7,6 +7,7 @@ import {
   Body,
   Post,
   Put,
+  Delete,
 } from '@nestjs/common';
 //import { PessoaService } from '../service/pessoa.service';
 import { Pessoa } from '../model/pessoa.entity';
@@ -47,5 +48,10 @@ export class PessoaController {
   @Put('/pessoa')
   public updateOne(@Body() body: any) {
     return this.montador.alteraPessoa(body);
+  }
+
+  @Delete('/pessoa')
+  public deleteOne(@Body() body: any) {
+    return this.montador.deletaPessoa(body);
   }
 }
