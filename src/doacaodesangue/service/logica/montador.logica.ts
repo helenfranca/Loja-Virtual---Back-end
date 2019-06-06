@@ -39,7 +39,7 @@ export class Montador {
     return this.servicoPessoa.readAll();
   }
 
-  public leUmaPessoa(id): Promise<Pessoa> {
+  public leUmaPessoa(id:number): Promise<Pessoa> {
     return this.servicoPessoa.readOne(id);
   }
 
