@@ -17,6 +17,8 @@ import { DemandaService } from '../demanda.service';
 import { Demanda, StatusEnum } from 'src/doacaodesangue/model/demanda.entity';
 import { ConvocacaoLogica } from './convocacao.logica';
 import { TipoSanguineo } from 'src/doacaodesangue/model/tiposanguineo.entity';
+import { Estado } from 'src/doacaodesangue/model/estado.entity';
+import { Municipio } from 'src/doacaodesangue/model/municipio.entity';
 
 @Injectable()
 export class Montador {
@@ -29,6 +31,8 @@ export class Montador {
     private readonly servicoDemanda: DemandaService,
     private readonly servicoTipoSanguineo: TipoSanguineoService,
     private readonly logicaConvocacao: ConvocacaoLogica,
+    private readonly servicoEstado: EstadoService,
+    private readonly servicoMunicipio: MunicipioService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -467,4 +471,43 @@ export class Montador {
       return err;
     }
   }
+  
+  // ~~~~~~~~~~~~~~~~~~ //
+  //       Endereco      //
+  // ~~~~~~~~~~~~~~~~~~ //
+  
+  // ~~~~~~~~~ Estado ~~~~~~~~~ //
+  
+  public async montaEstado(body): Promise<Estado> {
+    let estado: Estado = new Estado();
+    try {
+      estado = this.servicoEstado.readOne(body.nome);
+      if(estado == undefined){
+         estado.nome = body.estado;
+         return await this.servicoEstado.Create(estado);
+      }else{
+       return estado;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+  
+   // ~~~~~~~~~ Municipio ~~~~~~~~~ //
+  
+  public async montaMunicipio(body): Promise<Municipio> {
+    let municipio: Municipio = new Municipio();
+    try {
+      municipio = this.servicoMunicipio.readOne(body.nome);
+      if(municipio == undefined){
+         municipio.nome = body.municipio;
+         return await this.servicoEstado.Create(municipio);
+      }else{
+       return municipio;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
 }

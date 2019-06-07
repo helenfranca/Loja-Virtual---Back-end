@@ -10,6 +10,7 @@ import {
 import { Compra } from './compra.entity';
 import { Bairro } from './bairro.entity';
 import { Pessoa } from './pessoa.entity';
+import { Hemocentro } from './hemocentro.entity';
 
 @Entity()
 export class Endereco extends BaseEntity {
@@ -32,4 +33,7 @@ export class Endereco extends BaseEntity {
   })
   @JoinColumn({ name: 'idbairro' })
   bairro: Bairro;
+  
+  @OneToMany(type => Hemocentro, hemocentro => hemocentro.id)
+  hemocentro: Hemocentro[];
 }
