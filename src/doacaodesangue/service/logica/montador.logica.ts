@@ -19,6 +19,8 @@ import { ConvocacaoLogica } from './convocacao.logica';
 import { TipoSanguineo } from 'src/doacaodesangue/model/tiposanguineo.entity';
 import { Estado } from 'src/doacaodesangue/model/estado.entity';
 import { Municipio } from 'src/doacaodesangue/model/municipio.entity';
+import { MunicipioService } from '../municipio.service';
+import { EstadoService } from '../estado.service';
 
 @Injectable()
 export class Montador {
@@ -220,6 +222,7 @@ export class Montador {
     return this.servicoHemocentro.readOne(id);
   }
 
+//Verificar se existe
   public async montaHemocentro(body: Hemocentro): Promise<Hemocentro> {
     let hemocentro = new Hemocentro();
     let cripto = new CriptografiaService();
@@ -474,40 +477,59 @@ export class Montador {
   
   // ~~~~~~~~~~~~~~~~~~ //
   //       Endereco      //
+  //  A criação aqui será em cascata
+  // Endereço > Bairro > Municipio > Estado
+  // Para todos eles precisa verificar a existência antes de criar, sem existe retorna o existente, se não, cria e retorna.
   // ~~~~~~~~~~~~~~~~~~ //
+  
+  public async montaEndereco(body): Promise<Endereco> {
+    let endereco: Endereco = new Endereco();
+    try {
+      endereco = this.servicoEndereco.readOne(body.cep);
+      if(endereco != undefined){
+        return endereco;
+      }else{
+        await this.serviceEndereco.Create(body);
+        return estado;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+  
   
   // ~~~~~~~~~ Estado ~~~~~~~~~ //
   
-  public async montaEstado(body): Promise<Estado> {
-    let estado: Estado = new Estado();
-    try {
-      estado = this.servicoEstado.readOne(body.nome);
-      if(estado == undefined){
-         estado.nome = body.estado;
-         return await this.servicoEstado.Create(estado);
-      }else{
-       return estado;
-      }
-    } catch (err) {
-      return err;
-    }
-  }
+  // public async montaEstado(body): Promise<Estado> {
+  //   let estado: Estado = new Estado();
+  //   try {
+  //     estado = this.servicoEstado.readOne(body.nome);
+  //     if(estado == undefined){
+  //       estado.nome = body.estado;
+  //       return await this.servicoEstado.Create(estado);
+  //     }else{
+  //     return estado;
+  //     }
+  //   } catch (err) {
+  //     return err;
+  //   }
+  // }
   
-   // ~~~~~~~~~ Municipio ~~~~~~~~~ //
+  // // ~~~~~~~~~ Municipio ~~~~~~~~~ //
   
-  public async montaMunicipio(body): Promise<Municipio> {
-    let municipio: Municipio = new Municipio();
-    try {
-      municipio = this.servicoMunicipio.readOne(body.nome);
-      if(municipio == undefined){
-         municipio.nome = body.municipio;
-         return await this.servicoEstado.Create(municipio);
-      }else{
-       return municipio;
-      }
-    } catch (err) {
-      return err;
-    }
-  }
+  // public async montaMunicipio(body): Promise<Municipio> {
+  //   let municipio: Municipio = new Municipio();
+  //   try {
+  //     municipio = this.servicoMunicipio.readOne(body.nome);
+  //     if(municipio == undefined){
+  //       municipio.nome = body.municipio;
+  //       return await this.servicoEstado.Create(municipio);
+  //     }else{
+  //     return municipio;
+  //     }
+  //   } catch (err) {
+  //     return err;
+  //   }
+  // }
 
 }

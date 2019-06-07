@@ -64,6 +64,8 @@ export class HemocentroController {
 
   @Post('/Hemocentro')
   public createOne(@Body() body: any): Promise<Hemocentro> {
+    let endereco = await this.montador.montaEndereco(body);
+    body = {"endereco":endereco};
     return this.montador.montaHemocentro(body);
   }
 
