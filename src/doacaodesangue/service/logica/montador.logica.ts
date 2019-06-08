@@ -17,10 +17,14 @@ import { DemandaService } from '../demanda.service';
 import { Demanda, StatusEnum } from 'src/doacaodesangue/model/demanda.entity';
 import { ConvocacaoLogica } from './convocacao.logica';
 import { TipoSanguineo } from 'src/doacaodesangue/model/tiposanguineo.entity';
-import { Estado } from 'src/doacaodesangue/model/estado.entity';
-import { Municipio } from 'src/doacaodesangue/model/municipio.entity';
 import { MunicipioService } from '../municipio.service';
 import { EstadoService } from '../estado.service';
+import { Endereco } from 'src/doacaodesangue/model/endereco.entity';
+import { EnderecoService } from '../endereco.service';
+import { Bairro } from 'src/doacaodesangue/model/bairro.entity';
+import { Municipio } from 'src/doacaodesangue/model/municipio.entity';
+import { Estado } from 'src/doacaodesangue/model/estado.entity';
+import { BairroService } from '../bairro.service';
 
 @Injectable()
 export class Montador {
@@ -35,6 +39,8 @@ export class Montador {
     private readonly logicaConvocacao: ConvocacaoLogica,
     private readonly servicoEstado: EstadoService,
     private readonly servicoMunicipio: MunicipioService,
+    private readonly servicoEndereco: EnderecoService,
+    private readonly servicoBairro: BairroService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -222,8 +228,10 @@ export class Montador {
     return this.servicoHemocentro.readOne(id);
   }
 
-//Verificar se existe
-  public async montaHemocentro(body: Hemocentro): Promise<Hemocentro> {
+  public async montaHemocentro(
+    body: Hemocentro,
+    endereco: Endereco,
+  ): Promise<Hemocentro> {
     let hemocentro = new Hemocentro();
     let cripto = new CriptografiaService();
     try {
@@ -233,6 +241,9 @@ export class Montador {
       hemocentro.email = body.email;
       hemocentro.senha = cripto.criptografar(body.senha);
       hemocentro.status = true;
+      hemocentro.endereco = endereco;
+      // console.log(hemocentro.endereco);
+
       return await this.servicoHemocentro.Create(hemocentro);
     } catch (err) {
       return err;
@@ -474,62 +485,92 @@ export class Montador {
       return err;
     }
   }
-  
+
   // ~~~~~~~~~~~~~~~~~~ //
   //       Endereco      //
   //  A criação aqui será em cascata
   // Endereço > Bairro > Municipio > Estado
-  // Para todos eles precisa verificar a existência antes de criar, sem existe retorna o existente, se não, cria e retorna.
+  // Para todos eles precisa verificar a existência antes de criar, se existe retorna o existente, se não, cria e retorna.
   // ~~~~~~~~~~~~~~~~~~ //
-  
+
   public async montaEndereco(body): Promise<Endereco> {
-    let endereco: Endereco = new Endereco();
+    let enderecoNovo: Endereco = new Endereco();
+
     try {
-      endereco = this.servicoEndereco.readOne(body.cep);
-      if(endereco != undefined){
+      let endereco = await this.servicoEndereco.readOne(body.cep);
+      if (endereco != undefined) {
+        // Existe o cep
         return endereco;
-      }else{
-        await this.serviceEndereco.Create(body);
-        return estado;
+      } else {
+        await this.montaEstado(body.estado);
+        await this.montaMunicipio(body);
+        let bairro: Bairro = await this.montaBairro(body);
+        enderecoNovo.numero = body.numero;
+        enderecoNovo.bairro = bairro;
+        enderecoNovo.cep = body.cep;
+
+        return await this.servicoEndereco.Create(enderecoNovo);
       }
     } catch (err) {
       return err;
     }
   }
-  
-  
-  // ~~~~~~~~~ Estado ~~~~~~~~~ //
-  
-  // public async montaEstado(body): Promise<Estado> {
-  //   let estado: Estado = new Estado();
-  //   try {
-  //     estado = this.servicoEstado.readOne(body.nome);
-  //     if(estado == undefined){
-  //       estado.nome = body.estado;
-  //       return await this.servicoEstado.Create(estado);
-  //     }else{
-  //     return estado;
-  //     }
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
-  
-  // // ~~~~~~~~~ Municipio ~~~~~~~~~ //
-  
-  // public async montaMunicipio(body): Promise<Municipio> {
-  //   let municipio: Municipio = new Municipio();
-  //   try {
-  //     municipio = this.servicoMunicipio.readOne(body.nome);
-  //     if(municipio == undefined){
-  //       municipio.nome = body.municipio;
-  //       return await this.servicoEstado.Create(municipio);
-  //     }else{
-  //     return municipio;
-  //     }
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
 
+  // ~~~~~~~~~ Estado ~~~~~~~~~ //
+
+  public async montaEstado(estado): Promise<Estado> {
+    let estadoNew: Estado = new Estado();
+    try {
+      let estadoNovo = await this.servicoEstado.readOne(estado);
+      if (estadoNovo == undefined) {
+        estadoNew.nome = estado;
+
+        return await this.servicoEstado.Create(estadoNew);
+      } else {
+        return estadoNovo;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // // ~~~~~~~~~ Municipio ~~~~~~~~~ //
+
+  public async montaMunicipio(body): Promise<Municipio> {
+    let municipioNew: Municipio = new Municipio();
+    try {
+      let municipioNovo = await this.servicoMunicipio.readOne(body.municipio);
+      if (municipioNovo == undefined) {
+        let estado = await this.servicoEstado.readOne(body.estado);
+        municipioNew.nome = body.municipio;
+        municipioNew.estado = estado;
+
+        return await this.servicoMunicipio.Create(municipioNew);
+      } else {
+        return municipioNovo;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // // ~~~~~~~~~ Bairro ~~~~~~~~~ //
+
+  public async montaBairro(body): Promise<Bairro> {
+    let bairroNew: Bairro = new Bairro();
+    try {
+      let bairroNovo = await this.servicoBairro.readOne(body.bairro);
+      if (bairroNovo == undefined) {
+        let municipio = await this.servicoMunicipio.readOne(body.municipio);
+        bairroNew.nome = body.bairro;
+        bairroNew.municipio = municipio;
+        bairroNew.nome = body.bairro;
+        return await this.servicoBairro.Create(bairroNew);
+      } else {
+        return bairroNovo;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
 }

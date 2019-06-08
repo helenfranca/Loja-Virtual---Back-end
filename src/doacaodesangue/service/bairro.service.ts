@@ -1,32 +1,33 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
-import { Estado } from '../model/estado.entity';
+import { Bairro } from '../model/bairro.entity';
 
 @Injectable()
-export class EstadoService implements genericInterface<Estado> {
-  async readAll(): Promise<Estado[]> {
-    return await Estado.find();
-  }
-  async readOne(nome: string): Promise<Estado> {
-    return await Estado.findOne({ nome: nome });
+export class BairroService implements genericInterface<Bairro> {
+  async readAll(): Promise<Bairro[]> {
+    return await Bairro.find();
   }
 
-  async Create(body: any): Promise<Estado> {
+  async readOne(nome: string): Promise<Bairro> {
+    return await Bairro.findOne({ nome: nome });
+  }
+
+  async Create(body: any): Promise<Bairro> {
     try {
-      return await Estado.save(body);
+      return await Bairro.save(body);
     } catch (err) {
       throw new Error(
-        `Erro ao salvar Estado \n Erro: ${err.name}\n Mensagem: ${
+        `Erro ao salvar Bairro \n Erro: ${err.name}\n Mensagem: ${
           err.message
         }\n Os parametros estao certos?`,
       );
     }
   }
 
-  async Drop(body: Estado): Promise<Estado> {
+  async Drop(body: Bairro): Promise<Bairro> {
     throw new Error('Method not implemented.');
   }
-  /*   try {
+  /***try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -36,11 +37,11 @@ export class EstadoService implements genericInterface<Estado> {
       );
     }
   }
-*/
-  async Update(body: any): Promise<Estado> {
+***/
+  async Update(body: any): Promise<Bairro> {
     throw new Error('Method not implemented.');
   }
-  /*  try {
+  /***try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(

@@ -43,9 +43,11 @@ export class Hemocentro extends BaseEntity {
 
   @OneToMany(type => Doacao, doacao => doacao.hemocentro)
   doacao: Doacao[];
-  
-  @OneToOne(type => Endereco)
+
+  @OneToOne(type => Endereco, endereco => endereco.hemocentro, {
+    eager: true,
+    cascade: true,
+  })
   @JoinColumn({ name: 'idendereco' })
-  endereco:Endereco;
-  
+  endereco: Endereco;
 }

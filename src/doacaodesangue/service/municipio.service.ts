@@ -1,6 +1,5 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
-import { Estado } from '../model/estado.entity';
 import { Municipio } from '../model/municipio.entity';
 
 @Injectable()
@@ -23,9 +22,11 @@ export class MunicipioService implements genericInterface<Municipio> {
       );
     }
   }
-/***
-  async Drop(body: Hemocentro): Promise<Hemocentro> {
-    try {
+
+  async Drop(body: Municipio): Promise<Municipio> {
+    throw new Error('Method not implemented.');
+  }
+  /*** try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -35,9 +36,11 @@ export class MunicipioService implements genericInterface<Municipio> {
       );
     }
   }
-
-  async Update(body: any): Promise<Hemocentro> {
-    try {
+*/
+  async Update(body: any): Promise<Municipio> {
+    throw new Error('Method not implemented.');
+  }
+  /*  try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
