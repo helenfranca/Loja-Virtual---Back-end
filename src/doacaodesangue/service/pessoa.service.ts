@@ -11,8 +11,8 @@ export class PessoaService implements genericInterface<Pessoa> {
        .getOne();
     return user;
   }
-  readAll(): Promise<Pessoa[]> {
-    return Pessoa.find();
+  async readAll(): Promise<Pessoa[]> {
+    return await Pessoa.find();
   }
 
   async pessoaCpf(body) {
