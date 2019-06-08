@@ -1,4 +1,3 @@
-import { TipoSanguineo } from '../model/tiposanguineo.entity';
 import { ObservacaoService } from './observacao.service';
 import { Observacao } from '../model/observacao.entity';
 import { Doacao } from '../model/doacao.entity';
