@@ -11,11 +11,10 @@ export const databaseProviders = [
         port: 5432,
         username: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: process.env.DB_USER,
+        database: process.env.BD_BASE,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        dropSchema: true,
-        //synchronize: true,
+        // dropSchema: true,
+        synchronize: true,
       }),
   },
 ];
-

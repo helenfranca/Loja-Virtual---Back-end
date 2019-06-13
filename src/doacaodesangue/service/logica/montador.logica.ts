@@ -55,6 +55,16 @@ export class Montador {
     return this.servicoPessoa.readOne(id);
   }
 
+  public leporCpf(cpf): Promise<Pessoa> {
+    return this.servicoPessoa.pessoaCpf(cpf);
+  }
+
+  public async pessoa_endereco(pessoa: Pessoa, enderecoNovo: Endereco) {
+    pessoa.enderecos.push(enderecoNovo);
+
+    return this.servicoPessoa.Update(pessoa);
+  }
+
   public montaPessoa(body: Pessoa) {
     var moment = require('moment');
     var data = moment(body.datanascimento, 'DD/MM/YYYY');
@@ -486,20 +496,34 @@ export class Montador {
     }
   }
 
-  // ~~~~~~~~~~~~~~~~~~ //
+  // ~~~~~~~~~~~~~~~~~~~ //
   //       Endereco      //
   //  A criação aqui será em cascata
   // Endereço > Bairro > Municipio > Estado
   // Para todos eles precisa verificar a existência antes de criar, se existe retorna o existente, se não, cria e retorna.
   // ~~~~~~~~~~~~~~~~~~ //
 
+  public pegaEnderecos(): Promise<Endereco[]> {
+    return this.servicoEndereco.readAll();
+  }
+
+  public pegaCep(cep: string): Promise<Endereco> {
+    return this.servicoEndereco.readOne(cep);
+  }
+
+  public pegaCepNum(cep: string, numero: number): Promise<Endereco> {
+    return this.servicoEndereco.buscaCepNum(cep, numero);
+  }
+
   public async montaEndereco(body): Promise<Endereco> {
     let enderecoNovo: Endereco = new Endereco();
 
     try {
-      let endereco = await this.servicoEndereco.readOne(body.cep);
-      if (endereco != undefined) {
-        // Existe o cep
+      let endereco = await this.servicoEndereco.buscaCepNum(
+        body.cep,
+        body.numero,
+      );
+      if (endereco != undefined && endereco.numero == body.numero) {
         return endereco;
       } else {
         await this.montaEstado(body.estado);

@@ -24,6 +24,7 @@ import { BairroService } from './service/bairro.service';
 import { EstadoService } from './service/estado.service';
 import { MunicipioService } from './service/municipio.service';
 import { EnderecoService } from './service/endereco.service';
+import { EnderecoController } from './controller/endereco.controller';
 
 const modelProvider = [...databaseProviders];
 
@@ -55,6 +56,7 @@ const modelController = [
   ProdutoController,
   DoadorController,
   DemandaController,
+  EnderecoController,
 ];
 
 @Module({

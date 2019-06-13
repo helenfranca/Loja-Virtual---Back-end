@@ -12,6 +12,10 @@ export class EnderecoService implements genericInterface<Endereco> {
     return await Endereco.findOne({ cep: cep });
   }
 
+  async buscaCepNum(cep: string, num: number): Promise<Endereco> {
+    return await Endereco.findOne({ cep: cep, numero: num });
+  }
+
   async Create(body: any): Promise<Endereco> {
     try {
       return await Endereco.save(body);

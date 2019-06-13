@@ -23,7 +23,7 @@ export class HemocentroController {
     private readonly relatorios: Relatorio,
   ) {}
 
-  @Get('/Hemocentro')
+  @Get('/hemocentro')
   root(): any {
     return this.montador.pegaHemocentros();
   }
@@ -62,14 +62,11 @@ export class HemocentroController {
     }
   }
 
-  // ANTES DE INSERIR O HEMOCENTRO, VERIFICA OU CRIA O ENDEREÇO PARA ATRELAR A ELE
   @Post('/Hemocentro')
   public async createOne(@Body() body): Promise<Hemocentro> {
     let enderecoNovo = await this.montador.montaEndereco(body);
 
-    let a = await this.montador.montaHemocentro(body, enderecoNovo);
-    console.log(a);
-    return a;
+    return await this.montador.montaHemocentro(body, enderecoNovo);
   }
 
   @Put('/Hemocentro')
