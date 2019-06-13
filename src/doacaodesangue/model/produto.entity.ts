@@ -58,5 +58,6 @@ export class Produto extends BaseEntity {
   material: Material;
 
   @OneToOne(type => Imagem, imagem => imagem.produto)
+  @JoinColumn({ name: 'idimagem' })
   imagem: Imagem;
 }

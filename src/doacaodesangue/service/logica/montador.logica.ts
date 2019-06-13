@@ -25,6 +25,8 @@ import { Bairro } from 'src/doacaodesangue/model/bairro.entity';
 import { Municipio } from 'src/doacaodesangue/model/municipio.entity';
 import { Estado } from 'src/doacaodesangue/model/estado.entity';
 import { BairroService } from '../bairro.service';
+import { Imagem } from 'src/doacaodesangue/model/imagem.entity';
+import { Categoria } from 'src/doacaodesangue/model/categoria.entity';
 
 @Injectable()
 export class Montador {
@@ -131,17 +133,25 @@ export class Montador {
   public async montaProduto(body): Promise<Produto> {
     try {
       let produto = new Produto();
+
       produto.nome = body.nome;
       produto.quantidade = body.quantidade;
       produto.descricao = body.descricao;
       produto.valorunitario = body.valorunitario;
+      let p = new Imagem();
+      p.url = body.url;
+
+      produto.imagem = await p.save();
 
       let tipo = new CaracteristicasProdutoService();
-      let categoria = await tipo.buscaOneCategoria(body.idcategoria);
+      let categoria: Categoria = await tipo.buscaOneCategoria(body.categoria);
 
-      if (categoria != undefined) {
+      if (categoria == undefined) {
+        let cat = new Categoria();
+        cat.nome = body.categoria;
+        categoria = await tipo.createCategoria(cat);
         produto.categoria = categoria;
-
+        //Se não tiver,chamar o serviço de inserir
         let material = await tipo.buscaOneMaterial(body.idmaterial);
         if (material != undefined) {
           produto.material = material;
