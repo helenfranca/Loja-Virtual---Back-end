@@ -52,14 +52,18 @@ export class Pessoa extends BaseEntity {
   @OneToMany(type => Compra, compra => compra.id)
   compra: Compra[];
 
-  @ManyToMany(type => Endereco)
-  @JoinTable({
-    name: 'pessoa_endereco',
-    joinColumn: { name: 'idpessoa', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'idendereco', referencedColumnName: 'id' },
-  })
-  enderecos: Endereco[];
+  // @ManyToMany(type => Endereco)
+  // @JoinTable({
+  //   name: 'pessoa_endereco',
+  //   joinColumn: { name: 'idpessoa', referencedColumnName: 'id' },
+  //   inverseJoinColumn: { name: 'idendereco', referencedColumnName: 'id' },
+  // })
+  // enderecos: Endereco[];
 
   @OneToOne(type => Doador, doador => doador.pessoa)
-  doador: Doador;
+  doador: Doador
+  
+  @OneToMany(type => Pessoa_endereco, endereco => endereco.idendereco)
+  endereco: Pessoa_endereco[];
+
 }

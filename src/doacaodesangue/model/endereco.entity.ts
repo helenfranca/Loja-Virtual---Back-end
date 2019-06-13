@@ -19,20 +19,23 @@ export class Endereco extends BaseEntity {
   @Column({ type: 'varchar', length: 20, nullable: false })
   cep: string;
 
-  @Column({ type: 'int', nullable: false })
-  numero: number;
+  // @Column({ type: 'int', nullable: false })
+  // numero: number;
 
   @OneToMany(type => Compra, compra => compra.id)
   compra: Compra[];
 
-  @ManyToOne(type => Bairro, bairro => bairro.endereco, {
-    eager: true,
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'idbairro' })
-  bairro: Bairro;
+  // @ManyToOne(type => Bairro, bairro => bairro.endereco, {
+  //   eager: true,
+  //   cascade: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // @JoinColumn({ name: 'idbairro' })
+  // bairro: Bairro;
 
   @OneToMany(type => Hemocentro, hemocentro => hemocentro.id)
   hemocentro: Hemocentro[];
+  
+  @OneToMany(type => Pessoa_endereco, pessoa => pessoa.idendereco)
+  pessoa: Pessoa_endereco[];
 }
