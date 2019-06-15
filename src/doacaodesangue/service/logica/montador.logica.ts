@@ -27,6 +27,18 @@ import { Estado } from 'src/doacaodesangue/model/estado.entity';
 import { BairroService } from '../bairro.service';
 import { Imagem } from 'src/doacaodesangue/model/imagem.entity';
 import { Categoria } from 'src/doacaodesangue/model/categoria.entity';
+import { Material } from 'src/doacaodesangue/model/material.entity';
+import { Tamanho } from 'src/doacaodesangue/model/tamanho.entity';
+import { Generated } from 'typeorm';
+import { Genero } from 'src/doacaodesangue/model/genero.entity';
+import { Volume } from 'src/doacaodesangue/model/volume.entity';
+import {
+  CategoriaEnum,
+  MaterialEnum,
+  TamanhoEnum,
+  GeneroEnum,
+  VolumeEnum,
+} from 'src/doacaodesangue/model/Enum';
 
 @Injectable()
 export class Montador {
@@ -138,42 +150,128 @@ export class Montador {
       produto.quantidade = body.quantidade;
       produto.descricao = body.descricao;
       produto.valorunitario = body.valorunitario;
-      let p = new Imagem();
-      p.url = body.url;
 
-      produto.imagem = await p.save();
-
+      //Procura o existentes
       let tipo = new CaracteristicasProdutoService();
+      let imagem: Imagem = await tipo.buscaUrl(body.url);
       let categoria: Categoria = await tipo.buscaOneCategoria(body.categoria);
+      let material: Material = await tipo.buscaOneMaterial(
+        MaterialEnum[body.material],
+      );
+      let tamanho: Tamanho = await tipo.buscaOneTamanho(
+        TamanhoEnum[body.tamanho],
+      );
+      let genero: Genero = await tipo.buscaOneGenero(body.genero);
+      let volume: Volume = await tipo.buscaOneVolume(VolumeEnum[body.volume]);
 
+      // Caso não exista...
+
+      //Imagem
+      if (imagem == undefined) {
+        let ima = new Imagem();
+        ima.url = body.url;
+        imagem = await tipo.createImagem(ima);
+        produto.imagem = imagem;
+      } else {
+        produto.imagem = imagem;
+      }
+
+      // Categoria
       if (categoria == undefined) {
         let cat = new Categoria();
         cat.nome = body.categoria;
-        categoria = await tipo.createCategoria(cat);
-        produto.categoria = categoria;
-        //Se não tiver,chamar o serviço de inserir
-        let material = await tipo.buscaOneMaterial(body.idmaterial);
-        if (material != undefined) {
-          produto.material = material;
 
-          let tamanho = await tipo.buscaOneTamanho(body.idtamanho);
-          if (tamanho != undefined) {
-            produto.tamanho = tamanho;
-
-            let genero = await tipo.buscaOneGenero(body.idgenero);
-            if (genero != undefined) {
-              produto.genero = genero;
-
-              let volume = await tipo.buscaOneVolume(body.idvolume);
-              if (volume != undefined) {
-                produto.volume = volume;
-              }
-            }
-          }
+        if (cat.nome in CategoriaEnum) {
+          cat.nome = CategoriaEnum[cat.nome];
+          categoria = await tipo.createCategoria(cat);
+          produto.categoria = categoria;
         }
+      } else {
+        produto.categoria = categoria;
       }
-      return this.servicoProduto.Create(produto);
-    } catch (err) {}
+
+      //Material
+      if (material == undefined) {
+        let mat = new Material();
+        mat.material = body.material;
+
+        if (mat.material in MaterialEnum) {
+          mat.material = MaterialEnum[mat.material];
+          material = await tipo.createMaterial(mat);
+          produto.material = material;
+        }
+      } else {
+        produto.material = material;
+      }
+
+      //Tamanho
+      if (tamanho == undefined) {
+        let tam = new Tamanho();
+        tam.tamanho = body.tamanho;
+
+        if (tam.tamanho in TamanhoEnum) {
+          tam.tamanho = TamanhoEnum[tam.tamanho];
+          tamanho = await tipo.createTamanho(tam);
+          produto.tamanho = tamanho;
+        }
+      } else {
+        produto.tamanho = tamanho;
+      }
+
+      //Genero
+      if (genero == undefined) {
+        let gen = new Genero();
+        gen.genero = body.genero;
+
+        if (gen.genero in GeneroEnum) {
+          gen.genero = GeneroEnum[gen.genero];
+          genero = await tipo.createGenero(gen);
+          produto.genero = genero;
+        }
+      } else {
+        produto.genero = genero;
+      }
+
+      //Volume
+      if (volume == undefined) {
+        let vol = new Volume();
+        vol.quantidade = body.volume;
+
+        if (vol.quantidade in VolumeEnum) {
+          vol.quantidade = VolumeEnum[vol.quantidade];
+          volume = await tipo.createVolume(vol);
+          produto.volume = volume;
+        }
+      } else {
+        produto.volume = volume;
+      }
+
+      if (await this.verificaProduto(produto)) {
+        return await this.servicoProduto.Create(produto);
+      } else {
+        return new Produto();
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async verificaProduto(produto: Produto): Promise<Boolean> {
+    if (
+      produto.imagem &&
+      produto.material &&
+      produto.quantidade &&
+      produto.tamanho &&
+      produto.volume &&
+      produto.genero &&
+      produto.nome &&
+      produto.valorunitario &&
+      produto.categoria != undefined
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public async alteraProduto(body): Promise<Produto> {

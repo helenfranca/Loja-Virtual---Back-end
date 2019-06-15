@@ -6,6 +6,7 @@ import {
   Column,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -16,6 +17,6 @@ export class Imagem extends BaseEntity {
   @Column({ type: 'varchar', length: 300, nullable: false })
   url: string;
 
-  @OneToOne(type => Produto, produto => produto.imagem)
-  produto: Produto;
+  @OneToMany(type => Produto, produto => produto.imagem)
+  produto: Produto[];
 }

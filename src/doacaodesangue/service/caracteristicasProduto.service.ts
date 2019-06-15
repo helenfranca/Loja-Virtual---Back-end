@@ -4,6 +4,7 @@ import { Material } from '../model/material.entity';
 import { Tamanho } from '../model/tamanho.entity';
 import { Genero } from '../model/genero.entity';
 import { Volume } from '../model/volume.entity';
+import { Imagem } from '../model/imagem.entity';
 
 @Injectable()
 export class CaracteristicasProdutoService {
@@ -25,11 +26,19 @@ export class CaracteristicasProdutoService {
       .getRawOne();
   }
 
+  async createMaterial(material: Material) {
+    return await Material.save(material);
+  }
+
   buscaOneTamanho(tamanho: string) {
     return Tamanho.createQueryBuilder('tamanho')
       .select('tamanho.*')
       .where('tamanho.tamanho = :name', { name: tamanho })
       .getRawOne();
+  }
+
+  async createTamanho(tamanho: Tamanho) {
+    return await Tamanho.save(tamanho);
   }
 
   buscaOneGenero(genero: string) {
@@ -39,17 +48,25 @@ export class CaracteristicasProdutoService {
       .getRawOne();
   }
 
+  async createGenero(genero: Genero) {
+    return await Genero.save(genero);
+  }
+
   buscaOneVolume(qtd: string) {
     return Volume.createQueryBuilder('volume')
       .select('volume.*')
       .where('volume.quantidade = :name', { name: qtd })
       .getRawOne();
   }
+  async createVolume(volume: Volume) {
+    return await Volume.save(volume);
+  }
 
-  buscaUrl(url: string) {
-    return Volume.createQueryBuilder('imagem')
-      .select('imagem.*')
-      .where('imagem.url = :name', { name: url })
-      .getRawOne();
+  buscaUrl(url: string): Promise<Imagem> {
+    return Imagem.findOne({ url: url });
+  }
+
+  async createImagem(imagem: Imagem) {
+    return await Imagem.save(imagem);
   }
 }
