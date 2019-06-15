@@ -17,6 +17,34 @@ import { DemandaService } from '../demanda.service';
 import { Demanda, StatusEnum } from 'src/doacaodesangue/model/demanda.entity';
 import { ConvocacaoLogica } from './convocacao.logica';
 import { TipoSanguineo } from 'src/doacaodesangue/model/tiposanguineo.entity';
+import { MunicipioService } from '../municipio.service';
+import { EstadoService } from '../estado.service';
+import { Endereco } from 'src/doacaodesangue/model/endereco.entity';
+import { EnderecoService } from '../endereco.service';
+import { Bairro } from 'src/doacaodesangue/model/bairro.entity';
+import { Municipio } from 'src/doacaodesangue/model/municipio.entity';
+import { Estado } from 'src/doacaodesangue/model/estado.entity';
+import { BairroService } from '../bairro.service';
+import { Imagem } from 'src/doacaodesangue/model/imagem.entity';
+import { Categoria } from 'src/doacaodesangue/model/categoria.entity';
+import { Material } from 'src/doacaodesangue/model/material.entity';
+import { Tamanho } from 'src/doacaodesangue/model/tamanho.entity';
+import { Genero } from 'src/doacaodesangue/model/genero.entity';
+import { Volume } from 'src/doacaodesangue/model/volume.entity';
+import {
+  CategoriaEnum,
+  MaterialEnum,
+  TamanhoEnum,
+  GeneroEnum,
+  VolumeEnum,
+} from 'src/doacaodesangue/model/Enum';
+import { FuncionamentoService } from '../funcionamento.service';
+import { Funcionamento } from 'src/doacaodesangue/model/funcionamento.entity';
+import {
+  DiasSemana,
+  DiaSemanaEnum,
+} from 'src/doacaodesangue/model/diassemana.entity';
+import { DiasSemanaService } from '../diasSemana.service';
 
 @Injectable()
 export class Montador {
@@ -29,6 +57,12 @@ export class Montador {
     private readonly servicoDemanda: DemandaService,
     private readonly servicoTipoSanguineo: TipoSanguineoService,
     private readonly logicaConvocacao: ConvocacaoLogica,
+    private readonly servicoEstado: EstadoService,
+    private readonly servicoMunicipio: MunicipioService,
+    private readonly servicoEndereco: EnderecoService,
+    private readonly servicoBairro: BairroService,
+    private readonly servicoFuncionamento: FuncionamentoService,
+    private readonly servicoDiasSemana: DiasSemanaService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -41,6 +75,16 @@ export class Montador {
 
   public leUmaPessoa(id): Promise<Pessoa> {
     return this.servicoPessoa.readOne(id);
+  }
+
+  public leporCpf(cpf): Promise<Pessoa> {
+    return this.servicoPessoa.pessoaCpf(cpf);
+  }
+
+  public async pessoa_endereco(pessoa: Pessoa, enderecoNovo: Endereco) {
+    pessoa.enderecos.push(enderecoNovo);
+
+    return this.servicoPessoa.Update(pessoa);
   }
 
   public montaPessoa(body: Pessoa) {
@@ -109,39 +153,133 @@ export class Montador {
   public async montaProduto(body): Promise<Produto> {
     try {
       let produto = new Produto();
+
       produto.nome = body.nome;
       produto.quantidade = body.quantidade;
       produto.descricao = body.descricao;
       produto.valorunitario = body.valorunitario;
 
+      //Procura o existentes
       let tipo = new CaracteristicasProdutoService();
-      let categoria = await tipo.buscaOneCategoria(body.idcategoria);
+      let imagem: Imagem = await tipo.buscaUrl(body.url);
+      let categoria: Categoria = await tipo.buscaOneCategoria(body.categoria);
+      let material: Material = await tipo.buscaOneMaterial(
+        MaterialEnum[body.material],
+      );
+      let tamanho: Tamanho = await tipo.buscaOneTamanho(
+        TamanhoEnum[body.tamanho],
+      );
+      let genero: Genero = await tipo.buscaOneGenero(body.genero);
+      let volume: Volume = await tipo.buscaOneVolume(VolumeEnum[body.volume]);
 
-      if (categoria != undefined) {
-        produto.categoria = categoria;
+      // Caso não exista...
 
-        let material = await tipo.buscaOneMaterial(body.idmaterial);
-        if (material != undefined) {
-          produto.material = material;
-
-          let tamanho = await tipo.buscaOneTamanho(body.idtamanho);
-          if (tamanho != undefined) {
-            produto.tamanho = tamanho;
-
-            let genero = await tipo.buscaOneGenero(body.idgenero);
-            if (genero != undefined) {
-              produto.genero = genero;
-
-              let volume = await tipo.buscaOneVolume(body.idvolume);
-              if (volume != undefined) {
-                produto.volume = volume;
-              }
-            }
-          }
-        }
+      //Imagem
+      if (imagem == undefined) {
+        let ima = new Imagem();
+        ima.url = body.url;
+        imagem = await tipo.createImagem(ima);
+        produto.imagem = imagem;
+      } else {
+        produto.imagem = imagem;
       }
-      return this.servicoProduto.Create(produto);
-    } catch (err) {}
+
+      // Categoria
+      if (categoria == undefined) {
+        let cat = new Categoria();
+        cat.nome = body.categoria;
+
+        if (cat.nome in CategoriaEnum) {
+          cat.nome = CategoriaEnum[cat.nome];
+          categoria = await tipo.createCategoria(cat);
+          produto.categoria = categoria;
+        }
+      } else {
+        produto.categoria = categoria;
+      }
+
+      //Material
+      if (material == undefined) {
+        let mat = new Material();
+        mat.material = body.material;
+
+        if (mat.material in MaterialEnum) {
+          mat.material = MaterialEnum[mat.material];
+          material = await tipo.createMaterial(mat);
+          produto.material = material;
+        }
+      } else {
+        produto.material = material;
+      }
+
+      //Tamanho
+      if (tamanho == undefined) {
+        let tam = new Tamanho();
+        tam.tamanho = body.tamanho;
+
+        if (tam.tamanho in TamanhoEnum) {
+          tam.tamanho = TamanhoEnum[tam.tamanho];
+          tamanho = await tipo.createTamanho(tam);
+          produto.tamanho = tamanho;
+        }
+      } else {
+        produto.tamanho = tamanho;
+      }
+
+      //Genero
+      if (genero == undefined) {
+        let gen = new Genero();
+        gen.genero = body.genero;
+
+        if (gen.genero in GeneroEnum) {
+          gen.genero = GeneroEnum[gen.genero];
+          genero = await tipo.createGenero(gen);
+          produto.genero = genero;
+        }
+      } else {
+        produto.genero = genero;
+      }
+
+      //Volume
+      if (volume == undefined) {
+        let vol = new Volume();
+        vol.quantidade = body.volume;
+
+        if (vol.quantidade in VolumeEnum) {
+          vol.quantidade = VolumeEnum[vol.quantidade];
+          volume = await tipo.createVolume(vol);
+          produto.volume = volume;
+        }
+      } else {
+        produto.volume = volume;
+      }
+
+      if (await this.verificaProduto(produto)) {
+        return await this.servicoProduto.Create(produto);
+      } else {
+        return new Produto();
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async verificaProduto(produto: Produto): Promise<Boolean> {
+    if (
+      produto.imagem &&
+      produto.material &&
+      produto.quantidade &&
+      produto.tamanho &&
+      produto.volume &&
+      produto.genero &&
+      produto.nome &&
+      produto.valorunitario &&
+      produto.categoria != undefined
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public async alteraProduto(body): Promise<Produto> {
@@ -216,17 +354,28 @@ export class Montador {
     return this.servicoHemocentro.readOne(id);
   }
 
-  public async montaHemocentro(body: Hemocentro): Promise<Hemocentro> {
+  public async montaHemocentro(
+    body: Hemocentro,
+    endereco: Endereco,
+  ): Promise<Hemocentro> {
     let hemocentro = new Hemocentro();
     let cripto = new CriptografiaService();
     try {
-      hemocentro.nome = body.nome;
-      hemocentro.cnes = body.cnes;
-      hemocentro.telefone = body.telefone;
-      hemocentro.email = body.email;
-      hemocentro.senha = cripto.criptografar(body.senha);
-      hemocentro.status = true;
-      return await this.servicoHemocentro.Create(hemocentro);
+      let hemo = await this.servicoHemocentro.readHemocentro(body.cnes);
+
+      if (hemo != undefined) {
+        return hemo;
+      } else {
+        hemocentro.nome = body.nome;
+        hemocentro.cnes = body.cnes;
+        hemocentro.telefone = body.telefone;
+        hemocentro.email = body.email;
+        hemocentro.senha = cripto.criptografar(body.senha);
+        hemocentro.status = true;
+        hemocentro.endereco = endereco;
+
+        return await this.servicoHemocentro.Create(hemocentro);
+      }
     } catch (err) {
       return err;
     }
@@ -242,7 +391,7 @@ export class Montador {
     }
   }
 
-  public async alteraHemocentro(body) {
+  public async alteraHemocentro(body: any) {
     try {
       let cripto = new CriptografiaService();
       let busca = await Hemocentro.findOne({ cnes: body.cnes });
@@ -256,6 +405,56 @@ export class Montador {
     } catch (err) {
       return err;
     }
+  }
+
+  public async hemocentro_funcionamento(
+    hemocentro: Hemocentro,
+    funcionamento: Funcionamento,
+  ) {
+    hemocentro.funcionamento.push(funcionamento);
+
+    return await this.servicoFuncionamento.Update(funcionamento);
+  }
+
+  // ~~~~~~~~~~~~~~~~~~ //
+  //   Funcionamento   //
+  // ~~~~~~~~~~~~~~~~~~ //
+
+  public async horarioFuncionamento(body) {
+    let hora = await this.servicoFuncionamento.readOne(body);
+
+    if (hora == undefined) {
+      let horario = new Funcionamento();
+      horario.horaAbertura = body.abertura;
+      horario.horaFechamento = body.fechamento;
+      return await this.servicoFuncionamento.Create(horario);
+    } else {
+      return await this.servicoFuncionamento.Create(hora);
+    }
+  }
+
+  // ~~~~~~~~~~~~~~~~~~ //
+  //   Dias da semana   //
+  // ~~~~~~~~~~~~~~~~~~ //
+
+  public montaDias(body: any, funcionamento: Funcionamento) {
+    body.diasSemana.forEach(async (dia: string) => {
+      let dias = new DiasSemana();
+      if (dia in DiaSemanaEnum) {
+        let a = await this.servicoDiasSemana.readOne(dia);
+        console.log(a);
+        if (a != undefined) {
+          console.log('no nada');
+          a.funcionamento = funcionamento;
+          return await this.servicoDiasSemana.Create(a);
+        } else {
+          console.log('com algo');
+          dias.diaSemana = DiaSemanaEnum[dia];
+          dias.funcionamento = funcionamento;
+          return await this.servicoDiasSemana.Create(dias);
+        }
+      }
+    });
   }
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -463,6 +662,108 @@ export class Montador {
   public async alteraDemanda(body): Promise<Demanda> {
     try {
       return await this.servicoDemanda.Update(body);
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // ~~~~~~~~~~~~~~~~~~~ //
+  //       Endereco      //
+  //  A criação aqui será em cascata
+  // Endereço > Bairro > Municipio > Estado
+  // Para todos eles precisa verificar a existência antes de criar, se existe retorna o existente, se não, cria e retorna.
+  // ~~~~~~~~~~~~~~~~~~ //
+
+  public pegaEnderecos(): Promise<Endereco[]> {
+    return this.servicoEndereco.readAll();
+  }
+
+  public pegaCep(cep: string): Promise<Endereco> {
+    return this.servicoEndereco.readOne(cep);
+  }
+
+  public pegaCepNum(cep: string, numero: number): Promise<Endereco> {
+    return this.servicoEndereco.buscaCepNum(cep, numero);
+  }
+
+  public async montaEndereco(body): Promise<Endereco> {
+    let enderecoNovo: Endereco = new Endereco();
+
+    try {
+      let endereco = await this.servicoEndereco.buscaCepNum(
+        body.cep,
+        body.numero,
+      );
+      if (endereco != undefined && endereco.numero == body.numero) {
+        return endereco;
+      } else {
+        await this.montaEstado(body.estado);
+        await this.montaMunicipio(body);
+        let bairro: Bairro = await this.montaBairro(body);
+        enderecoNovo.numero = body.numero;
+        enderecoNovo.bairro = bairro;
+        enderecoNovo.cep = body.cep;
+
+        return await this.servicoEndereco.Create(enderecoNovo);
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // ~~~~~~~~~ Estado ~~~~~~~~~ //
+
+  public async montaEstado(estado): Promise<Estado> {
+    let estadoNew: Estado = new Estado();
+    try {
+      let estadoNovo = await this.servicoEstado.readOne(estado);
+      if (estadoNovo == undefined) {
+        estadoNew.nome = estado;
+
+        return await this.servicoEstado.Create(estadoNew);
+      } else {
+        return estadoNovo;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // // ~~~~~~~~~ Municipio ~~~~~~~~~ //
+
+  public async montaMunicipio(body): Promise<Municipio> {
+    let municipioNew: Municipio = new Municipio();
+    try {
+      let municipioNovo = await this.servicoMunicipio.readOne(body.municipio);
+      if (municipioNovo == undefined) {
+        let estado = await this.servicoEstado.readOne(body.estado);
+        municipioNew.nome = body.municipio;
+        municipioNew.estado = estado;
+
+        return await this.servicoMunicipio.Create(municipioNew);
+      } else {
+        return municipioNovo;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // // ~~~~~~~~~ Bairro ~~~~~~~~~ //
+
+  public async montaBairro(body): Promise<Bairro> {
+    let bairroNew: Bairro = new Bairro();
+    try {
+      let bairroNovo = await this.servicoBairro.readOne(body.bairro);
+      if (bairroNovo == undefined) {
+        let municipio = await this.servicoMunicipio.readOne(body.municipio);
+        bairroNew.nome = body.bairro;
+        bairroNew.municipio = municipio;
+        bairroNew.nome = body.bairro;
+        return await this.servicoBairro.Create(bairroNew);
+      } else {
+        return bairroNovo;
+      }
     } catch (err) {
       return err;
     }

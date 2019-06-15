@@ -52,7 +52,7 @@ export class Pessoa extends BaseEntity {
   @OneToMany(type => Compra, compra => compra.id)
   compra: Compra[];
 
-  @ManyToMany(type => Endereco)
+  @ManyToMany(type => Endereco, { eager: true })
   @JoinTable({
     name: 'pessoa_endereco',
     joinColumn: { name: 'idpessoa', referencedColumnName: 'id' },

@@ -1,16 +1,29 @@
 Produto
 {
-    "nome": "I'm hero!",
-    "quantidade": 12,
-    "descricao":"Estampa frente e verso",
-    "valorunitario": "39.90",
-    "idcategoria":"Camisa",
-    "idmaterial":"Malha",
-    "idvolume":"Não Possui",
-    "idtamanho":"P",
-    "idgenero":"Feminino"
+	"nome":"Compartilhando sangue bom",
+	"quantidade":30,
+	"descricao":"",
+	"valorunitario":19.9,
+	"categoria":"Camisa",
+	"tamanho":"P",
+	"volume":"Não Possui",
+	"material":"Algodão",
+	"genero":"Masculino",
+	"url":"https://raw.githubusercontent.com/malufreitas/doacao-sangue-front-end/dev-malu/images/camisa%20-%20compartilhando%20sangue%20bom.jpg"	
 }
-
+MODELO PADRÃO
+{
+	"nome":"Teste",
+	"quantidade":10,
+	"descricao":"Ta errado mesmo",
+	"valorunitario":8.5,
+	"categoria":"Botton",
+	"tamanho":"G",
+	"volume":"v500",
+	"material":"Nao_especificado",
+	"genero":"Feminino",
+	"url":"https://raw.githubusercontent.com/malufreitas/doacao-sangue-front-end/dev-malu/images/camisa%20-%20compartilhando%20sangue%20bom.jpg"	
+}
 
 Pessoa
 

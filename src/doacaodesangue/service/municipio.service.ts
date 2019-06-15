@@ -1,34 +1,32 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
-import { Hemocentro } from '../model/hemocentro.entity';
+import { Municipio } from '../model/municipio.entity';
 
 @Injectable()
-export class HemocentroService implements genericInterface<Hemocentro> {
-  async readAll(): Promise<Hemocentro[]> {
-    return await Hemocentro.find();
+export class MunicipioService implements genericInterface<Municipio> {
+  async readAll(): Promise<Municipio[]> {
+    return await Municipio.find();
   }
-  async readOne(id: number): Promise<Hemocentro> {
-    return await Hemocentro.findOne({ id: id });
-  }
-
-  async readHemocentro(cnes: string): Promise<Hemocentro> {
-    return await Hemocentro.findOne({ cnes: cnes });
+  async readOne(nome: string): Promise<Municipio> {
+    return await Municipio.findOne({ nome: nome });
   }
 
-  async Create(body: Hemocentro): Promise<Hemocentro> {
+  async Create(body: any): Promise<Municipio> {
     try {
-      return await Hemocentro.save(body);
+      return await Municipio.save(body);
     } catch (err) {
       throw new Error(
-        `Erro ao salvar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
+        `Erro ao salvar Municipio \n Erro: ${err.name}\n Mensagem: ${
           err.message
         }\n Os parametros estao certos?`,
       );
     }
   }
 
-  async Drop(body: Hemocentro): Promise<Hemocentro> {
-    try {
+  async Drop(body: Municipio): Promise<Municipio> {
+    throw new Error('Method not implemented.');
+  }
+  /*** try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -38,9 +36,11 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       );
     }
   }
-
-  async Update(body: any): Promise<Hemocentro> {
-    try {
+*/
+  async Update(body: any): Promise<Municipio> {
+    throw new Error('Method not implemented.');
+  }
+  /*  try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -69,5 +69,5 @@ export class HemocentroService implements genericInterface<Hemocentro> {
 
   async hemocentro(body) {
     return await Hemocentro.findOne({ id: body.idhemocentro });
-  }
+  }***/
 }
