@@ -4,12 +4,18 @@ import { Pessoa } from '../model/pessoa.entity';
 
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
-  readAll(): Promise<Pessoa[]> {
-    return Pessoa.find();
+  async findByEmail(email: string, senha: string): Promise<Pessoa> {
+    let user: Pessoa = await Pessoa.createQueryBuilder('pessoa')
+      .where('pessoa.email = :e and pessoa.senha = :s', { e: email, s: senha })
+      .getOne();
+    return user;
+  }
+  async readAll(): Promise<Pessoa[]> {
+    return await Pessoa.find();
   }
 
-  async pessoaCpf(body) {
-    return await Pessoa.findOne({ cpf: body.cpf });
+  async pessoaCpf(cpf: string): Promise<Pessoa> {
+    return await Pessoa.findOne({ cpf: cpf });
   }
 
   // Caso precise descriptar a senha

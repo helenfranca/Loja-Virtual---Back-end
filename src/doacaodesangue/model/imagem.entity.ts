@@ -1,15 +1,22 @@
-import { Produto } from "./produto.entity";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne } from "typeorm";
+import { Produto } from './produto.entity';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinColumn,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Imagem extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'varchar', length: 100, nullable: false })
-    url: string;
+  @Column({ type: 'varchar', length: 300, nullable: false })
+  url: string;
 
-    @OneToOne(type => Produto, produto => produto.imagem)
-    @JoinColumn({ name: 'idproduto' })
-    produto: Produto;
+  @OneToMany(type => Produto, produto => produto.imagem)
+  produto: Produto[];
 }

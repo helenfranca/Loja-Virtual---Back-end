@@ -14,6 +14,8 @@ import { Hemocentro } from '../model/hemocentro.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 import { Montador } from '../service/logica/montador.logica';
 import { Relatorio } from '../service/logica/relatorio.logica';
+import { Funcionamento } from '../model/funcionamento.entity';
+import { Endereco } from '../model/endereco.entity';
 
 @ApiUseTags('Hemocentro')
 @Controller()
@@ -23,7 +25,7 @@ export class HemocentroController {
     private readonly relatorios: Relatorio,
   ) {}
 
-  @Get('/Hemocentro')
+  @Get('/hemocentro')
   root(): any {
     return this.montador.pegaHemocentros();
   }
@@ -63,8 +65,30 @@ export class HemocentroController {
   }
 
   @Post('/Hemocentro')
-  public createOne(@Body() body: any): Promise<Hemocentro> {
-    return this.montador.montaHemocentro(body);
+  public async createOne(@Body() body): Promise<Hemocentro | any> {
+    let enderecoNovo: Endereco = await this.montador.montaEndereco(body);
+
+    let hemocentro: Hemocentro = await this.montador.montaHemocentro(
+      body,
+      enderecoNovo,
+    );
+
+    console.log('passei do hemocentro');
+
+    //Criar dias de funcionamento da semana
+    let funcionamento: Funcionamento = await this.montador.horarioFuncionamento(
+      body,
+    );
+    console.log('passei do funcionamento');
+
+    // dias da semana
+
+    await this.montador.montaDias(body, funcionamento);
+
+    return await this.montador.hemocentro_funcionamento(
+      hemocentro,
+      funcionamento,
+    );
   }
 
   @Put('/Hemocentro')
