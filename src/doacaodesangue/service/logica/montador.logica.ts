@@ -29,7 +29,6 @@ import { Imagem } from 'src/doacaodesangue/model/imagem.entity';
 import { Categoria } from 'src/doacaodesangue/model/categoria.entity';
 import { Material } from 'src/doacaodesangue/model/material.entity';
 import { Tamanho } from 'src/doacaodesangue/model/tamanho.entity';
-import { Generated } from 'typeorm';
 import { Genero } from 'src/doacaodesangue/model/genero.entity';
 import { Volume } from 'src/doacaodesangue/model/volume.entity';
 import {
@@ -39,6 +38,13 @@ import {
   GeneroEnum,
   VolumeEnum,
 } from 'src/doacaodesangue/model/Enum';
+import { FuncionamentoService } from '../funcionamento.service';
+import { Funcionamento } from 'src/doacaodesangue/model/funcionamento.entity';
+import {
+  DiasSemana,
+  DiaSemanaEnum,
+} from 'src/doacaodesangue/model/diassemana.entity';
+import { DiasSemanaService } from '../diasSemana.service';
 
 @Injectable()
 export class Montador {
@@ -55,6 +61,8 @@ export class Montador {
     private readonly servicoMunicipio: MunicipioService,
     private readonly servicoEndereco: EnderecoService,
     private readonly servicoBairro: BairroService,
+    private readonly servicoFuncionamento: FuncionamentoService,
+    private readonly servicoDiasSemana: DiasSemanaService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -353,16 +361,21 @@ export class Montador {
     let hemocentro = new Hemocentro();
     let cripto = new CriptografiaService();
     try {
-      hemocentro.nome = body.nome;
-      hemocentro.cnes = body.cnes;
-      hemocentro.telefone = body.telefone;
-      hemocentro.email = body.email;
-      hemocentro.senha = cripto.criptografar(body.senha);
-      hemocentro.status = true;
-      hemocentro.endereco = endereco;
-      // console.log(hemocentro.endereco);
+      let hemo = await this.servicoHemocentro.readHemocentro(body.cnes);
 
-      return await this.servicoHemocentro.Create(hemocentro);
+      if (hemo != undefined) {
+        return hemo;
+      } else {
+        hemocentro.nome = body.nome;
+        hemocentro.cnes = body.cnes;
+        hemocentro.telefone = body.telefone;
+        hemocentro.email = body.email;
+        hemocentro.senha = cripto.criptografar(body.senha);
+        hemocentro.status = true;
+        hemocentro.endereco = endereco;
+
+        return await this.servicoHemocentro.Create(hemocentro);
+      }
     } catch (err) {
       return err;
     }
@@ -378,7 +391,7 @@ export class Montador {
     }
   }
 
-  public async alteraHemocentro(body) {
+  public async alteraHemocentro(body: any) {
     try {
       let cripto = new CriptografiaService();
       let busca = await Hemocentro.findOne({ cnes: body.cnes });
@@ -392,6 +405,56 @@ export class Montador {
     } catch (err) {
       return err;
     }
+  }
+
+  public async hemocentro_funcionamento(
+    hemocentro: Hemocentro,
+    funcionamento: Funcionamento,
+  ) {
+    hemocentro.funcionamento.push(funcionamento);
+
+    return await this.servicoFuncionamento.Update(funcionamento);
+  }
+
+  // ~~~~~~~~~~~~~~~~~~ //
+  //   Funcionamento   //
+  // ~~~~~~~~~~~~~~~~~~ //
+
+  public async horarioFuncionamento(body) {
+    let hora = await this.servicoFuncionamento.readOne(body);
+
+    if (hora == undefined) {
+      let horario = new Funcionamento();
+      horario.horaAbertura = body.abertura;
+      horario.horaFechamento = body.fechamento;
+      return await this.servicoFuncionamento.Create(horario);
+    } else {
+      return await this.servicoFuncionamento.Create(hora);
+    }
+  }
+
+  // ~~~~~~~~~~~~~~~~~~ //
+  //   Dias da semana   //
+  // ~~~~~~~~~~~~~~~~~~ //
+
+  public montaDias(body: any, funcionamento: Funcionamento) {
+    body.diasSemana.forEach(async (dia: string) => {
+      let dias = new DiasSemana();
+      if (dia in DiaSemanaEnum) {
+        let a = await this.servicoDiasSemana.readOne(dia);
+        console.log(a);
+        if (a != undefined) {
+          console.log('no nada');
+          a.funcionamento = funcionamento;
+          return await this.servicoDiasSemana.Create(a);
+        } else {
+          console.log('com algo');
+          dias.diaSemana = DiaSemanaEnum[dia];
+          dias.funcionamento = funcionamento;
+          return await this.servicoDiasSemana.Create(dias);
+        }
+      }
+    });
   }
 
   // ~~~~~~~~~~~~~~~~~~ //

@@ -25,6 +25,8 @@ import { EstadoService } from './service/estado.service';
 import { MunicipioService } from './service/municipio.service';
 import { EnderecoService } from './service/endereco.service';
 import { EnderecoController } from './controller/endereco.controller';
+import { DiasSemanaService } from './service/diasSemana.service';
+import { FuncionamentoService } from './service/funcionamento.service';
 
 const modelProvider = [...databaseProviders];
 
@@ -47,6 +49,8 @@ const modelService = [
   EstadoService,
   MunicipioService,
   EnderecoService,
+  DiasSemanaService,
+  FuncionamentoService,
 ];
 
 const modelController = [

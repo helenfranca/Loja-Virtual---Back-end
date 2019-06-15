@@ -11,6 +11,10 @@ export class HemocentroService implements genericInterface<Hemocentro> {
     return await Hemocentro.findOne({ id: id });
   }
 
+  async readHemocentro(cnes: string): Promise<Hemocentro> {
+    return await Hemocentro.findOne({ cnes: cnes });
+  }
+
   async Create(body: Hemocentro): Promise<Hemocentro> {
     try {
       return await Hemocentro.save(body);
