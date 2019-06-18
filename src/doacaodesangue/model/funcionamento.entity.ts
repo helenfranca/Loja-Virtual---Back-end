@@ -9,6 +9,7 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { Hemocentro } from './hemocentro.entity';
 import { DiasSemana } from './diassemana.entity';
@@ -24,13 +25,14 @@ export class Funcionamento extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   horaFechamento: string;
 
-  // @ManyToOne(type => Hemocentro, hemocentro => hemocentro.funcionamento, {
-  //   cascade: true,
-  //   onDelete: 'CASCADE',
-  // })
-  // @JoinColumn({ name: 'idhemocentro' })
-  // hemocentro: Hemocentro;
+  @OneToOne(type => Hemocentro, hemocentro => hemocentro.funcionamento, {
+    cascade: true,
+    onDelete: 'CASCADE',
+   })
+   @JoinColumn({ name: 'idhemocentro' })
+   hemocentro: Hemocentro;
 
   @OneToMany(type => DiasSemana, diassemana => diassemana.funcionamento)
+  @JoinColumn({ name: 'iddiasemana' })
   diassemana: DiasSemana[];
 }

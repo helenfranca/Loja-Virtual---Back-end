@@ -407,15 +407,6 @@ export class Montador {
     }
   }
 
-  public async hemocentro_funcionamento(
-    hemocentro: Hemocentro,
-    funcionamento: Funcionamento,
-  ) {
-    hemocentro.funcionamento.push(funcionamento);
-
-    return await this.servicoFuncionamento.Update(funcionamento);
-  }
-
   // ~~~~~~~~~~~~~~~~~~ //
   //   Funcionamento   //
   // ~~~~~~~~~~~~~~~~~~ //
@@ -427,34 +418,44 @@ export class Montador {
       let horario = new Funcionamento();
       horario.horaAbertura = body.abertura;
       horario.horaFechamento = body.fechamento;
+      horario.diassemana = [];
+
+      for (let dia of body.diasSemana) {
+        let diasemana = await this.servicoDiasSemana.readOne(dia)
+        if (diasemana == undefined){
+          diasemana = new DiasSemana();
+          switch(dia) {
+            case "Segunda": {
+              diasemana.diaSemana = DiaSemanaEnum.Segunda;
+              break;}
+            case "Terça": {
+              diasemana.diaSemana = DiaSemanaEnum.Terca;
+              break;}
+            case "Quarta": {
+              diasemana.diaSemana = DiaSemanaEnum.Quarta;
+              break;}
+            case "Quinta": {
+              diasemana.diaSemana = DiaSemanaEnum.Quinta;
+              break;}
+            case "Sexta": {
+              diasemana.diaSemana = DiaSemanaEnum.Sexta;
+              break;}
+            case "Sábado": {
+              diasemana.diaSemana = DiaSemanaEnum.Sexta;
+              break;}
+            case "Domingo": {
+              diasemana.diaSemana = DiaSemanaEnum.Domingo;
+              break;}
+          }
+          horario.diassemana.push(await this.servicoDiasSemana.Create(diasemana));
+        }
+        else 
+          horario.diassemana.push(diasemana);
+      }
       return await this.servicoFuncionamento.Create(horario);
     } else {
       return await this.servicoFuncionamento.Create(hora);
     }
-  }
-
-  // ~~~~~~~~~~~~~~~~~~ //
-  //   Dias da semana   //
-  // ~~~~~~~~~~~~~~~~~~ //
-
-  public montaDias(body: any, funcionamento: Funcionamento) {
-    body.diasSemana.forEach(async (dia: string) => {
-      let dias = new DiasSemana();
-      if (dia in DiaSemanaEnum) {
-        let a = await this.servicoDiasSemana.readOne(dia);
-        console.log(a);
-        if (a != undefined) {
-          console.log('no nada');
-          a.funcionamento = funcionamento;
-          return await this.servicoDiasSemana.Create(a);
-        } else {
-          console.log('com algo');
-          dias.diaSemana = DiaSemanaEnum[dia];
-          dias.funcionamento = funcionamento;
-          return await this.servicoDiasSemana.Create(dias);
-        }
-      }
-    });
   }
 
   // ~~~~~~~~~~~~~~~~~~ //

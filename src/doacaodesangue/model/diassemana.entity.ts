@@ -3,8 +3,8 @@ import {
   BaseEntity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Funcionamento } from './funcionamento.entity';
 
@@ -26,7 +26,7 @@ export class DiasSemana extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   diaSemana: DiaSemanaEnum;
 
-  @ManyToOne(type => Funcionamento, funcionamento => funcionamento.diassemana, {
+  @ManyToOne(() => Funcionamento, funcionamento => funcionamento.diassemana, {
     cascade: true,
     onDelete: 'CASCADE',
   })
