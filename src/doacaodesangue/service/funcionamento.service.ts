@@ -13,6 +13,15 @@ export class FuncionamentoService implements genericInterface<Funcionamento> {
       horaFechamento: body.fechamento,
     });
   }
+
+  async findOne(idHemocentro: number, idDia: number) {
+    return Funcionamento
+    .createQueryBuilder("funcionamento")
+    .where("funcionamento.idHemocentro = :idH AND funcionamento.diaFuncionamento = :dia",
+        {idH: idHemocentro, dia: idDia})
+    .getOne();
+  }
+
   async Create(horario: any): Promise<Funcionamento> {
     try {
       return await Funcionamento.save(horario);

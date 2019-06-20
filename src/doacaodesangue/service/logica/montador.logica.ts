@@ -373,6 +373,7 @@ export class Montador {
         hemocentro.senha = cripto.criptografar(body.senha);
         hemocentro.status = true;
         hemocentro.endereco = endereco;
+        //hemocentro.funcionamento = await this.horarioFuncionamento(body);
 
         return await this.servicoHemocentro.Create(hemocentro);
       }
@@ -411,51 +412,47 @@ export class Montador {
   //   Funcionamento   //
   // ~~~~~~~~~~~~~~~~~~ //
 
-  public async horarioFuncionamento(body) {
-    let hora = await this.servicoFuncionamento.readOne(body);
-
-    if (hora == undefined) {
-      let horario = new Funcionamento();
-      horario.horaAbertura = body.abertura;
-      horario.horaFechamento = body.fechamento;
-      horario.diassemana = [];
-
-      for (let dia of body.diasSemana) {
-        let diasemana = await this.servicoDiasSemana.readOne(dia)
-        if (diasemana == undefined){
-          diasemana = new DiasSemana();
-          switch(dia) {
-            case "Segunda": {
-              diasemana.diaSemana = DiaSemanaEnum.Segunda;
-              break;}
-            case "Terça": {
-              diasemana.diaSemana = DiaSemanaEnum.Terca;
-              break;}
-            case "Quarta": {
-              diasemana.diaSemana = DiaSemanaEnum.Quarta;
-              break;}
-            case "Quinta": {
-              diasemana.diaSemana = DiaSemanaEnum.Quinta;
-              break;}
-            case "Sexta": {
-              diasemana.diaSemana = DiaSemanaEnum.Sexta;
-              break;}
-            case "Sábado": {
-              diasemana.diaSemana = DiaSemanaEnum.Sexta;
-              break;}
-            case "Domingo": {
-              diasemana.diaSemana = DiaSemanaEnum.Domingo;
-              break;}
-          }
-          horario.diassemana.push(await this.servicoDiasSemana.Create(diasemana));
-        }
-        else 
-          horario.diassemana.push(diasemana);
+  public async horarioFuncionamento(body, hemocentro: Hemocentro) {
+    let periodos: Funcionamento[] = [];
+    for (let func of body.funcionamento) {
+      let diaFunc = new Funcionamento();
+      diaFunc.horaAbertura = func.abertura;
+      diaFunc.horaFechamento = func.fechamento;
+      diaFunc.hemocentro = hemocentro;
+      let idDia: number;
+      switch(func.dia) {
+        case "Segunda": {
+          idDia = DiaSemanaEnum.Segunda;
+          break;}
+        case "Terca": {
+          idDia = DiaSemanaEnum.Terca;
+          break;}
+        case "Quarta": {
+          idDia = DiaSemanaEnum.Quarta;
+          break;}
+        case "Quinta": {
+          idDia = DiaSemanaEnum.Quinta;
+          break;}
+        case "Sexta": {
+          idDia = DiaSemanaEnum.Sexta;
+          break;}
+        case "Sabado": {
+          idDia = DiaSemanaEnum.Sexta;
+          break;}
+        case "Domingo": {
+          idDia = DiaSemanaEnum.Domingo;
+          break;}
       }
-      return await this.servicoFuncionamento.Create(horario);
-    } else {
-      return await this.servicoFuncionamento.Create(hora);
+      diaFunc.diaFuncionamento = idDia;
+      let ret = await this.servicoFuncionamento.findOne(hemocentro.id, diaFunc.diaFuncionamento);
+      if (ret == undefined) {
+        periodos.push(await this.servicoFuncionamento.Create(diaFunc));
+      }
+      else {
+        periodos.push(ret);
+      }
     }
+    return periodos;
   }
 
   // ~~~~~~~~~~~~~~~~~~ //

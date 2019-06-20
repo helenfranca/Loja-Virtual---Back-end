@@ -37,8 +37,8 @@ export class Hemocentro extends BaseEntity {
   @Column({ type: 'boolean', nullable: false })
   status: boolean;
 
-  @OneToOne(type => Funcionamento, funcionamento => funcionamento.hemocentro)
-  funcionamento: Funcionamento;
+  @OneToMany(type => Funcionamento, funcionamento => funcionamento.hemocentro)
+  funcionamento: Funcionamento[];
 
   @OneToMany(type => Demanda, demanda => demanda.hemocentro)
   demanda: Demanda[];
