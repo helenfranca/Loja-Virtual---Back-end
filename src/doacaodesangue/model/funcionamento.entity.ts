@@ -3,16 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  Timestamp,
   ManyToOne,
   JoinColumn,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
-  OneToOne,
 } from 'typeorm';
 import { Hemocentro } from './hemocentro.entity';
-import { DiasSemana } from './diassemana.entity';
 
 export enum DiaSemanaEnum {
   Domingo = 0,
@@ -35,7 +29,7 @@ export class Funcionamento extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   horaFechamento: string;
 
-  @ManyToOne(type => Hemocentro, hemocentro => hemocentro.funcionamento, {
+  @ManyToOne(() => Hemocentro, hemocentro => hemocentro.funcionamento, {
     cascade: true,
     onDelete: 'CASCADE',
    })

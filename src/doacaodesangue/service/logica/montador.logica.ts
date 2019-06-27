@@ -39,12 +39,7 @@ import {
   VolumeEnum,
 } from 'src/doacaodesangue/model/Enum';
 import { FuncionamentoService } from '../funcionamento.service';
-import { Funcionamento } from 'src/doacaodesangue/model/funcionamento.entity';
-import {
-  DiasSemana,
-  DiaSemanaEnum,
-} from 'src/doacaodesangue/model/diassemana.entity';
-import { DiasSemanaService } from '../diasSemana.service';
+import { Funcionamento, DiaSemanaEnum } from 'src/doacaodesangue/model/funcionamento.entity';
 
 @Injectable()
 export class Montador {
@@ -61,8 +56,7 @@ export class Montador {
     private readonly servicoMunicipio: MunicipioService,
     private readonly servicoEndereco: EnderecoService,
     private readonly servicoBairro: BairroService,
-    private readonly servicoFuncionamento: FuncionamentoService,
-    private readonly servicoDiasSemana: DiasSemanaService,
+    private readonly servicoFuncionamento: FuncionamentoService
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
