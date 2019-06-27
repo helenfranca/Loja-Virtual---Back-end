@@ -40,6 +40,9 @@ import {
 } from 'src/doacaodesangue/model/Enum';
 import { FuncionamentoService } from '../funcionamento.service';
 import { Funcionamento, DiaSemanaEnum } from 'src/doacaodesangue/model/funcionamento.entity';
+import { Compra } from 'src/doacaodesangue/model/compra.entity';
+import { ItemCompra } from 'src/doacaodesangue/model/itemcompra.entity';
+import { CompraService } from '../compra.service';
 
 @Injectable()
 export class Montador {
@@ -56,7 +59,8 @@ export class Montador {
     private readonly servicoMunicipio: MunicipioService,
     private readonly servicoEndereco: EnderecoService,
     private readonly servicoBairro: BairroService,
-    private readonly servicoFuncionamento: FuncionamentoService
+    private readonly servicoFuncionamento: FuncionamentoService,
+    private readonly servicoCompra: CompraService
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -367,7 +371,6 @@ export class Montador {
         hemocentro.senha = cripto.criptografar(body.senha);
         hemocentro.status = true;
         hemocentro.endereco = endereco;
-        //hemocentro.funcionamento = await this.horarioFuncionamento(body);
 
         return await this.servicoHemocentro.Create(hemocentro);
       }
@@ -758,6 +761,38 @@ export class Montador {
       }
     } catch (err) {
       return err;
+    }
+  }
+
+  // //~~~~~~~~~~ COMPRA ~~~~~~~~~~\\ \\
+  public async buscarCompra(id: any): Promise<Compra> {
+    return this.servicoCompra.readOne(id);
+  }
+
+  public async efetuarCompra(compra: any): Promise<Compra> {
+    return this.servicoCompra.Create(compra);
+  }
+
+  public async buscarTodasCompras(): Promise<Compra[]> {
+    return this.servicoCompra.readAll();
+  }
+  async montaCompra(body: any): Promise<Compra> {
+    try {
+      let compra = new Compra();
+      compra.valorTotal = body.valorTotal;
+      compra.pessoa = body.comprador;
+      compra.data = body.data;
+      compra.endereco = body.enderecoEntrega;
+      compra.pagamento = body.pagamento;
+      compra.status = body.status;
+      let itenscompra: ItemCompra[] = [];
+      for(let ic of body.carrinho) {
+        itenscompra.push(ic);
+      }
+      return await this.servicoCompra.Create(compra);
+    }
+    catch(err) {
+      throw new Error('Erro ao salvar compra. Verifique os parâmetros enviados.');
     }
   }
 }

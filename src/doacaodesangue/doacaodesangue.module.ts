@@ -26,6 +26,8 @@ import { MunicipioService } from './service/municipio.service';
 import { EnderecoService } from './service/endereco.service';
 import { EnderecoController } from './controller/endereco.controller';
 import { FuncionamentoService } from './service/funcionamento.service';
+import { CompraService } from './service/compra.service';
+import { CompraController } from './controller/compra.controller';
 
 const modelProvider = [...databaseProviders];
 
@@ -49,6 +51,7 @@ const modelService = [
   MunicipioService,
   EnderecoService,
   FuncionamentoService,
+  CompraService
 ];
 
 const modelController = [
@@ -59,6 +62,7 @@ const modelController = [
   DoadorController,
   DemandaController,
   EnderecoController,
+  CompraController
 ];
 
 @Module({
