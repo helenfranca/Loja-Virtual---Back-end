@@ -80,6 +80,7 @@ export class Montador {
   }
 
   public leporCpf(cpf): Promise<Pessoa> {
+    console.log(cpf);
     return this.servicoPessoa.pessoaCpf(cpf);
   }
 
@@ -480,8 +481,7 @@ export class Montador {
   public async montaDoador(body): Promise<Doador> {
     let doador = new Doador();
     try {
-      let pessoa = await this.servicoPessoa.pessoaCpf(body);
-      console.log(pessoa);
+      let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
@@ -520,7 +520,6 @@ export class Montador {
       return err;
     }
   }
-
   public async deletarDoador(body: Doador): Promise<Doador> {
     try {
       let busca = await Doador.findOne({ id: body.id });

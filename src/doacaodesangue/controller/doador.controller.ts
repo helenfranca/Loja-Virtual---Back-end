@@ -36,7 +36,7 @@ export class DoadorController {
   }
 
   @Get('/doador/:id')
-  async readOne(@Res() res, @Param() id) {
+  async readOne(@Res() res, @Param() id): Promise<any> {
     try {
       let doacao: Doador = await this.montador.leUmDoador(id.id);
       if (doacao != undefined) {
