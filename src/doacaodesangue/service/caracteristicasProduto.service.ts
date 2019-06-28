@@ -69,4 +69,22 @@ export class CaracteristicasProdutoService {
   async createImagem(imagem: Imagem) {
     return await Imagem.save(imagem);
   }
+
+  async buscaTodasCategorias() {
+    return Categoria.createQueryBuilder("categoria")
+    .select("categoria.*")
+    .getRawMany();
+  }
+
+  async buscaTodosVolumes() {
+    return Volume.createQueryBuilder("volume")
+    .select("volume.*")
+    .getRawMany();
+  }
+
+  async buscaTodosGeneros() {
+    return Genero.createQueryBuilder("genero")
+    .select("genero.*")
+    .getRawMany();
+  }
 }

@@ -60,7 +60,8 @@ export class Montador {
     private readonly servicoEndereco: EnderecoService,
     private readonly servicoBairro: BairroService,
     private readonly servicoFuncionamento: FuncionamentoService,
-    private readonly servicoCompra: CompraService
+    private readonly servicoCompra: CompraService,
+    private readonly servicoCaracteristicas: CaracteristicasProdutoService
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -794,5 +795,16 @@ export class Montador {
     catch(err) {
       throw new Error('Erro ao salvar compra. Verifique os parâmetros enviados.');
     }
+  }
+  async pegaTodasCategorias(): Promise<Categoria[]> {
+    return await this.servicoCaracteristicas.buscaTodasCategorias();
+  }
+
+  async pegaTodosVolumes(): Promise<Volume[]> {
+    return await this.servicoCaracteristicas.buscaTodosVolumes();
+  }
+
+  async pegaTodosGeneros(): Promise<Genero[]> {
+    return await this.servicoCaracteristicas.buscaTodosGeneros();
   }
 }

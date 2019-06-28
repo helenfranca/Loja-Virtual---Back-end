@@ -28,6 +28,7 @@ import { EnderecoController } from './controller/endereco.controller';
 import { FuncionamentoService } from './service/funcionamento.service';
 import { CompraService } from './service/compra.service';
 import { CompraController } from './controller/compra.controller';
+import { CaracteristicasProdutoService } from './service/caracteristicasProduto.service';
 
 const modelProvider = [...databaseProviders];
 
@@ -51,7 +52,8 @@ const modelService = [
   MunicipioService,
   EnderecoService,
   FuncionamentoService,
-  CompraService
+  CompraService,
+  CaracteristicasProdutoService
 ];
 
 const modelController = [
