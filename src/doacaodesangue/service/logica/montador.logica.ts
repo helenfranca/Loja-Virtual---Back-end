@@ -39,7 +39,10 @@ import {
   VolumeEnum,
 } from 'src/doacaodesangue/model/Enum';
 import { FuncionamentoService } from '../funcionamento.service';
-import { Funcionamento, DiaSemanaEnum } from 'src/doacaodesangue/model/funcionamento.entity';
+import {
+  Funcionamento,
+  DiaSemanaEnum,
+} from 'src/doacaodesangue/model/funcionamento.entity';
 import { Compra } from 'src/doacaodesangue/model/compra.entity';
 import { ItemCompra } from 'src/doacaodesangue/model/itemcompra.entity';
 import { CompraService } from '../compra.service';
@@ -61,7 +64,7 @@ export class Montador {
     private readonly servicoBairro: BairroService,
     private readonly servicoFuncionamento: FuncionamentoService,
     private readonly servicoCompra: CompraService,
-    private readonly servicoCaracteristicas: CaracteristicasProdutoService
+    private readonly servicoCaracteristicas: CaracteristicasProdutoService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -418,35 +421,44 @@ export class Montador {
       diaFunc.horaFechamento = func.fechamento;
       diaFunc.hemocentro = hemocentro;
       let idDia: number;
-      switch(func.dia) {
-        case "Segunda": {
+      switch (func.dia) {
+        case 'Segunda': {
           idDia = DiaSemanaEnum.Segunda;
-          break;}
-        case "Terca": {
+          break;
+        }
+        case 'Terca': {
           idDia = DiaSemanaEnum.Terca;
-          break;}
-        case "Quarta": {
+          break;
+        }
+        case 'Quarta': {
           idDia = DiaSemanaEnum.Quarta;
-          break;}
-        case "Quinta": {
+          break;
+        }
+        case 'Quinta': {
           idDia = DiaSemanaEnum.Quinta;
-          break;}
-        case "Sexta": {
+          break;
+        }
+        case 'Sexta': {
           idDia = DiaSemanaEnum.Sexta;
-          break;}
-        case "Sabado": {
+          break;
+        }
+        case 'Sabado': {
           idDia = DiaSemanaEnum.Sexta;
-          break;}
-        case "Domingo": {
+          break;
+        }
+        case 'Domingo': {
           idDia = DiaSemanaEnum.Domingo;
-          break;}
+          break;
+        }
       }
       diaFunc.diaFuncionamento = idDia;
-      let ret = await this.servicoFuncionamento.findOne(hemocentro.id, diaFunc.diaFuncionamento);
+      let ret = await this.servicoFuncionamento.findOne(
+        hemocentro.id,
+        diaFunc.diaFuncionamento,
+      );
       if (ret == undefined) {
         periodos.push(await this.servicoFuncionamento.Create(diaFunc));
-      }
-      else {
+      } else {
         periodos.push(ret);
       }
     }
@@ -469,6 +481,7 @@ export class Montador {
     let doador = new Doador();
     try {
       let pessoa = await this.servicoPessoa.pessoaCpf(body);
+      console.log(pessoa);
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
@@ -787,13 +800,14 @@ export class Montador {
       compra.pagamento = body.pagamento;
       compra.status = body.status;
       let itenscompra: ItemCompra[] = [];
-      for(let ic of body.carrinho) {
+      for (let ic of body.carrinho) {
         itenscompra.push(ic);
       }
       return await this.servicoCompra.Create(compra);
-    }
-    catch(err) {
-      throw new Error('Erro ao salvar compra. Verifique os parâmetros enviados.');
+    } catch (err) {
+      throw new Error(
+        'Erro ao salvar compra. Verifique os parâmetros enviados.',
+      );
     }
   }
   async pegaTodasCategorias(): Promise<Categoria[]> {
