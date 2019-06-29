@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Funcionamento } from '../model/funcionamento.entity';
+import { Funcionamento, DiaSemanaEnum } from '../model/funcionamento.entity';
 import { genericInterface } from './interface/generic.interface';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class FuncionamentoService implements genericInterface<Funcionamento> {
     });
   }
 
-  async findOne(idHemocentro: number, idDia: number) {
+  async findOne(idHemocentro: number, idDia: DiaSemanaEnum) {
     return Funcionamento
     .createQueryBuilder("funcionamento")
     .where("funcionamento.idHemocentro = :idH AND funcionamento.diaFuncionamento = :dia",

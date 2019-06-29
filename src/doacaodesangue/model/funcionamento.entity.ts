@@ -9,13 +9,13 @@ import {
 import { Hemocentro } from './hemocentro.entity';
 
 export enum DiaSemanaEnum {
-  Domingo = 0,
-  Segunda = 1,
-  Terca = 2,
-  Quarta = 3,
-  Quinta = 4,
-  Sexta = 5,
-  Sabado = 6,
+  Domingo = "Domingo",
+  Segunda = "Segunda",
+  Terca = "Terca",
+  Quarta = "Quarta",
+  Quinta = "Quinta",
+  Sexta = "Sexta",
+  Sabado = "Sabado"
 }
 
 @Entity()
@@ -36,6 +36,6 @@ export class Funcionamento extends BaseEntity {
    @JoinColumn({ name: 'idhemocentro' })
    hemocentro: Hemocentro;
 
-   @Column({ type: 'int', nullable: false })
+   @Column({ type: 'varchar', nullable: false })
    diaFuncionamento: DiaSemanaEnum;
 }
