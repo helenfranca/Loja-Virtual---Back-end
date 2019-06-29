@@ -1,34 +1,32 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
-import { Hemocentro } from '../model/hemocentro.entity';
+import { Estado } from '../model/estado.entity';
 
 @Injectable()
-export class HemocentroService implements genericInterface<Hemocentro> {
-  async readAll(): Promise<Hemocentro[]> {
-    return await Hemocentro.find();
+export class EstadoService implements genericInterface<Estado> {
+  async readAll(): Promise<Estado[]> {
+    return await Estado.find();
   }
-  async readOne(id: number): Promise<Hemocentro> {
-    return await Hemocentro.findOne({ id: id });
-  }
-
-  async readHemocentro(cnes: string): Promise<Hemocentro> {
-    return await Hemocentro.findOne({ cnes: cnes });
+  async readOne(nome: string): Promise<Estado> {
+    return await Estado.findOne({ nome: nome });
   }
 
-  async Create(body: Hemocentro): Promise<Hemocentro> {
+  async Create(body: any): Promise<Estado> {
     try {
-      return await Hemocentro.save(body);
+      return await Estado.save(body);
     } catch (err) {
       throw new Error(
-        `Erro ao salvar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
+        `Erro ao salvar Estado \n Erro: ${err.name}\n Mensagem: ${
           err.message
         }\n Os parametros estao certos?`,
       );
     }
   }
 
-  async Drop(body: Hemocentro): Promise<Hemocentro> {
-    try {
+  async Drop(body: Estado): Promise<Estado> {
+    throw new Error('Method not implemented.');
+  }
+  /*   try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -38,9 +36,11 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       );
     }
   }
-
-  async Update(body: any): Promise<Hemocentro> {
-    try {
+*/
+  async Update(body: any): Promise<Estado> {
+    throw new Error('Method not implemented.');
+  }
+  /*  try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -68,6 +68,6 @@ export class HemocentroService implements genericInterface<Hemocentro> {
   }
 
   async hemocentro(body) {
-    return await Hemocentro.findOne({ cnes: body.cnes });
-  }
+    return await Hemocentro.findOne({ id: body.idhemocentro });
+  }***/
 }

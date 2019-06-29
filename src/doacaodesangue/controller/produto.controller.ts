@@ -8,15 +8,18 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ProdutoService } from '../service/produto.service';
 import { Produto } from '../model/produto.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 import { Montador } from '../service/logica/montador.logica';
+import { Relatorio } from '../service/logica/relatorio.logica';
 
 @ApiUseTags('produto')
 @Controller()
 export class ProdutoController {
-  constructor(private readonly montador: Montador) {}
+  constructor(
+    private readonly montador: Montador,
+    private readonly relatorio: Relatorio
+    ) {}
   @Get('/produto')
   root(): Promise<Produto[]> {
     return this.montador.pegaProdutos();
@@ -73,5 +76,35 @@ export class ProdutoController {
   @Get('/canecas')
   async buscaCanecas() {
     return await this.montador.canecas();
+  }
+
+  @Get('/categorias')
+  async buscaCategorias() {
+    return await this.montador.pegaTodasCategorias();
+  }
+
+  @Get('/volumes')
+  async buscaVolumes() {
+    return await this.montador.pegaTodosVolumes();
+  }
+
+  @Get('/generos')
+  async buscaGeneros() {
+    return await this.montador.pegaTodosGeneros();
+  }
+
+  @Get('/materiais') 
+  async buscaMateriais() {
+    return await this.montador.pegaTodosMateriais();
+  }
+
+  @Get('/tamanhos') 
+  async buscaTamanhos() {
+    return await this.montador.pegaTodosTamanhos();
+  }
+
+  @Get('/top3')
+  async buscarTop3Produtos() {
+    return await this.relatorio.top3Produtos();
   }
 }

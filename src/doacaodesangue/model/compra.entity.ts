@@ -33,7 +33,7 @@ export class Compra extends BaseEntity {
   valorTotal: Double;
 
   @OneToMany(type => ItemCompra, itemcompra => itemcompra.compra)
-  itemcompra: ItemCompra;
+  itemcompra: ItemCompra[];
 
   @ManyToOne(type => Endereco, endereco => endereco.compra, {
     eager: true,
@@ -43,7 +43,7 @@ export class Compra extends BaseEntity {
   @JoinColumn({ name: 'idendereco' })
   endereco: Endereco;
 
-  @OneToOne(type => Pessoa) //// Olhar aqui
+  @ManyToOne(type => Pessoa, pessoa => pessoa.compra) //// Olhar aqui
   @JoinColumn({ name: 'idpessoa' })
   pessoa: Pessoa;
 }

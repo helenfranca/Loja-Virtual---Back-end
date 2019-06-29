@@ -14,7 +14,9 @@ import { Hemocentro } from '../model/hemocentro.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 import { Montador } from '../service/logica/montador.logica';
 import { Relatorio } from '../service/logica/relatorio.logica';
-
+import { Funcionamento } from '../model/funcionamento.entity';
+import { Endereco } from '../model/endereco.entity';
+let stringify = require('json-stringify-safe');
 @ApiUseTags('Hemocentro')
 @Controller()
 export class HemocentroController {
@@ -23,7 +25,7 @@ export class HemocentroController {
     private readonly relatorios: Relatorio,
   ) {}
 
-  @Get('/Hemocentro')
+  @Get('/hemocentro')
   root(): any {
     return this.montador.pegaHemocentros();
   }
@@ -63,8 +65,12 @@ export class HemocentroController {
   }
 
   @Post('/Hemocentro')
-  public createOne(@Body() body: any): Promise<Hemocentro> {
-    return this.montador.montaHemocentro(body);
+  public async createOne(@Body() body): Promise<Hemocentro | any> {
+    let enderecoNovo: Endereco = await this.montador.montaEndereco(body);
+    let hemocentro: Hemocentro = await this.montador.montaHemocentro(body, enderecoNovo);
+    hemocentro.funcionamento = await this.montador.horarioFuncionamento(body, hemocentro);
+    // Evitando estrutura circular usando outro stringfy
+    return JSON.parse(stringify(hemocentro,null,2));
   }
 
   @Put('/Hemocentro')

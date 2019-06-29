@@ -4,10 +4,15 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   OneToMany,
+  OneToOne,
+  JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Funcionamento } from './funcionamento.entity';
 import { Demanda } from './demanda.entity';
 import { Doacao } from './doacao.entity';
+import { Endereco } from './endereco.entity';
 
 @Entity()
 export class Hemocentro extends BaseEntity {
@@ -40,4 +45,11 @@ export class Hemocentro extends BaseEntity {
 
   @OneToMany(type => Doacao, doacao => doacao.hemocentro)
   doacao: Doacao[];
+
+  @OneToOne(type => Endereco, endereco => endereco.hemocentro, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinColumn({ name: 'idendereco' })
+  endereco: Endereco;
 }

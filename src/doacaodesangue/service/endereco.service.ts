@@ -1,34 +1,37 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
-import { Hemocentro } from '../model/hemocentro.entity';
+import { Endereco } from '../model/endereco.entity';
 
 @Injectable()
-export class HemocentroService implements genericInterface<Hemocentro> {
-  async readAll(): Promise<Hemocentro[]> {
-    return await Hemocentro.find();
-  }
-  async readOne(id: number): Promise<Hemocentro> {
-    return await Hemocentro.findOne({ id: id });
+export class EnderecoService implements genericInterface<Endereco> {
+  async readAll(): Promise<Endereco[]> {
+    return await Endereco.find();
   }
 
-  async readHemocentro(cnes: string): Promise<Hemocentro> {
-    return await Hemocentro.findOne({ cnes: cnes });
+  async readOne(cep: string): Promise<Endereco> {
+    return await Endereco.findOne({ cep: cep });
   }
 
-  async Create(body: Hemocentro): Promise<Hemocentro> {
+  async buscaCepNum(cep: string, num: number): Promise<Endereco> {
+    return await Endereco.findOne({ cep: cep, numero: num });
+  }
+
+  async Create(body: any): Promise<Endereco> {
     try {
-      return await Hemocentro.save(body);
+      return await Endereco.save(body);
     } catch (err) {
       throw new Error(
-        `Erro ao salvar Hemocentro \n Erro: ${err.name}\n Mensagem: ${
+        `Erro ao salvar Endereco \n Erro: ${err.name}\n Mensagem: ${
           err.message
         }\n Os parametros estao certos?`,
       );
     }
   }
 
-  async Drop(body: Hemocentro): Promise<Hemocentro> {
-    try {
+  async Drop(body: Endereco): Promise<Endereco> {
+    throw new Error('Method not implemented.');
+  }
+  /***try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -38,9 +41,11 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       );
     }
   }
-
-  async Update(body: any): Promise<Hemocentro> {
-    try {
+***/
+  async Update(body: any): Promise<Endereco> {
+    throw new Error('Method not implemented.');
+  }
+  /***try {
       return await Hemocentro.save(body);
     } catch (err) {
       throw new Error(
@@ -68,6 +73,6 @@ export class HemocentroService implements genericInterface<Hemocentro> {
   }
 
   async hemocentro(body) {
-    return await Hemocentro.findOne({ cnes: body.cnes });
-  }
+    return await Hemocentro.findOne({ id: body.idhemocentro });
+  }***/
 }

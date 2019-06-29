@@ -4,7 +4,7 @@ export enum MaterialEnum {
   Aluminio = 'Aluminio',
   Algodão = 'Algodão',
   Malha = 'Malha',
-  Nao_especificado = 'Não especificado',
+  Nao_Especificado = 'Não especificado',
 }
 
 export enum GeneroEnum {
@@ -29,7 +29,7 @@ export enum TamanhoEnum {
   M = 'M',
   G = 'G',
   GG = 'GG',
-  Nao_especificado = 'Não especificado',
+  Nao_Especificado = 'Não especificado',
 }
 
 export enum CategoriaEnum {

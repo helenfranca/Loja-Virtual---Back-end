@@ -20,6 +20,16 @@ import { Montador } from './service/logica/montador.logica';
 import { Relatorio } from './service/logica/relatorio.logica';
 import { Tuntum } from './service/logica/tuntum.logica';
 import { MontaEmail } from './service/logica/email';
+import { BairroService } from './service/bairro.service';
+import { EstadoService } from './service/estado.service';
+import { MunicipioService } from './service/municipio.service';
+import { EnderecoService } from './service/endereco.service';
+import { EnderecoController } from './controller/endereco.controller';
+import { FuncionamentoService } from './service/funcionamento.service';
+import { CompraService } from './service/compra.service';
+import { CompraController } from './controller/compra.controller';
+import { CaracteristicasProdutoService } from './service/caracteristicasProduto.service';
+import { ItemCompraService } from './service/itemcompra.service';
 
 const modelProvider = [...databaseProviders];
 
@@ -38,6 +48,14 @@ const modelService = [
   Relatorio,
   Tuntum,
   MontaEmail,
+  BairroService,
+  EstadoService,
+  MunicipioService,
+  EnderecoService,
+  FuncionamentoService,
+  CompraService,
+  CaracteristicasProdutoService,
+  ItemCompraService
 ];
 
 const modelController = [
@@ -47,6 +65,8 @@ const modelController = [
   ProdutoController,
   DoadorController,
   DemandaController,
+  EnderecoController,
+  CompraController
 ];
 
 @Module({
