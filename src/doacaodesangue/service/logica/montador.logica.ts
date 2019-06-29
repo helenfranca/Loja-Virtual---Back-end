@@ -484,6 +484,7 @@ export class Montador {
 
     try {
       let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
+      console.log(pessoa);
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
@@ -515,6 +516,7 @@ export class Montador {
           } else {
             doador.apto = true;
           }
+
           return await this.servicoDoador.Create(doador);
         }
       }
