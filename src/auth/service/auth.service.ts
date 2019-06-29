@@ -3,6 +3,7 @@ import { PessoaService } from 'src/doacaodesangue/service/pessoa.service';
 import { Pessoa } from 'src/doacaodesangue/model/pessoa.entity';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
+import { CriptografiaService } from 'src/doacaodesangue/service/logica/criptografia.logica';
 
 enum Provider {
   GOOGLE = 'google',
@@ -13,10 +14,12 @@ export class AuthService {
   constructor(
     private readonly userService: PessoaService,
     private readonly jwtService: JwtService,
+    private readonly criptoService: CriptografiaService
   ) {}
 
   private async validate(userData: Pessoa): Promise<Pessoa> {
-    return await this.userService.findByEmail(userData.email, userData.senha);
+    let senhaCriptografada = this.criptoService.criptografar(userData.senha);
+    return await this.userService.findByEmail(userData.email, senhaCriptografada);
   }
 
   public async login(user: Pessoa): Promise<any | { status: number }> {
