@@ -643,8 +643,8 @@ export class Montador {
   public async montaDemanda(body): Promise<Demanda> {
     let demanda: Demanda = new Demanda();
     try {
-      let hemocentro: Hemocentro = await this.servicoHemocentro.readOne(
-        body.idhemocentro,
+      let hemocentro: Hemocentro = await this.servicoHemocentro.readHemocentro(
+        body.hemocentro,
       );
       let tiposangue: TipoSanguineo = await this.servicoTipoSanguineo.buscaOne(
         body.tiposanguineo,
