@@ -42,6 +42,7 @@ import { FuncionamentoService } from '../funcionamento.service';
 import { Funcionamento, DiaSemanaEnum } from 'src/doacaodesangue/model/funcionamento.entity';
 import { Compra } from 'src/doacaodesangue/model/compra.entity';
 import { ItemCompra } from 'src/doacaodesangue/model/itemcompra.entity';
+import { ItemCompraService } from 'src/doacaodesangue/service/itemcompra.service';
 import { CompraService } from '../compra.service';
 
 @Injectable()
@@ -61,7 +62,8 @@ export class Montador {
     private readonly servicoBairro: BairroService,
     private readonly servicoFuncionamento: FuncionamentoService,
     private readonly servicoCompra: CompraService,
-    private readonly servicoCaracteristicas: CaracteristicasProdutoService
+    private readonly servicoCaracteristicas: CaracteristicasProdutoService,
+    private readonly servicoItemCompra: ItemCompraService
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -417,7 +419,7 @@ export class Montador {
       diaFunc.horaAbertura = func.abertura;
       diaFunc.horaFechamento = func.fechamento;
       diaFunc.hemocentro = hemocentro;
-      let idDia: number;
+      let idDia: DiaSemanaEnum;
       switch(func.dia) {
         case "Segunda": {
           idDia = DiaSemanaEnum.Segunda;
@@ -781,15 +783,22 @@ export class Montador {
     try {
       let compra = new Compra();
       compra.valorTotal = body.valorTotal;
-      compra.pessoa = body.comprador;
+      compra.pessoa = body.pessoa;
       compra.data = body.data;
-      compra.endereco = body.enderecoEntrega;
+      compra.endereco = await this.montaEndereco(body.enderecoEntrega);
       compra.pagamento = body.pagamento;
       compra.status = body.status;
       let itenscompra: ItemCompra[] = [];
+      
       for(let ic of body.carrinho) {
-        itenscompra.push(ic);
+        let item = new ItemCompra();
+        item.produto = await this.servicoProduto.readOne(ic.produto.id);
+        item.quantidade = ic.quantidade;
+        item.valoratual = item.produto.valorunitario;
+        itenscompra.push(await this.servicoItemCompra.Create(item));
       }
+      compra.itemcompra = itenscompra;
+      
       return await this.servicoCompra.Create(compra);
     }
     catch(err) {

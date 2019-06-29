@@ -29,6 +29,7 @@ import { FuncionamentoService } from './service/funcionamento.service';
 import { CompraService } from './service/compra.service';
 import { CompraController } from './controller/compra.controller';
 import { CaracteristicasProdutoService } from './service/caracteristicasProduto.service';
+import { ItemCompraService } from './service/itemcompra.service';
 
 const modelProvider = [...databaseProviders];
 
@@ -53,7 +54,8 @@ const modelService = [
   EnderecoService,
   FuncionamentoService,
   CompraService,
-  CaracteristicasProdutoService
+  CaracteristicasProdutoService,
+  ItemCompraService
 ];
 
 const modelController = [
