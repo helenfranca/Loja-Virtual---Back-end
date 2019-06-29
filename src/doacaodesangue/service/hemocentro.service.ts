@@ -68,6 +68,6 @@ export class HemocentroService implements genericInterface<Hemocentro> {
   }
 
   async hemocentro(body) {
-    return await Hemocentro.findOne({ id: body.idhemocentro });
+    return await Hemocentro.findOne({ cnes: body.cnes });
   }
 }

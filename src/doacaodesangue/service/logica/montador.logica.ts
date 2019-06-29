@@ -39,7 +39,10 @@ import {
   VolumeEnum,
 } from 'src/doacaodesangue/model/Enum';
 import { FuncionamentoService } from '../funcionamento.service';
-import { Funcionamento, DiaSemanaEnum } from 'src/doacaodesangue/model/funcionamento.entity';
+import {
+  Funcionamento,
+  DiaSemanaEnum,
+} from 'src/doacaodesangue/model/funcionamento.entity';
 import { Compra } from 'src/doacaodesangue/model/compra.entity';
 import { ItemCompra } from 'src/doacaodesangue/model/itemcompra.entity';
 import { ItemCompraService } from 'src/doacaodesangue/service/itemcompra.service';
@@ -79,6 +82,7 @@ export class Montador {
   }
 
   public leporCpf(cpf): Promise<Pessoa> {
+    console.log(cpf);
     return this.servicoPessoa.pessoaCpf(cpf);
   }
 
@@ -171,7 +175,7 @@ export class Montador {
         TamanhoEnum[body.tamanho],
       );
       let genero: Genero = await tipo.buscaOneGenero(body.genero);
-      let volume: Volume = await tipo.buscaOneVolume(VolumeEnum[body.volume]);
+      let volume: Volume = await tipo.buscaOneVolume(body.volume);
 
       // Caso não exista...
 
@@ -254,7 +258,6 @@ export class Montador {
       } else {
         produto.volume = volume;
       }
-
       if (await this.verificaProduto(produto)) {
         return await this.servicoProduto.Create(produto);
       } else {
@@ -423,32 +426,41 @@ export class Montador {
       switch(func.dia) {
         case "Segunda": {
           idDia = DiaSemanaEnum.Segunda;
-          break;}
-        case "Terca": {
+          break;
+        }
+        case 'Terca': {
           idDia = DiaSemanaEnum.Terca;
-          break;}
-        case "Quarta": {
+          break;
+        }
+        case 'Quarta': {
           idDia = DiaSemanaEnum.Quarta;
-          break;}
-        case "Quinta": {
+          break;
+        }
+        case 'Quinta': {
           idDia = DiaSemanaEnum.Quinta;
-          break;}
-        case "Sexta": {
+          break;
+        }
+        case 'Sexta': {
           idDia = DiaSemanaEnum.Sexta;
-          break;}
-        case "Sabado": {
+          break;
+        }
+        case 'Sabado': {
           idDia = DiaSemanaEnum.Sexta;
-          break;}
-        case "Domingo": {
+          break;
+        }
+        case 'Domingo': {
           idDia = DiaSemanaEnum.Domingo;
-          break;}
+          break;
+        }
       }
       diaFunc.diaFuncionamento = idDia;
-      let ret = await this.servicoFuncionamento.findOne(hemocentro.id, diaFunc.diaFuncionamento);
+      let ret = await this.servicoFuncionamento.findOne(
+        hemocentro.id,
+        diaFunc.diaFuncionamento,
+      );
       if (ret == undefined) {
         periodos.push(await this.servicoFuncionamento.Create(diaFunc));
-      }
-      else {
+      } else {
         periodos.push(ret);
       }
     }
@@ -469,8 +481,9 @@ export class Montador {
 
   public async montaDoador(body): Promise<Doador> {
     let doador = new Doador();
+
     try {
-      let pessoa = await this.servicoPessoa.pessoaCpf(body);
+      let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
@@ -509,7 +522,6 @@ export class Montador {
       return err;
     }
   }
-
   public async deletarDoador(body: Doador): Promise<Doador> {
     try {
       let busca = await Doador.findOne({ id: body.id });
@@ -566,17 +578,21 @@ export class Montador {
   public async montaDoacao(body): Promise<Doacao> {
     let doacao: Doacao = new Doacao();
     try {
-      let pessoa = await this.servicoPessoa.pessoaCpf(body);
-      let doador = await this.servicoDoador.doador(pessoa);
-      let hemocentro = await this.servicoHemocentro.hemocentro(body);
+      let pessoa: Pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
+
+      let doador: Doador = await this.servicoDoador.doador(pessoa);
+
+      let hemocentro: Hemocentro = await this.servicoHemocentro.hemocentro(
+        body,
+      );
 
       doacao.quantidade = body.quantidade;
       doacao.datadoacao = new Date().toLocaleDateString();
       doacao.doador = doador;
       doacao.hemocentro = hemocentro;
 
-      let confirma = await this.servicoDoacao.Create(doacao);
-
+      let confirma: Doacao = await this.servicoDoacao.Create(doacao);
+      // console.log(confirma);
       if (body.observacao != undefined) {
         let obs = {};
         obs['observacao'] = body.observacao;
@@ -800,9 +816,10 @@ export class Montador {
       compra.itemcompra = itenscompra;
       
       return await this.servicoCompra.Create(compra);
-    }
-    catch(err) {
-      throw new Error('Erro ao salvar compra. Verifique os parâmetros enviados.');
+    } catch (err) {
+      throw new Error(
+        'Erro ao salvar compra. Verifique os parâmetros enviados.',
+      );
     }
   }
   async pegaTodasCategorias(): Promise<Categoria[]> {
