@@ -77,7 +77,7 @@ export class Montador {
     return this.servicoPessoa.readAll();
   }
 
-  public leUmaPessoa(id: number): Promise<Pessoa> {
+  public leUmaPessoa(id): Promise<Pessoa> {
     return this.servicoPessoa.readOne(id);
   }
 
@@ -484,14 +484,14 @@ export class Montador {
 
     try {
       let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
-      console.log(pessoa);
+
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
         let tiposangue = await this.servicoTipoSanguineo.buscaOne(
           body.tiposanguineo,
         );
-        console.log(tiposangue);
+
         if (tiposangue != undefined) {
           doador.tiposanguineo = tiposangue;
           doador.doenca_chagas = body.chagas;
@@ -517,10 +517,7 @@ export class Montador {
           } else {
             doador.apto = true;
           }
-
-          let a = await this.servicoDoador.Create(doador);
-          console.log(a);
-          return a;
+          return await this.servicoDoador.Create(doador);
         }
       }
     } catch (err) {
