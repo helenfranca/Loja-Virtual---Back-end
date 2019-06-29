@@ -491,6 +491,7 @@ export class Montador {
         let tiposangue = await this.servicoTipoSanguineo.buscaOne(
           body.tiposanguineo,
         );
+        console.log(tiposangue);
         if (tiposangue != undefined) {
           doador.tiposanguineo = tiposangue;
           doador.doenca_chagas = body.chagas;
@@ -517,7 +518,9 @@ export class Montador {
             doador.apto = true;
           }
 
-          return await this.servicoDoador.Create(doador);
+          let a = await this.servicoDoador.Create(doador);
+          console.log(a);
+          return a;
         }
       }
     } catch (err) {
