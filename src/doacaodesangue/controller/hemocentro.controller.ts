@@ -16,7 +16,7 @@ import { Montador } from '../service/logica/montador.logica';
 import { Relatorio } from '../service/logica/relatorio.logica';
 import { Funcionamento } from '../model/funcionamento.entity';
 import { Endereco } from '../model/endereco.entity';
-
+let stringify = require('json-stringify-safe');
 @ApiUseTags('Hemocentro')
 @Controller()
 export class HemocentroController {
@@ -67,28 +67,10 @@ export class HemocentroController {
   @Post('/Hemocentro')
   public async createOne(@Body() body): Promise<Hemocentro | any> {
     let enderecoNovo: Endereco = await this.montador.montaEndereco(body);
-
-    let hemocentro: Hemocentro = await this.montador.montaHemocentro(
-      body,
-      enderecoNovo,
-    );
-
-    console.log('passei do hemocentro');
-
-    //Criar dias de funcionamento da semana
-    let funcionamento: Funcionamento = await this.montador.horarioFuncionamento(
-      body,
-    );
-    console.log('passei do funcionamento');
-
-    // dias da semana
-
-    await this.montador.montaDias(body, funcionamento);
-
-    return await this.montador.hemocentro_funcionamento(
-      hemocentro,
-      funcionamento,
-    );
+    let hemocentro: Hemocentro = await this.montador.montaHemocentro(body, enderecoNovo);
+    hemocentro.funcionamento = await this.montador.horarioFuncionamento(body, hemocentro);
+    // Evitando estrutura circular usando outro stringfy
+    return JSON.parse(stringify(hemocentro,null,2));
   }
 
   @Put('/Hemocentro')

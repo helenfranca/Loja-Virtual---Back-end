@@ -37,15 +37,7 @@ export class Hemocentro extends BaseEntity {
   @Column({ type: 'boolean', nullable: false })
   status: boolean;
 
-  // @OneToMany(type => Funcionamento, funcionamento => funcionamento.hemocentro)
-  // funcionamento: Funcionamento[];
-
-  @ManyToMany(type => Funcionamento, { eager: true })
-  @JoinTable({
-    name: 'hemocentro_funcionamento',
-    joinColumn: { name: 'idhemocentro', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'idfuncionamento', referencedColumnName: 'id' },
-  })
+  @OneToMany(type => Funcionamento, funcionamento => funcionamento.hemocentro)
   funcionamento: Funcionamento[];
 
   @OneToMany(type => Demanda, demanda => demanda.hemocentro)

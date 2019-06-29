@@ -12,6 +12,7 @@ import { ProdutoService } from '../service/produto.service';
 import { Produto } from '../model/produto.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 import { Montador } from '../service/logica/montador.logica';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @ApiUseTags('produto')
 @Controller()
@@ -73,5 +74,20 @@ export class ProdutoController {
   @Get('/canecas')
   async buscaCanecas() {
     return await this.montador.canecas();
+  }
+
+  @Get('/categorias')
+  async buscaCategorias() {
+    return await this.montador.pegaTodasCategorias();
+  }
+
+  @Get('volumes')
+  async buscaVolumes() {
+    return await this.montador.pegaTodosVolumes();
+  }
+
+  @Get('generos')
+  async buscaGeneros() {
+    return await this.montador.pegaTodosGeneros();
   }
 }

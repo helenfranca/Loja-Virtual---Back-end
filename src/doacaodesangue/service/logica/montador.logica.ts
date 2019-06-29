@@ -39,12 +39,13 @@ import {
   VolumeEnum,
 } from 'src/doacaodesangue/model/Enum';
 import { FuncionamentoService } from '../funcionamento.service';
-import { Funcionamento } from 'src/doacaodesangue/model/funcionamento.entity';
 import {
-  DiasSemana,
+  Funcionamento,
   DiaSemanaEnum,
-} from 'src/doacaodesangue/model/diassemana.entity';
-import { DiasSemanaService } from '../diasSemana.service';
+} from 'src/doacaodesangue/model/funcionamento.entity';
+import { Compra } from 'src/doacaodesangue/model/compra.entity';
+import { ItemCompra } from 'src/doacaodesangue/model/itemcompra.entity';
+import { CompraService } from '../compra.service';
 
 @Injectable()
 export class Montador {
@@ -62,7 +63,8 @@ export class Montador {
     private readonly servicoEndereco: EnderecoService,
     private readonly servicoBairro: BairroService,
     private readonly servicoFuncionamento: FuncionamentoService,
-    private readonly servicoDiasSemana: DiasSemanaService,
+    private readonly servicoCompra: CompraService,
+    private readonly servicoCaracteristicas: CaracteristicasProdutoService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -78,6 +80,7 @@ export class Montador {
   }
 
   public leporCpf(cpf): Promise<Pessoa> {
+    console.log(cpf);
     return this.servicoPessoa.pessoaCpf(cpf);
   }
 
@@ -170,7 +173,7 @@ export class Montador {
         TamanhoEnum[body.tamanho],
       );
       let genero: Genero = await tipo.buscaOneGenero(body.genero);
-      let volume: Volume = await tipo.buscaOneVolume(VolumeEnum[body.volume]);
+      let volume: Volume = await tipo.buscaOneVolume(body.volume);
 
       // Caso não exista...
 
@@ -253,7 +256,6 @@ export class Montador {
       } else {
         produto.volume = volume;
       }
-
       if (await this.verificaProduto(produto)) {
         return await this.servicoProduto.Create(produto);
       } else {
@@ -407,54 +409,60 @@ export class Montador {
     }
   }
 
-  public async hemocentro_funcionamento(
-    hemocentro: Hemocentro,
-    funcionamento: Funcionamento,
-  ) {
-    hemocentro.funcionamento.push(funcionamento);
-
-    return await this.servicoFuncionamento.Update(funcionamento);
-  }
-
   // ~~~~~~~~~~~~~~~~~~ //
   //   Funcionamento   //
   // ~~~~~~~~~~~~~~~~~~ //
 
-  public async horarioFuncionamento(body) {
-    let hora = await this.servicoFuncionamento.readOne(body);
-
-    if (hora == undefined) {
-      let horario = new Funcionamento();
-      horario.horaAbertura = body.abertura;
-      horario.horaFechamento = body.fechamento;
-      return await this.servicoFuncionamento.Create(horario);
-    } else {
-      return await this.servicoFuncionamento.Create(hora);
-    }
-  }
-
-  // ~~~~~~~~~~~~~~~~~~ //
-  //   Dias da semana   //
-  // ~~~~~~~~~~~~~~~~~~ //
-
-  public montaDias(body: any, funcionamento: Funcionamento) {
-    body.diasSemana.forEach(async (dia: string) => {
-      let dias = new DiasSemana();
-      if (dia in DiaSemanaEnum) {
-        let a = await this.servicoDiasSemana.readOne(dia);
-        console.log(a);
-        if (a != undefined) {
-          console.log('no nada');
-          a.funcionamento = funcionamento;
-          return await this.servicoDiasSemana.Create(a);
-        } else {
-          console.log('com algo');
-          dias.diaSemana = DiaSemanaEnum[dia];
-          dias.funcionamento = funcionamento;
-          return await this.servicoDiasSemana.Create(dias);
+  public async horarioFuncionamento(body, hemocentro: Hemocentro) {
+    let periodos: Funcionamento[] = [];
+    for (let func of body.funcionamento) {
+      let diaFunc = new Funcionamento();
+      diaFunc.horaAbertura = func.abertura;
+      diaFunc.horaFechamento = func.fechamento;
+      diaFunc.hemocentro = hemocentro;
+      let idDia: number;
+      switch (func.dia) {
+        case 'Segunda': {
+          idDia = DiaSemanaEnum.Segunda;
+          break;
+        }
+        case 'Terca': {
+          idDia = DiaSemanaEnum.Terca;
+          break;
+        }
+        case 'Quarta': {
+          idDia = DiaSemanaEnum.Quarta;
+          break;
+        }
+        case 'Quinta': {
+          idDia = DiaSemanaEnum.Quinta;
+          break;
+        }
+        case 'Sexta': {
+          idDia = DiaSemanaEnum.Sexta;
+          break;
+        }
+        case 'Sabado': {
+          idDia = DiaSemanaEnum.Sexta;
+          break;
+        }
+        case 'Domingo': {
+          idDia = DiaSemanaEnum.Domingo;
+          break;
         }
       }
-    });
+      diaFunc.diaFuncionamento = idDia;
+      let ret = await this.servicoFuncionamento.findOne(
+        hemocentro.id,
+        diaFunc.diaFuncionamento,
+      );
+      if (ret == undefined) {
+        periodos.push(await this.servicoFuncionamento.Create(diaFunc));
+      } else {
+        periodos.push(ret);
+      }
+    }
+    return periodos;
   }
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -471,8 +479,9 @@ export class Montador {
 
   public async montaDoador(body): Promise<Doador> {
     let doador = new Doador();
+
     try {
-      let pessoa = await this.servicoPessoa.pessoaCpf(body);
+      let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
@@ -511,7 +520,6 @@ export class Montador {
       return err;
     }
   }
-
   public async deletarDoador(body: Doador): Promise<Doador> {
     try {
       let busca = await Doador.findOne({ id: body.id });
@@ -568,17 +576,21 @@ export class Montador {
   public async montaDoacao(body): Promise<Doacao> {
     let doacao: Doacao = new Doacao();
     try {
-      let pessoa = await this.servicoPessoa.pessoaCpf(body);
-      let doador = await this.servicoDoador.doador(pessoa);
-      let hemocentro = await this.servicoHemocentro.hemocentro(body);
+      let pessoa: Pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
+
+      let doador: Doador = await this.servicoDoador.doador(pessoa);
+
+      let hemocentro: Hemocentro = await this.servicoHemocentro.hemocentro(
+        body,
+      );
 
       doacao.quantidade = body.quantidade;
       doacao.datadoacao = new Date().toLocaleDateString();
       doacao.doador = doador;
       doacao.hemocentro = hemocentro;
 
-      let confirma = await this.servicoDoacao.Create(doacao);
-
+      let confirma: Doacao = await this.servicoDoacao.Create(doacao);
+      // console.log(confirma);
       if (body.observacao != undefined) {
         let obs = {};
         obs['observacao'] = body.observacao;
@@ -767,5 +779,49 @@ export class Montador {
     } catch (err) {
       return err;
     }
+  }
+
+  // //~~~~~~~~~~ COMPRA ~~~~~~~~~~\\ \\
+  public async buscarCompra(id: any): Promise<Compra> {
+    return this.servicoCompra.readOne(id);
+  }
+
+  public async efetuarCompra(compra: any): Promise<Compra> {
+    return this.servicoCompra.Create(compra);
+  }
+
+  public async buscarTodasCompras(): Promise<Compra[]> {
+    return this.servicoCompra.readAll();
+  }
+  async montaCompra(body: any): Promise<Compra> {
+    try {
+      let compra = new Compra();
+      compra.valorTotal = body.valorTotal;
+      compra.pessoa = body.comprador;
+      compra.data = body.data;
+      compra.endereco = body.enderecoEntrega;
+      compra.pagamento = body.pagamento;
+      compra.status = body.status;
+      let itenscompra: ItemCompra[] = [];
+      for (let ic of body.carrinho) {
+        itenscompra.push(ic);
+      }
+      return await this.servicoCompra.Create(compra);
+    } catch (err) {
+      throw new Error(
+        'Erro ao salvar compra. Verifique os parâmetros enviados.',
+      );
+    }
+  }
+  async pegaTodasCategorias(): Promise<Categoria[]> {
+    return await this.servicoCaracteristicas.buscaTodasCategorias();
+  }
+
+  async pegaTodosVolumes(): Promise<Volume[]> {
+    return await this.servicoCaracteristicas.buscaTodosVolumes();
+  }
+
+  async pegaTodosGeneros(): Promise<Genero[]> {
+    return await this.servicoCaracteristicas.buscaTodosGeneros();
   }
 }

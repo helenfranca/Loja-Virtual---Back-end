@@ -3,15 +3,20 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  Timestamp,
   ManyToOne,
   JoinColumn,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 import { Hemocentro } from './hemocentro.entity';
-import { DiasSemana } from './diassemana.entity';
+
+export enum DiaSemanaEnum {
+  Domingo = 0,
+  Segunda = 1,
+  Terca = 2,
+  Quarta = 3,
+  Quinta = 4,
+  Sexta = 5,
+  Sabado = 6,
+}
 
 @Entity()
 export class Funcionamento extends BaseEntity {
@@ -24,13 +29,13 @@ export class Funcionamento extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   horaFechamento: string;
 
-  // @ManyToOne(type => Hemocentro, hemocentro => hemocentro.funcionamento, {
-  //   cascade: true,
-  //   onDelete: 'CASCADE',
-  // })
-  // @JoinColumn({ name: 'idhemocentro' })
-  // hemocentro: Hemocentro;
+  @ManyToOne(() => Hemocentro, hemocentro => hemocentro.funcionamento, {
+    cascade: true,
+    onDelete: 'CASCADE',
+   })
+   @JoinColumn({ name: 'idhemocentro' })
+   hemocentro: Hemocentro;
 
-  @OneToMany(type => DiasSemana, diassemana => diassemana.funcionamento)
-  diassemana: DiasSemana[];
+   @Column({ type: 'int', nullable: false })
+   diaFuncionamento: DiaSemanaEnum;
 }

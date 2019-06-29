@@ -33,7 +33,7 @@ export class Compra extends BaseEntity {
   valorTotal: Double;
 
   @OneToMany(type => ItemCompra, itemcompra => itemcompra.compra)
-  itemcompra: ItemCompra;
+  itemcompra: ItemCompra[];
 
   @ManyToOne(type => Endereco, endereco => endereco.compra, {
     eager: true,
