@@ -81,13 +81,23 @@ export class ProdutoController {
     return await this.montador.pegaTodasCategorias();
   }
 
-  @Get('volumes')
+  @Get('/volumes')
   async buscaVolumes() {
     return await this.montador.pegaTodosVolumes();
   }
 
-  @Get('generos')
+  @Get('/generos')
   async buscaGeneros() {
     return await this.montador.pegaTodosGeneros();
+  }
+
+  @Get('/materiais') 
+  async buscaMateriais() {
+    return await this.montador.pegaTodosMateriais();
+  }
+
+  @Get('/tamanhos') 
+  async buscaTamanhos() {
+    return await this.montador.pegaTodosTamanhos();
   }
 }

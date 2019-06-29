@@ -807,4 +807,12 @@ export class Montador {
   async pegaTodosGeneros(): Promise<Genero[]> {
     return await this.servicoCaracteristicas.buscaTodosGeneros();
   }
+
+  async pegaTodosMateriais(): Promise<Material[]> {
+    return await this.servicoCaracteristicas.buscaTodosMateriais();
+  }
+
+  async pegaTodosTamanhos(): Promise<Tamanho[]> {
+    return await this.servicoCaracteristicas.buscaTodosTamanhos();
+  }
 }
