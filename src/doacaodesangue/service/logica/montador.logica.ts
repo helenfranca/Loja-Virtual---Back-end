@@ -173,7 +173,7 @@ export class Montador {
         TamanhoEnum[body.tamanho],
       );
       let genero: Genero = await tipo.buscaOneGenero(body.genero);
-      let volume: Volume = await tipo.buscaOneVolume(VolumeEnum[body.volume]);
+      let volume: Volume = await tipo.buscaOneVolume(body.volume);
 
       // Caso não exista...
 
@@ -256,7 +256,6 @@ export class Montador {
       } else {
         produto.volume = volume;
       }
-
       if (await this.verificaProduto(produto)) {
         return await this.servicoProduto.Create(produto);
       } else {
@@ -480,6 +479,7 @@ export class Montador {
 
   public async montaDoador(body): Promise<Doador> {
     let doador = new Doador();
+
     try {
       let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
       if (pessoa != undefined) {
@@ -576,17 +576,21 @@ export class Montador {
   public async montaDoacao(body): Promise<Doacao> {
     let doacao: Doacao = new Doacao();
     try {
-      let pessoa = await this.servicoPessoa.pessoaCpf(body);
-      let doador = await this.servicoDoador.doador(pessoa);
-      let hemocentro = await this.servicoHemocentro.hemocentro(body);
+      let pessoa: Pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
+
+      let doador: Doador = await this.servicoDoador.doador(pessoa);
+
+      let hemocentro: Hemocentro = await this.servicoHemocentro.hemocentro(
+        body,
+      );
 
       doacao.quantidade = body.quantidade;
       doacao.datadoacao = new Date().toLocaleDateString();
       doacao.doador = doador;
       doacao.hemocentro = hemocentro;
 
-      let confirma = await this.servicoDoacao.Create(doacao);
-
+      let confirma: Doacao = await this.servicoDoacao.Create(doacao);
+      // console.log(confirma);
       if (body.observacao != undefined) {
         let obs = {};
         obs['observacao'] = body.observacao;
