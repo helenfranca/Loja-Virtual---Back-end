@@ -66,7 +66,7 @@ export class Montador {
     private readonly servicoFuncionamento: FuncionamentoService,
     private readonly servicoCompra: CompraService,
     private readonly servicoCaracteristicas: CaracteristicasProdutoService,
-    private readonly servicoItemCompra: ItemCompraService
+    private readonly servicoItemCompra: ItemCompraService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -423,8 +423,8 @@ export class Montador {
       diaFunc.horaFechamento = func.fechamento;
       diaFunc.hemocentro = hemocentro;
       let idDia: DiaSemanaEnum;
-      switch(func.dia) {
-        case "Segunda": {
+      switch (func.dia) {
+        case 'Segunda': {
           idDia = DiaSemanaEnum.Segunda;
           break;
         }
@@ -484,12 +484,14 @@ export class Montador {
 
     try {
       let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
+
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
         let tiposangue = await this.servicoTipoSanguineo.buscaOne(
           body.tiposanguineo,
         );
+
         if (tiposangue != undefined) {
           doador.tiposanguineo = tiposangue;
           doador.doenca_chagas = body.chagas;
@@ -805,8 +807,8 @@ export class Montador {
       compra.pagamento = body.pagamento;
       compra.status = body.status;
       let itenscompra: ItemCompra[] = [];
-      
-      for(let ic of body.carrinho) {
+
+      for (let ic of body.carrinho) {
         let item = new ItemCompra();
         item.produto = await this.servicoProduto.readOne(ic.produto.id);
         item.quantidade = ic.quantidade;
@@ -814,7 +816,7 @@ export class Montador {
         itenscompra.push(await this.servicoItemCompra.Create(item));
       }
       compra.itemcompra = itenscompra;
-      
+
       return await this.servicoCompra.Create(compra);
     } catch (err) {
       throw new Error(
