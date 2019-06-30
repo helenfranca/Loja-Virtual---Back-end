@@ -21,7 +21,7 @@ export class AuthService {
 
   private async validate(userData): Promise<Pessoa | Administrador> {
     console.log(userData);
-    let b: any = {
+    let usuario: any = {
       nome: null,
       sobrenome: null,
       email: null,
@@ -35,14 +35,14 @@ export class AuthService {
       userData.email,
       userData.senha,
     );
-    b = pessoa;
-    let x = await this.adminService.pessoaAdmin(pessoa);
-    if (x != null) {
-      b.admin = x.matricula;
-      b.cnes = x.hemocentro.cnes;
-      return b;
+    usuario = pessoa;
+    let admin = await this.adminService.pessoaAdmin(pessoa);
+    if (admin != null) {
+      usuario.admin = admin.matricula;
+      usuario.cnes = admin.hemocentro.cnes;
+      return usuario;
     } else {
-      return b;
+      return usuario;
     }
   }
 
@@ -60,14 +60,12 @@ export class AuthService {
       let payload = `${u.nome}${u.id}`;
       const accessToken = this.jwtService.sign(payload);
 
-      let a = {
+      return {
         expires_in: 3600,
         access_token: accessToken,
         user_id: u,
         status: 200,
       };
-      console.log(a);
-      return a;
     } else {
       return {
         status: 404,
@@ -82,13 +80,6 @@ export class AuthService {
 
   async validateOAuthLogin(profile, provider: string): Promise<string | any> {
     try {
-      /*
-            // Registrando o usuário
-            let user: Pessoa = await this.userService.findByEmail(profile.emails[0].value, profile.id);
-            if (!user) {
-                this.userService.RegisterOAuthUser(profile);
-            }
-            */
       var id: string = profile.id;
       const payload = { id, provider };
 
