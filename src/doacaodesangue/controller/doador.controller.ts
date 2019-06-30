@@ -53,6 +53,7 @@ export class DoadorController {
 
   @Post('/doador')
   public createOne(@Body() body: any): Promise<Doador> {
+    console.log('hvdns');
     return this.montador.montaDoador(body);
   }
 

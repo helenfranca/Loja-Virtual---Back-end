@@ -113,7 +113,13 @@ export class Montador {
       pessoa.telefone = body.telefone;
       pessoa.senha = cripto.criptografar(body.senha);
       pessoa.status = true;
-      return this.servicoPessoa.Create(pessoa);
+
+      let existe = this.servicoPessoa.pessoaCpf(body.cpf);
+      if (existe != null) {
+        return existe;
+      } else {
+        return this.servicoPessoa.Create(pessoa);
+      }
     } catch (err) {
       return err;
     }
