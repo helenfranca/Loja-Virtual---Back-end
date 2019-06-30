@@ -13,6 +13,7 @@ import { Funcionamento } from './funcionamento.entity';
 import { Demanda } from './demanda.entity';
 import { Doacao } from './doacao.entity';
 import { Endereco } from './endereco.entity';
+import { Administrador } from './administrador.entity';
 
 @Entity()
 export class Hemocentro extends BaseEntity {
@@ -52,4 +53,7 @@ export class Hemocentro extends BaseEntity {
   })
   @JoinColumn({ name: 'idendereco' })
   endereco: Endereco;
+
+  @OneToMany(type => Administrador, administrador => administrador.hemocentro)
+  administrador: Administrador[];
 }

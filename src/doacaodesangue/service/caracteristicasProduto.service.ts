@@ -87,4 +87,16 @@ export class CaracteristicasProdutoService {
     .select("genero.*")
     .getRawMany();
   }
+
+  async buscaTodosMateriais() {
+    return Material.createQueryBuilder("material")
+    .select("material.*")
+    .getRawMany();
+  }
+
+  async buscaTodosTamanhos() {
+    return Material.createQueryBuilder("tamanho")
+    .select("tamanho.*")
+    .getRawMany();
+  }
 }

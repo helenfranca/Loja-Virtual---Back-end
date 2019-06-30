@@ -60,7 +60,7 @@ export class PessoaController {
   }
 
   @Post('/pessoa')
-  public createOne(@Body() body: any): Promise<Pessoa> {
+  public createOne(@Body() body: Pessoa): Promise<Pessoa> {
     return this.montador.montaPessoa(body);
   }
 
@@ -72,12 +72,12 @@ export class PessoaController {
   }
 
   @Put('/pessoa')
-  public updateOne(@Body() body: any) {
+  public updateOne(@Body() body: Pessoa) {
     return this.montador.alteraPessoa(body);
   }
 
   @Delete('/pessoa')
-  public deleteOne(@Body() body: any) {
+  public deleteOne(@Body() body: Pessoa) {
     return this.montador.deletaPessoa(body);
   }
 }

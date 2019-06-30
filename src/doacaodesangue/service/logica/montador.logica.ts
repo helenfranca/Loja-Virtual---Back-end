@@ -45,6 +45,7 @@ import {
 } from 'src/doacaodesangue/model/funcionamento.entity';
 import { Compra } from 'src/doacaodesangue/model/compra.entity';
 import { ItemCompra } from 'src/doacaodesangue/model/itemcompra.entity';
+import { ItemCompraService } from 'src/doacaodesangue/service/itemcompra.service';
 import { CompraService } from '../compra.service';
 
 @Injectable()
@@ -65,6 +66,7 @@ export class Montador {
     private readonly servicoFuncionamento: FuncionamentoService,
     private readonly servicoCompra: CompraService,
     private readonly servicoCaracteristicas: CaracteristicasProdutoService,
+    private readonly servicoItemCompra: ItemCompraService,
   ) {}
 
   // ~~~~~~~~~~~~~~~~~~ //
@@ -111,7 +113,13 @@ export class Montador {
       pessoa.telefone = body.telefone;
       pessoa.senha = cripto.criptografar(body.senha);
       pessoa.status = true;
-      return this.servicoPessoa.Create(pessoa);
+
+      let existe = this.servicoPessoa.pessoaCpf(body.cpf);
+      if (existe != null) {
+        return existe;
+      } else {
+        return this.servicoPessoa.Create(pessoa);
+      }
     } catch (err) {
       return err;
     }
@@ -420,7 +428,7 @@ export class Montador {
       diaFunc.horaAbertura = func.abertura;
       diaFunc.horaFechamento = func.fechamento;
       diaFunc.hemocentro = hemocentro;
-      let idDia: number;
+      let idDia: DiaSemanaEnum;
       switch (func.dia) {
         case 'Segunda': {
           idDia = DiaSemanaEnum.Segunda;
@@ -482,12 +490,14 @@ export class Montador {
 
     try {
       let pessoa = await this.servicoPessoa.pessoaCpf(body.cpf);
+
       if (pessoa != undefined) {
         doador.pessoa = pessoa;
 
         let tiposangue = await this.servicoTipoSanguineo.buscaOne(
           body.tiposanguineo,
         );
+
         if (tiposangue != undefined) {
           doador.tiposanguineo = tiposangue;
           doador.doenca_chagas = body.chagas;
@@ -639,8 +649,8 @@ export class Montador {
   public async montaDemanda(body): Promise<Demanda> {
     let demanda: Demanda = new Demanda();
     try {
-      let hemocentro: Hemocentro = await this.servicoHemocentro.readOne(
-        body.idhemocentro,
+      let hemocentro: Hemocentro = await this.servicoHemocentro.readHemocentro(
+        body.hemocentro,
       );
       let tiposangue: TipoSanguineo = await this.servicoTipoSanguineo.buscaOne(
         body.tiposanguineo,
@@ -797,15 +807,22 @@ export class Montador {
     try {
       let compra = new Compra();
       compra.valorTotal = body.valorTotal;
-      compra.pessoa = body.comprador;
+      compra.pessoa = body.pessoa;
       compra.data = body.data;
-      compra.endereco = body.enderecoEntrega;
+      compra.endereco = await this.montaEndereco(body.enderecoEntrega);
       compra.pagamento = body.pagamento;
       compra.status = body.status;
       let itenscompra: ItemCompra[] = [];
+
       for (let ic of body.carrinho) {
-        itenscompra.push(ic);
+        let item = new ItemCompra();
+        item.produto = await this.servicoProduto.readOne(ic.produto.id);
+        item.quantidade = ic.quantidade;
+        item.valoratual = item.produto.valorunitario;
+        itenscompra.push(await this.servicoItemCompra.Create(item));
       }
+      compra.itemcompra = itenscompra;
+
       return await this.servicoCompra.Create(compra);
     } catch (err) {
       throw new Error(
@@ -823,5 +840,13 @@ export class Montador {
 
   async pegaTodosGeneros(): Promise<Genero[]> {
     return await this.servicoCaracteristicas.buscaTodosGeneros();
+  }
+
+  async pegaTodosMateriais(): Promise<Material[]> {
+    return await this.servicoCaracteristicas.buscaTodosMateriais();
+  }
+
+  async pegaTodosTamanhos(): Promise<Tamanho[]> {
+    return await this.servicoCaracteristicas.buscaTodosTamanhos();
   }
 }

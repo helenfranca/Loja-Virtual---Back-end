@@ -1,6 +1,7 @@
 import { genericInterface } from './interface/generic.interface';
 import { Injectable } from '@nestjs/common';
 import { Produto } from '../model/produto.entity';
+import { ItemCompra } from '../model/itemcompra.entity';
 
 @Injectable()
 export class ProdutoService implements genericInterface<Produto> {
@@ -75,5 +76,12 @@ export class ProdutoService implements genericInterface<Produto> {
       .innerJoin('produto.genero', 'genero')
       .where('categoria.nome ILIKE :name', { name: param })
       .getRawMany();
+  }
+
+  async buscaTop3Produtos() {
+    return await ItemCompra.createQueryBuilder("item_compra")
+    .select("DISTINCT item_compra.*")
+    .take(3)
+    .getRawMany();
   }
 }
