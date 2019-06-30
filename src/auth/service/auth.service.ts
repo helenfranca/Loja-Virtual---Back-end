@@ -31,13 +31,14 @@ export class AuthService {
       return {
         expires_in: 3600,
         access_token: accessToken,
-        user_id: payload,
+        user: u,
         status: 200,
       };
     } else {
       return {
         status: 404,
         message: 'Email ou senha incorreto!',
+        access_token: "Sem Token!"
       };
     }
   }
