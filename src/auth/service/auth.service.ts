@@ -29,6 +29,7 @@ export class AuthService {
       cpf: null,
       sexo: null,
       admin: null,
+      cnes: null,
     };
     let pessoa = await this.userService.findByEmail(
       userData.email,
@@ -38,6 +39,7 @@ export class AuthService {
     let x = await this.adminService.pessoaAdmin(pessoa);
     if (x != null) {
       b.admin = x.matricula;
+      b.cnes = x.hemocentro.cnes;
       return b;
     } else {
       return b;

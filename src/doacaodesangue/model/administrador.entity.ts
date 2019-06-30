@@ -8,6 +8,7 @@ import {
   Column,
 } from 'typeorm';
 import { Pessoa } from './pessoa.entity';
+import { Hemocentro } from './hemocentro.entity';
 
 @Entity()
 export class Administrador extends BaseEntity {
@@ -20,4 +21,8 @@ export class Administrador extends BaseEntity {
   @OneToOne(type => Pessoa)
   @JoinColumn()
   pessoa: Pessoa;
+
+  @OneToOne(type => Hemocentro)
+  @JoinColumn()
+  hemocentro: Hemocentro;
 }
