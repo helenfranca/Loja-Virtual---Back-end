@@ -1,4 +1,3 @@
-
 import { Module, CacheModule } from '@nestjs/common';
 import { PessoaService } from 'src/doacaodesangue/service/pessoa.service';
 import { databaseProviders } from 'src/doacaodesangue/database/database.providers';
@@ -7,6 +6,7 @@ import { AuthController } from './controller/auth.controller';
 import { AuthService } from './service/auth.service';
 import { GoogleStrategy } from './service/google.strategy';
 import { CriptografiaService } from 'src/doacaodesangue/service/logica/criptografia.logica';
+import { AdministradorService } from 'src/doacaodesangue/service/administrador.service';
 
 const modelProvider = [...databaseProviders];
 
@@ -14,24 +14,23 @@ const modelService = [
   PessoaService,
   AuthService,
   GoogleStrategy,
-  CriptografiaService
+  CriptografiaService,
+  AdministradorService,
 ];
 
-const modelController = [
-  AuthController,
-];
+const modelController = [AuthController];
 require('dotenv').config();
 @Module({
-    imports: [
-      CacheModule.register({
-        ttl: 10,
-        max: 10,
-      }),
-      JwtModule.register({
-        secretOrPrivateKey: process.env.PRIVATE_KEY
-    })
-    ],
-    providers: [...modelProvider, ...modelService],
-    controllers: [...modelController]
-  })
+  imports: [
+    CacheModule.register({
+      ttl: 10,
+      max: 10,
+    }),
+    JwtModule.register({
+      secretOrPrivateKey: process.env.PRIVATE_KEY,
+    }),
+  ],
+  providers: [...modelProvider, ...modelService],
+  controllers: [...modelController],
+})
 export class AuthModule {}

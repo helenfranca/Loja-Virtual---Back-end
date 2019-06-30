@@ -30,6 +30,7 @@ import { CompraService } from './service/compra.service';
 import { CompraController } from './controller/compra.controller';
 import { CaracteristicasProdutoService } from './service/caracteristicasProduto.service';
 import { ItemCompraService } from './service/itemcompra.service';
+import { AdministradorService } from './service/administrador.service';
 
 const modelProvider = [...databaseProviders];
 
@@ -55,7 +56,8 @@ const modelService = [
   FuncionamentoService,
   CompraService,
   CaracteristicasProdutoService,
-  ItemCompraService
+  ItemCompraService,
+  AdministradorService,
 ];
 
 const modelController = [
@@ -66,7 +68,7 @@ const modelController = [
   DoadorController,
   DemandaController,
   EnderecoController,
-  CompraController
+  CompraController,
 ];
 
 @Module({
