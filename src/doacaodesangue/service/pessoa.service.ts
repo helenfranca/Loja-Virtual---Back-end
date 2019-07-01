@@ -5,10 +5,7 @@ import { Pessoa } from '../model/pessoa.entity';
 @Injectable()
 export class PessoaService implements genericInterface<Pessoa> {
   async findByEmail(email: string, senha: string): Promise<Pessoa> {
-    console.log(email, senha);
-    let a = await Pessoa.findOne({ email: email, senha: senha });
-    console.log(a);
-    return a;
+    return await Pessoa.findOne({ email: email, senha: senha });
   }
 
   async readAll(): Promise<Pessoa[]> {

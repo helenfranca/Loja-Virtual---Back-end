@@ -20,7 +20,6 @@ export class AuthService {
   ) {}
 
   private async validate(userData): Promise<Pessoa | Administrador> {
-    console.log(userData);
     let usuario: any = {
       nome: null,
       sobrenome: null,
@@ -30,16 +29,31 @@ export class AuthService {
       sexo: null,
       admin: null,
       cnes: null,
+      hemocentro: null,
     };
-    let pessoa = await this.userService.findByEmail(
-      userData.email,
-      userData.senha,
-    );
+
+    let pessoa;
+    let admin;
+    let administrador: Administrador;
+
+    if (userData.email.search('@') != -1) {
+      pessoa = await this.userService.findByEmail(
+        userData.email,
+        userData.senha,
+      );
+    } else {
+      administrador = await this.adminService.adminMatricula(userData.email);
+      if (administrador != null) {
+        pessoa = await this.userService.readOne(administrador.pessoa.id);
+      }
+    }
     usuario = pessoa;
-    let admin = await this.adminService.pessoaAdmin(pessoa);
+    admin = await this.adminService.pessoaAdmin(pessoa);
+
     if (admin != null) {
       usuario.admin = admin.matricula;
       usuario.cnes = admin.hemocentro.cnes;
+      usuario.hemocentro = admin.hemocentro.nome;
       return usuario;
     } else {
       return usuario;
@@ -51,21 +65,24 @@ export class AuthService {
       email: null,
       senha: null,
     };
+
     let a = new CriptografiaService();
     usuario.email = user.login;
     usuario.senha = a.criptografar(user.senha);
     let u: any = await this.validate(usuario);
-
+    console.log(u);
     if (u != null) {
       let payload = `${u.nome}${u.id}`;
       const accessToken = this.jwtService.sign(payload);
 
-      return {
+      let a = {
         expires_in: 3600,
         access_token: accessToken,
         user_id: u,
         status: 200,
       };
+      // console.log(a);
+      return a;
     } else {
       return {
         status: 404,

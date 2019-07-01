@@ -6,9 +6,7 @@ import { Administrador } from '../model/administrador.entity';
 @Injectable()
 export class AdministradorService implements genericInterface<Administrador> {
   async pessoaAdmin(pessoa: Pessoa): Promise<Administrador> {
-    // console.log(email, senha);
     let a = await Administrador.findOne({ pessoa: pessoa });
-    console.log(a);
     return a;
   }
 
