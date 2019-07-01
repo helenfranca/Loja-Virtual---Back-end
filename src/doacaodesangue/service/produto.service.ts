@@ -8,13 +8,14 @@ export class ProdutoService implements genericInterface<Produto> {
   readAll(): Promise<Produto[]> {
     return Produto.createQueryBuilder('produto')
       .select(
-        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero, imagem.url as urlimagem',
       )
       .innerJoin('produto.categoria', 'categoria')
       .innerJoin('produto.tamanho', 'tamanho')
       .innerJoin('produto.volume', 'volume')
       .innerJoin('produto.material', 'material')
       .innerJoin('produto.genero', 'genero')
+      .innerJoin('produto.imagem','imagem')
       .getRawMany();
   }
 
