@@ -57,14 +57,8 @@ export class Relatorio {
       }
       relatorio.push(produto);
     }
-    relatorio.sort(function (a,b) {
-      if (a.produto.quantidade < b.produto.quantidade) {
-        return -1;
-      }
-      if (a.produto.quantidade > b.produto.quandidade) {
-        return 1;
-      }
-      return 0;
+    relatorio = relatorio.sort(function (a,b) {
+      return b.porcentagem - a.porcentagem;
     });
     return relatorio.slice(0,3);
   }
