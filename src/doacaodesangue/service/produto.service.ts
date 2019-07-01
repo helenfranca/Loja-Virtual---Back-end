@@ -79,9 +79,11 @@ export class ProdutoService implements genericInterface<Produto> {
   }
 
   async buscaTop3Produtos() {
-    return await ItemCompra.createQueryBuilder("item_compra")
-    .select("DISTINCT item_compra.*")
-    .take(3)
+    return await Produto.createQueryBuilder("produto")
+    .select("produto.id, produto.nome, produto.valorunitario, itemcompra.quantidade, imagem.url")
+    .innerJoin('produto.itemcompra','itemcompra')
+    .innerJoin('produto.imagem','imagem')
+    .orderBy('produto.id')
     .getRawMany();
   }
 }

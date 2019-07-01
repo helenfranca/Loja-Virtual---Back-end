@@ -17,6 +17,7 @@ export class AuthService {
     private readonly userService: PessoaService,
     private readonly adminService: AdministradorService,
     private readonly jwtService: JwtService,
+    private readonly criptoService: CriptografiaService,
   ) {}
 
   private async validate(userData): Promise<Pessoa | Administrador> {
@@ -65,7 +66,6 @@ export class AuthService {
       email: null,
       senha: null,
     };
-
     let a = new CriptografiaService();
     usuario.email = user.login;
     usuario.senha = a.criptografar(user.senha);
@@ -85,6 +85,7 @@ export class AuthService {
       return {
         status: 404,
         message: 'Email ou senha incorreto!',
+        access_token: 'Sem Token!',
       };
     }
   }

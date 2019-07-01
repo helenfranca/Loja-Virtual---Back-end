@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controller/auth.controller';
 import { AuthService } from './service/auth.service';
 import { GoogleStrategy } from './service/google.strategy';
+import { CriptografiaService } from 'src/doacaodesangue/service/logica/criptografia.logica';
 import { AdministradorService } from 'src/doacaodesangue/service/administrador.service';
 
 const modelProvider = [...databaseProviders];
@@ -13,6 +14,7 @@ const modelService = [
   PessoaService,
   AuthService,
   GoogleStrategy,
+  CriptografiaService,
   AdministradorService,
 ];
 
