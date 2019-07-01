@@ -66,7 +66,7 @@ export class PessoaController {
 
   @Post('/pessoa/endereco')
   public async createEndereco(@Body() body: any): Promise<Pessoa> {
-    let pessoa: Pessoa = await this.montador.leUmaPessoa(body.idPessoa);
+    let pessoa: Pessoa = await this.montador.leUmaPessoa(body.id);
     let enderecoNovo: Endereco = await this.montador.montaEndereco(body);
     return this.montador.pessoa_endereco(pessoa, enderecoNovo);
   }
