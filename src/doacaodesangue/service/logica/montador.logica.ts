@@ -82,7 +82,6 @@ export class Montador {
   }
 
   public leporCpf(cpf): Promise<Pessoa> {
-    console.log(cpf);
     return this.servicoPessoa.pessoaCpf(cpf);
   }
 
@@ -600,7 +599,7 @@ export class Montador {
       doacao.hemocentro = hemocentro;
 
       let confirma: Doacao = await this.servicoDoacao.Create(doacao);
-      // console.log(confirma);
+
       if (body.observacao != undefined) {
         let obs = {};
         obs['observacao'] = body.observacao;

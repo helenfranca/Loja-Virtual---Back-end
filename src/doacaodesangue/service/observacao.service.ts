@@ -14,7 +14,6 @@ export class ObservacaoService implements genericInterface<Observacao> {
 
   async Create(body: any): Promise<Observacao> {
     let observacao = new Observacao();
-    console.log('obs');
     try {
       observacao.descricao = body.observacao;
       observacao.doacao = body.iddoacao;

@@ -70,7 +70,6 @@ export class AuthService {
     usuario.email = user.login;
     usuario.senha = a.criptografar(user.senha);
     let u: any = await this.validate(usuario);
-    console.log(u);
     if (u != null) {
       let payload = `${u.nome}${u.id}`;
       const accessToken = this.jwtService.sign(payload);
@@ -81,7 +80,6 @@ export class AuthService {
         user_id: u,
         status: 200,
       };
-      // console.log(a);
       return a;
     } else {
       return {
