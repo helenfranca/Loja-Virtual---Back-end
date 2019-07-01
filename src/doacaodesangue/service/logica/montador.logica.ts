@@ -152,8 +152,10 @@ export class Montador {
   //      PRODUTO       //
   // ~~~~~~~~~~~~~~~~~~ //
 
-  public pegaProdutos(): Promise<Produto[]> {
-    return this.servicoProduto.readAll();
+  public async pegaProdutos(): Promise<Produto[]> {
+    let bla: Produto[] = await this.servicoProduto.readAll();
+    console.log('prod:', bla);
+    return bla;
   }
 
   public leUmProduto(id): Promise<Produto> {
