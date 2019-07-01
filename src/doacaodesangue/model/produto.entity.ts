@@ -35,7 +35,7 @@ export class Produto extends BaseEntity {
   valorunitario: Double;
 
   @OneToMany(() => ItemCompra, itemcompra => itemcompra.produto)
-  itemcompra: ItemCompra;
+  itemcompra: ItemCompra[];
 
   @ManyToOne(() => Categoria)
   @JoinColumn({ name: 'idcategoria' })
