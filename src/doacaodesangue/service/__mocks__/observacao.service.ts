@@ -8,7 +8,7 @@ export class ObservacaoService implements genericInterface<Observacao> {
   async readAll(): Promise<Observacao[]> {
     let observacao = new Observacao();
     observacao.id = 0;
-    observacao.descricao = "Tudo certo!";
+    observacao.descricao = 'Tudo certo!';
     observacao.doacao = new Doacao();
     return [observacao, observacao];
   }
@@ -16,35 +16,28 @@ export class ObservacaoService implements genericInterface<Observacao> {
   async readOne(id: number): Promise<Observacao> {
     let observacao = new Observacao();
     observacao.id = 0;
-    observacao.descricao = "Tudo certo!";
+    observacao.descricao = 'Tudo certo!';
     observacao.doacao = new Doacao();
-    if (id === observacao.id)
-      return observacao;
+    if (id === observacao.id) return observacao;
     else return new Observacao();
   }
 
   async Create(body: any): Promise<Observacao> {
     let observacao = new Observacao();
     observacao.id = 0;
-    observacao.descricao = "Tudo certo!";
+    observacao.descricao = 'Tudo certo!';
     observacao.doacao = new Doacao();
     return observacao;
   }
 
   async Drop(body: any): Promise<Observacao> {
-    let observacao = new Observacao();
-    observacao.id = 0;
-    observacao.descricao = "Tudo certo!";
-    observacao.doacao = new Doacao();
-    return observacao;
+    let observacaoa = await this.Create(body);
+
+    return observacaoa;
   }
   async Update(body: any): Promise<Observacao> {
-    let observacao = new Observacao();
-    observacao.id = 0;
-    observacao.descricao = "Tudo certo!";
-    observacao.doacao = new Doacao();
-    return observacao;
-  }
+    let observacaob = await this.Create(body);
 
-  
+    return observacaob;
+  }
 }

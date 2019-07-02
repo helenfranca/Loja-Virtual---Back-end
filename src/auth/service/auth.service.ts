@@ -21,17 +21,7 @@ export class AuthService {
   ) {}
 
   private async validate(userData): Promise<Pessoa | Administrador> {
-    let usuario: any = {
-      nome: null,
-      sobrenome: null,
-      email: null,
-      datanascimento: null,
-      cpf: null,
-      sexo: null,
-      admin: null,
-      cnes: null,
-      hemocentro: null,
-    };
+    let usuario;
 
     let pessoa;
     let admin;

@@ -35,10 +35,10 @@ export class DoadorService implements genericInterface<Doador> {
 
   async readDoador(cpf: string): Promise<Doador> {
     return await Doador.createQueryBuilder('doador')
-    .select('doador.*')
-    .innerJoin('doador.pessoa','pessoa')
-    .where('pessoa.cpf = :c', {c: cpf})
-    .getRawOne();
+      .select('doador.*')
+      .innerJoin('doador.pessoa', 'pessoa')
+      .where('pessoa.cpf = :c', { c: cpf })
+      .getRawOne();
   }
   async Drop(body: any): Promise<Doador> {
     return await Doador.save(body);

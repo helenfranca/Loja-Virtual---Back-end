@@ -284,7 +284,7 @@ export class Montador {
     }
   }
 
-  async verificaProduto(produto: Produto): Promise<Boolean> {
+  async verificaProduto(produto: Produto): Promise<boolean> {
     if (
       produto.imagem &&
       produto.material &&

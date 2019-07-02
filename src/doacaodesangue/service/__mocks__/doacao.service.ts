@@ -30,8 +30,7 @@ export class DoacaoService implements genericInterface<Doacao> {
     doacao.observacao = new Observacao();
     if (id === doacao.id) {
       return doacao;
-    }
-    else {
+    } else {
       return new Doacao();
     }
   }
@@ -49,15 +48,7 @@ export class DoacaoService implements genericInterface<Doacao> {
   }
 
   async Drop(body: any): Promise<Doacao> {
-    let doacao: Doacao = new Doacao();
-    doacao.id = 0;
-    doacao.quantidade = 12;
-    doacao.datadoacao = new Date().toLocaleDateString();
-    doacao.doador = new Doador();
-    doacao.doador.id = 0;
-    doacao.hemocentro = new Hemocentro();
-    doacao.observacao = new Observacao();
-    return doacao;
+    throw new Error('Não é possível deletar doação!');
   }
 
   //Altera a quantidade de sangue doada
@@ -84,11 +75,9 @@ export class DoacaoService implements genericInterface<Doacao> {
     doacao.hemocentro = new Hemocentro();
     doacao.observacao = new Observacao();
     if (id === doacao.doador.id) {
-      return [doacao,doacao,doacao];
-    }
-    else {
+      return [doacao, doacao, doacao];
+    } else {
       return [new Doacao()];
     }
   }
-
-  }
+}
