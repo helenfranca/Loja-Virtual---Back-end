@@ -27,6 +27,15 @@ export class DoacaoService implements genericInterface<Doacao> {
       .getRawOne();
   }
 
+  async buscaDoacoesPorCpf(cpf:string): Promise<Doacao[]>{
+    return await Doacao.createQueryBuilder('doacao')
+    .select('doacao.*')
+    .innerJoin('doacao.doador','doador')
+    .innerJoin('doador.pessoa','pessoa')
+    .where('pessoa.cpf = :c',{c: cpf})
+    .getRawMany();
+  }
+
   async Create(body: any): Promise<Doacao> {
     try {
       return await Doacao.save(body);

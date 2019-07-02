@@ -57,6 +57,21 @@ export class DoacaoController {
     }
   }
 
+  @Get('/doacao/pessoa/:cpf')
+  async buscarDoacoesPorCPF(@Res() res, @Param() param){
+    try {
+      let doacoes: Doacao[] = await this.montador.consultaDoacoesPorCpf(param.cpf);
+      if (doacoes != undefined) {
+        res.status(HttpStatus.OK).send(doacoes);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send('Nenhuma doação encontrada na busca');
+      }
+    } catch (err) {
+      res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+    }
+  }
   @Post('/doacao')
   public createOne(@Body() body: any): Promise<Doacao> {
     return this.montador.montaDoacao(body);

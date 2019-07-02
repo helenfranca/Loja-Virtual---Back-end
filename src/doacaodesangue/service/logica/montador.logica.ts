@@ -592,6 +592,9 @@ export class Montador {
     return this.servicoDoacao.readAll();
   }
 
+  public async consultaDoacoesPorCpf(cpf) {
+    return await this.servicoDoacao.buscaDoacoesPorCpf(cpf);
+  }
   public leUmaDoacao(id): Promise<Doacao> {
     return this.servicoDoacao.readOne(id);
   }
