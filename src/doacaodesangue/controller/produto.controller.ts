@@ -7,6 +7,7 @@ import {
   Body,
   Post,
   Query,
+  Put,
 } from '@nestjs/common';
 import { Produto } from '../model/produto.entity';
 import { ApiUseTags } from '@nestjs/swagger';
@@ -61,6 +62,11 @@ export class ProdutoController {
   @Post('/produto')
   public createOne(@Body() body: any) {
     return this.montador.montaProduto(body);
+  }
+
+  @Put('/produto')
+  public deleteOne(@Body() body: Produto) {
+    return this.montador.removeProduto(body);
   }
 
   @Get('/camisas')

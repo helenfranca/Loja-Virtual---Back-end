@@ -119,7 +119,7 @@ export class Montador {
       pessoa.telefone = body.telefone;
       pessoa.senha = cripto.criptografar(body.senha);
       pessoa.status = true;
-      
+
       let existe = await this.servicoPessoa.pessoaCpf(body.cpf);
       if (existe != null) {
         return existe;
@@ -160,9 +160,11 @@ export class Montador {
   // ~~~~~~~~~~~~~~~~~~ //
 
   public async pegaProdutos(): Promise<Produto[]> {
-    let bla: Produto[] = await this.servicoProduto.readAll();
-    console.log('prod:', bla);
-    return bla;
+    let lista: Produto[] = await this.servicoProduto.readAll();
+    return lista;
+  }
+  public async removeProduto(prod: Produto) {
+    return await this.servicoProduto.Drop(prod);
   }
 
   public leUmProduto(id): Promise<Produto> {

@@ -35,8 +35,16 @@ export class ProdutoService implements genericInterface<Produto> {
     }
   }
 
-  Drop(body: any): Promise<Produto> {
-    throw new Error('Method not implemented.');
+  async Drop(body: any): Promise<Produto> {
+    try {
+      return await Produto.remove(body);
+    }
+    catch(err) {
+      throw new Error(
+        `Erro ao excluir Produto \n Erro: ${err.name}\n Mensagem: ${
+          err.message}`,
+      );
+    }
   }
 
   async Update(body: any): Promise<Produto> {
