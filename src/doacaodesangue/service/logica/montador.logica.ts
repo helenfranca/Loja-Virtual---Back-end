@@ -495,6 +495,9 @@ export class Montador {
     return this.servicoDoador.readOne(id);
   }
 
+  public consultaDoadorPorCpf(cpf): Promise<Doador> {
+    return this.servicoDoador.readDoador(cpf);
+  }
   public async montaDoador(body): Promise<Doador> {
     let doador = new Doador();
 

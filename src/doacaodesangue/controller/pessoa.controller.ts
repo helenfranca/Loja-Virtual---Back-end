@@ -14,6 +14,8 @@ import { Pessoa } from '../model/pessoa.entity';
 import { ApiUseTags } from '@nestjs/swagger';
 import { Montador } from '../service/logica/montador.logica';
 import { Endereco } from '../model/endereco.entity';
+import { async } from 'rxjs/internal/scheduler/async';
+import { Doador } from '../model/doador.entity';
 
 @ApiUseTags('Pessoa')
 @Controller()
@@ -35,6 +37,22 @@ export class PessoaController {
           .status(HttpStatus.NOT_FOUND)
 
           .send('Nenhum usuário encontrado na busca');
+      }
+    } catch (err) {
+      res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+    }
+  }
+
+  @Get('/pessoa/doador/:cpf')
+  async buscaDoadorPorCPF(@Res() res, @Param() cpf){
+    try {
+      let doador: Doador = await this.montador.consultaDoadorPorCpf(cpf.cpf);
+      if (doador != undefined) {
+        res.status(HttpStatus.OK).send(doador);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send('Nenhum doador encontrado na busca');
       }
     } catch (err) {
       res.status(HttpStatus.BAD_GATEWAY).send(err.message);
