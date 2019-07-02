@@ -91,8 +91,9 @@ export class Montador {
     return this.servicoPessoa.Update(pessoa);
   }
 
-  public montaPessoa(body: Pessoa) {
+  public async montaPessoa(body: Pessoa) {
     var moment = require('moment');
+    var validarCpf = require('validar-cpf');
     var data = moment(body.datanascimento, 'DD/MM/YYYY');
     //Feito isso basta definir o formato de saída:
 
@@ -101,19 +102,25 @@ export class Montador {
     try {
       pessoa.nome = body.nome;
       pessoa.sobrenome = body.sobrenome;
-
       pessoa.datanascimento = data.format('YYYY-MM-DD');
 
       //Validar CPF
       pessoa.cpf = body.cpf;
+      pessoa.cpf.replace('.','');
+      pessoa.cpf.replace('-', '');
 
+      if (!validarCpf(pessoa.cpf)) {
+        return {
+          message: "CPF inválido"
+        }
+      }
       pessoa.sexo = body.sexo;
       pessoa.email = body.email;
       pessoa.telefone = body.telefone;
       pessoa.senha = cripto.criptografar(body.senha);
       pessoa.status = true;
-
-      let existe = this.servicoPessoa.pessoaCpf(body.cpf);
+      
+      let existe = await this.servicoPessoa.pessoaCpf(body.cpf);
       if (existe != null) {
         return existe;
       } else {
