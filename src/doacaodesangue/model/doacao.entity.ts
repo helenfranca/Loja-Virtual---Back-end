@@ -24,6 +24,7 @@ export class Doacao extends BaseEntity {
   quantidade: number;
 
   @ManyToOne(type => Doador, doador => doador.doacao, {
+    eager: true,
     cascade: true,
     onDelete: 'CASCADE',
   })
@@ -31,12 +32,17 @@ export class Doacao extends BaseEntity {
   doador: Doador;
 
   @ManyToOne(type => Hemocentro, hemocentro => hemocentro.doacao, {
+    eager: true,
     cascade: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'idhemocentro' })
   hemocentro: Hemocentro;
 
-  @OneToOne(type => Observacao, observacao => observacao.doacao)
+  @OneToOne(type => Observacao, observacao => observacao.doacao, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   observacao: Observacao;
 }
