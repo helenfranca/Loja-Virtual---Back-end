@@ -8,14 +8,14 @@ export class ProdutoService implements genericInterface<Produto> {
   readAll(): Promise<Produto[]> {
     return Produto.createQueryBuilder('produto')
       .select(
-        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero, imagem.url as urlimagem',
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero, imagem.url as url',
       )
       .innerJoin('produto.categoria', 'categoria')
       .innerJoin('produto.tamanho', 'tamanho')
       .innerJoin('produto.volume', 'volume')
       .innerJoin('produto.material', 'material')
       .innerJoin('produto.genero', 'genero')
-      .innerJoin('produto.imagem','imagem')
+      .innerJoin('produto.imagem', 'imagem')
       .getRawMany();
   }
 
@@ -80,11 +80,13 @@ export class ProdutoService implements genericInterface<Produto> {
   }
 
   async buscaTop3Produtos() {
-    return await Produto.createQueryBuilder("produto")
-    .select("produto.id, produto.nome, produto.valorunitario, itemcompra.quantidade, imagem.url")
-    .innerJoin('produto.itemcompra','itemcompra')
-    .innerJoin('produto.imagem','imagem')
-    .orderBy('produto.id')
-    .getRawMany();
+    return await Produto.createQueryBuilder('produto')
+      .select(
+        'produto.id, produto.nome, produto.valorunitario, itemcompra.quantidade, imagem.url',
+      )
+      .innerJoin('produto.itemcompra', 'itemcompra')
+      .innerJoin('produto.imagem', 'imagem')
+      .orderBy('produto.id')
+      .getRawMany();
   }
 }

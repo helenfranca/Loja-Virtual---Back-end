@@ -27,7 +27,6 @@ export class PessoaController {
   @Get('/pessoa/:cpf')
   async buscaCPF(@Res() res, @Param() cpf) {
     try {
-      console.log('por cpf');
       let pessoa: Pessoa = await this.montador.leporCpf(cpf.cpf);
       if (pessoa != undefined) {
         res.status(HttpStatus.OK).send(pessoa);

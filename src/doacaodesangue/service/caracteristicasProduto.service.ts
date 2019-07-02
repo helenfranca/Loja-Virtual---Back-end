@@ -71,32 +71,32 @@ export class CaracteristicasProdutoService {
   }
 
   async buscaTodasCategorias() {
-    return Categoria.createQueryBuilder("categoria")
-    .select("categoria.*")
-    .getRawMany();
+    return Categoria.createQueryBuilder('categoria')
+      .select('categoria.*')
+      .getRawMany();
   }
 
   async buscaTodosVolumes() {
-    return Volume.createQueryBuilder("volume")
-    .select("volume.*")
-    .getRawMany();
+    return Volume.createQueryBuilder('volume')
+      .select('volume.*')
+      .getRawMany();
   }
 
   async buscaTodosGeneros() {
-    return Genero.createQueryBuilder("genero")
-    .select("genero.*")
-    .getRawMany();
+    return Genero.createQueryBuilder('genero')
+      .select('genero.*')
+      .getRawMany();
   }
 
   async buscaTodosMateriais() {
-    return Material.createQueryBuilder("material")
-    .select("material.*")
-    .getRawMany();
+    return Material.createQueryBuilder('material')
+      .select('material.*')
+      .getRawMany();
   }
 
   async buscaTodosTamanhos() {
-    return Material.createQueryBuilder("tamanho")
-    .select("tamanho.*")
-    .getRawMany();
+    return Tamanho.createQueryBuilder('tamanho')
+      .select('tamanho.*')
+      .getRawMany();
   }
 }

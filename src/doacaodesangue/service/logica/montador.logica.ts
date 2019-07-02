@@ -82,7 +82,6 @@ export class Montador {
   }
 
   public leporCpf(cpf): Promise<Pessoa> {
-    console.log(cpf);
     return this.servicoPessoa.pessoaCpf(cpf);
   }
 
@@ -153,8 +152,10 @@ export class Montador {
   //      PRODUTO       //
   // ~~~~~~~~~~~~~~~~~~ //
 
-  public pegaProdutos(): Promise<Produto[]> {
-    return this.servicoProduto.readAll();
+  public async pegaProdutos(): Promise<Produto[]> {
+    let bla: Produto[] = await this.servicoProduto.readAll();
+    console.log('prod:', bla);
+    return bla;
   }
 
   public leUmProduto(id): Promise<Produto> {
@@ -600,7 +601,7 @@ export class Montador {
       doacao.hemocentro = hemocentro;
 
       let confirma: Doacao = await this.servicoDoacao.Create(doacao);
-      // console.log(confirma);
+
       if (body.observacao != undefined) {
         let obs = {};
         obs['observacao'] = body.observacao;
