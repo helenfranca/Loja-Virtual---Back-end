@@ -106,13 +106,13 @@ export class Montador {
 
       //Validar CPF
       pessoa.cpf = body.cpf;
-      pessoa.cpf.replace('.','');
-      pessoa.cpf.replace('-', '');
+      pessoa.cpf = pessoa.cpf.replace('.', '');
+      pessoa.cpf = pessoa.cpf.replace('-', '');
 
       if (!validarCpf(pessoa.cpf)) {
         return {
-          message: "CPF inválido"
-        }
+          message: 'CPF inválido',
+        };
       }
       pessoa.sexo = body.sexo;
       pessoa.email = body.email;
@@ -797,7 +797,7 @@ export class Montador {
         let municipio = await this.servicoMunicipio.readOne(body.municipio);
         bairroNew.nome = body.bairro;
         bairroNew.municipio = municipio;
-        bairroNew.nome = body.bairro;
+
         return await this.servicoBairro.Create(bairroNew);
       } else {
         return bairroNovo;

@@ -54,9 +54,9 @@ export class ConvocacaoLogica {
       mailOptions.html = html;
       transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
-          error;
+          console.log(error);
         } else {
-          info.response;
+          console.log(info.response);
         }
       });
       i = i + 1;

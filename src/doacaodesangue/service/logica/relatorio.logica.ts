@@ -26,7 +26,7 @@ export class Relatorio {
     let qtdProdutos: number[] = [];
     let valorProdutos: Double[] = [];
     let nomeProdutos: string[] = [];
-    let urlProdutos: string[] = []
+    let urlProdutos: string[] = [];
     let totalProdutos = 0;
     for (let ic of produtos) {
       totalProdutos += ic.quantidade;
@@ -36,30 +36,31 @@ export class Relatorio {
         valorProdutos.push(ic.valorunitario);
         nomeProdutos.push(ic.nome);
         urlProdutos.push(ic.url);
-      }
-      else {
+      } else {
         let ind = idProdutos.indexOf(ic.id);
-        qtdProdutos[ind] += ic.quantidade
+        qtdProdutos[ind] += ic.quantidade;
       }
     }
 
     let relatorio = [];
     for (let prod of idProdutos) {
       let produto = {
-        produto: {id: prod,
-                  nome: nomeProdutos[idProdutos.indexOf(prod)],
-                  valor: valorProdutos[idProdutos.indexOf(prod)]
-                  },
-        imagem: {
-                  url: urlProdutos[idProdutos.indexOf(prod)]
+        produto: {
+          id: prod,
+          nome: nomeProdutos[idProdutos.indexOf(prod)],
+          valor: valorProdutos[idProdutos.indexOf(prod)],
         },
-        porcentagem: (qtdProdutos[idProdutos.indexOf(prod)]/totalProdutos)*100
-      }
+        imagem: {
+          url: urlProdutos[idProdutos.indexOf(prod)],
+        },
+        porcentagem:
+          (qtdProdutos[idProdutos.indexOf(prod)] / totalProdutos) * 100,
+      };
       relatorio.push(produto);
     }
-    relatorio = relatorio.sort(function (a,b) {
-      return b.porcentagem - a.porcentagem;
+    relatorio = relatorio.sort(function(a, b) {
+      return this.b.porcentagem - this.a.porcentagem;
     });
-    return relatorio.slice(0,3);
+    return relatorio.slice(0, 3);
   }
 }
