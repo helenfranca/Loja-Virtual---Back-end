@@ -811,7 +811,9 @@ export class Montador {
   public async buscarCompra(id: any): Promise<Compra> {
     return this.servicoCompra.readOne(id);
   }
-
+  public async consultaComprasPorID(id: number) {
+    return this.servicoCompra.buscaListaCompras(id);
+  }
   public async efetuarCompra(compra: any): Promise<Compra> {
     return this.servicoCompra.Create(compra);
   }

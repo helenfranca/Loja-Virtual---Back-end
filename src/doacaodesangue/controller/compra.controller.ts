@@ -38,7 +38,23 @@ import {
         res.status(HttpStatus.BAD_GATEWAY).send(err.message);
       }
     }
-  
+    
+    @Get('/compra/pessoa/:id')
+    public async buscaTodasCompraDoCliente(@Res() res, @Param() param) {
+      try {
+        let compra = await this.montador.consultaComprasPorID(param.id);
+        if (compra != undefined) {
+          res.status(HttpStatus.OK).send(compra);
+        } else {
+          res
+            .status(HttpStatus.NOT_FOUND)
+            .send('Lista de compras não foi encontrada');
+        }
+      } catch (err) {
+        res.status(HttpStatus.BAD_GATEWAY).send(err.message);
+      }
+    }
+
     @Post('/compra')
     public createOne(@Body() body: any): Promise<Compra> {
       return this.montador.montaCompra(body);

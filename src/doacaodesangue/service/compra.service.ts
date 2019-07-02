@@ -48,4 +48,13 @@ export class CompraService implements genericInterface<Compra> {
   Update(body: any): Promise<Compra> {
     throw new Error('Method not implemented.');
   }
+
+  async buscaListaCompras(idcomprador:number) {
+    return Compra.createQueryBuilder('compra')
+    .select('compra.*')
+    .innerJoin('compra.itemcompra','ic')
+    .innerJoin('compra.pessoa','pessoa')
+    .where('pessoa.id = :id',{id: idcomprador})
+    .getRawMany();
+  }
 }
