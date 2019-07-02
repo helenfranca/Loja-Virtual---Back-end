@@ -18,11 +18,17 @@ export class Administrador extends BaseEntity {
   @Column({ type: 'varchar', length: 30, nullable: false })
   matricula: string;
 
-  @OneToOne(type => Pessoa)
+  @OneToOne(type => Pessoa, {
+    eager: true,
+    cascade: true,
+  })
   @JoinColumn()
   pessoa: Pessoa;
 
-  @OneToOne(type => Hemocentro)
+  @OneToOne(type => Hemocentro, {
+    eager: true,
+    cascade: true,
+  })
   @JoinColumn()
   hemocentro: Hemocentro;
 }

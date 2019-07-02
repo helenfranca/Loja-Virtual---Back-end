@@ -18,8 +18,8 @@ import { Relatorio } from '../service/logica/relatorio.logica';
 export class ProdutoController {
   constructor(
     private readonly montador: Montador,
-    private readonly relatorio: Relatorio
-    ) {}
+    private readonly relatorio: Relatorio,
+  ) {}
   @Get('/produto')
   root(): Promise<Produto[]> {
     return this.montador.pegaProdutos();
@@ -93,12 +93,12 @@ export class ProdutoController {
     return await this.montador.pegaTodosGeneros();
   }
 
-  @Get('/materiais') 
+  @Get('/materiais')
   async buscaMateriais() {
     return await this.montador.pegaTodosMateriais();
   }
 
-  @Get('/tamanhos') 
+  @Get('/tamanhos')
   async buscaTamanhos() {
     return await this.montador.pegaTodosTamanhos();
   }
