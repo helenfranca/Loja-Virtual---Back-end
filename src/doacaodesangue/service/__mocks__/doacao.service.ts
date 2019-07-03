@@ -53,14 +53,7 @@ export class DoacaoService implements genericInterface<Doacao> {
 
   //Altera a quantidade de sangue doada
   async Update(body: any): Promise<Doacao> {
-    let doacao: Doacao = new Doacao();
-    doacao.id = 0;
-    doacao.quantidade = 12;
-    doacao.datadoacao = new Date().toLocaleDateString();
-    doacao.doador = new Doador();
-    doacao.doador.id = 0;
-    doacao.hemocentro = new Hemocentro();
-    doacao.observacao = new Observacao();
+    let doacao: Doacao = await this.Create(body);
     return doacao;
   }
 

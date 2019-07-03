@@ -71,18 +71,9 @@ export class HemocentroService implements genericInterface<Hemocentro> {
       },
     ];
   }
+
   async hemocentro(body) {
-    let hemo = new Hemocentro();
-    hemo.doacao = [];
-    hemo.email = 'hemo@hemo.gov.es.br';
-    hemo.funcionamento = [new Funcionamento()];
-    hemo.id = 0;
-    hemo.nome = 'HemoES';
-    hemo.senha = 'HemoPass';
-    hemo.status = true;
-    hemo.telefone = '02732145678';
-    hemo.cnes = '1232313';
-    hemo.demanda = [];
+    let hemo = await this.Create(body);
     return hemo;
   }
 }
