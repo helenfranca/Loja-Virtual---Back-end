@@ -59,7 +59,7 @@ export class Relatorio {
       relatorio.push(produto);
     }
     relatorio = relatorio.sort(function(a, b) {
-      return this.b.porcentagem - this.a.porcentagem;
+      return b.porcentagem - a.porcentagem;
     });
     return relatorio.slice(0, 3);
   }
