@@ -14,15 +14,24 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
-  const allowedOrigins = ["http://localhost:3000",
-                      "http://localhost:4200",
-                      "http://localhost"];
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:4200',
+    'http://localhost',
+    'https://tuntum.herokuapp.com',
+  ];
   const optionsCors: cors.CorsOptions = {
-    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+    allowedHeaders: [
+      'Origin',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'X-Access-Token',
+    ],
     credentials: true,
-    methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+    methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
     origin: allowedOrigins,
-    preflightContinue: false
+    preflightContinue: false,
   };
   app.use(cors(optionsCors));
   await app.listen(parseInt(process.env.PORT) || 3000);
