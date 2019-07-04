@@ -312,31 +312,32 @@ export class Montador {
       produto.valorunitario = body.valorunitario;
 
       let tipo = new CaracteristicasProdutoService();
-      let categoria = await tipo.buscaOneCategoria(body.idcategoria);
+      let categoria = await tipo.buscaOneCategoria(body.categoria);
 
       if (categoria != undefined) {
         produto.categoria = categoria;
-
-        let material = await tipo.buscaOneMaterial(body.idmaterial);
-        if (material != undefined) {
-          produto.material = material;
-
-          let tamanho = await tipo.buscaOneTamanho(body.idtamanho);
-          if (tamanho != undefined) {
-            produto.tamanho = tamanho;
-
-            let genero = await tipo.buscaOneGenero(body.idgenero);
-            if (genero != undefined) {
-              produto.genero = genero;
-
-              let volume = await tipo.buscaOneVolume(body.idvolume);
-              if (volume != undefined) {
-                produto.volume = volume;
-              }
-            }
-          }
-        }
       }
+
+      let material = await tipo.buscaOneMaterial(body.material);
+      if (material != undefined) {
+        produto.material = material;
+      }
+
+      let tamanho = await tipo.buscaOneTamanho(body.tamanho);
+      if (tamanho != undefined) {
+        produto.tamanho = tamanho;
+      }
+
+      let genero = await tipo.buscaOneGenero(body.genero);
+      if (genero != undefined) {
+        produto.genero = genero;
+      }
+
+      let volume = await tipo.buscaOneVolume(body.volume);
+      if (volume != undefined) {
+        produto.volume = volume;
+      }
+
       return this.servicoProduto.Update(produto);
     } catch (err) {
       return err;

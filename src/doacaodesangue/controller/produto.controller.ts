@@ -65,6 +65,11 @@ export class ProdutoController {
     return this.montador.montaProduto(body);
   }
 
+  @Put('/produto')
+  public updateOne(@Body() body: any) {
+    return this.montador.alteraProduto(body);
+  }
+
   @Delete('/produto')
   public deleteOne(@Body() body: Produto) {
     return this.montador.removeProduto(body);
