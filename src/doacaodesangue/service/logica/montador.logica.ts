@@ -184,12 +184,8 @@ export class Montador {
       let tipo = new CaracteristicasProdutoService();
       let imagem: Imagem = await tipo.buscaUrl(body.url);
       let categoria: Categoria = await tipo.buscaOneCategoria(body.categoria);
-      let material: Material = await tipo.buscaOneMaterial(
-        MaterialEnum[body.material],
-      );
-      let tamanho: Tamanho = await tipo.buscaOneTamanho(
-        TamanhoEnum[body.tamanho],
-      );
+      let material: Material = await tipo.buscaOneMaterial(body.material);
+      let tamanho: Tamanho = await tipo.buscaOneTamanho(body.tamanho);
       let genero: Genero = await tipo.buscaOneGenero(body.genero);
       let volume: Volume = await tipo.buscaOneVolume(body.volume);
 
