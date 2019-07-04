@@ -62,13 +62,14 @@ export class ProdutoService implements genericInterface<Produto> {
   async buscaProdutoParam(texto): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
       .select(
-        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero, imagem.url as url',
       )
       .innerJoin('produto.categoria', 'categoria')
       .innerJoin('produto.tamanho', 'tamanho')
       .innerJoin('produto.volume', 'volume')
       .innerJoin('produto.material', 'material')
       .innerJoin('produto.genero', 'genero')
+      .innerJoin('produto.imagem','imagem')
       .where('produto.nome ILIKE :name', { name: `%${texto}%` })
       .getRawMany();
   }
@@ -76,13 +77,14 @@ export class ProdutoService implements genericInterface<Produto> {
   async buscaProduto(param): Promise<Produto | any> {
     return await Produto.createQueryBuilder('produto')
       .select(
-        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero',
+        'produto.id, produto.nome, produto.quantidade, produto.descricao, produto.valorunitario, categoria.nome as categoria, tamanho.tamanho as tamanho, volume.quantidade as volume, material.material as material, genero.genero as genero, imagem.url as url',
       )
       .innerJoin('produto.categoria', 'categoria')
       .innerJoin('produto.tamanho', 'tamanho')
       .innerJoin('produto.volume', 'volume')
       .innerJoin('produto.material', 'material')
       .innerJoin('produto.genero', 'genero')
+      .innerJoin('produto.imagem','imagem')
       .where('categoria.nome ILIKE :name', { name: param })
       .getRawMany();
   }
